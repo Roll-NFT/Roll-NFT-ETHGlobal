@@ -1,0 +1,26 @@
+{
+  "name": "roll-nft-ethglobal",
+  "version": "1.0.0",
+  "description": "ETH Global MVP submission",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roll-NFT/Roll-NFT-ETHGlobal.git"
+  },
+  "keywords": [
+    "roll",
+    "nft",
+    "eth",
+    "hack",
+    "hackathon"
+  ],
+  "author": "Loizage",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Roll-NFT/Roll-NFT-ETHGlobal/issues"
+  },
+  "homepage": "https://github.com/Roll-NFT/Roll-NFT-ETHGlobal#readme"
+}
