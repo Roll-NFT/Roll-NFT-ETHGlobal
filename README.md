@@ -18,3 +18,17 @@ Every hosted (created) Roll will be unique ERC721 smart contract - representing 
 We consider to deploy smart contract on Polygon network.
 To handle network listening we consider to use TheGraph or Covalent.
 We like what Worldcoin offer for web3 developers, and we have ideas on how to implement it.
+
+# Sample Hardhat Project
+
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+
+Try running some of the following tasks:
+
+```shell
+npx hardhat help
+npx hardhat test
+GAS_REPORT=true npx hardhat test
+npx hardhat node
+npx hardhat run scripts/deploy.js
+```
