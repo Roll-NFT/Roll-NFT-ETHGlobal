@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Roll-NFT/Roll-NFT-ETHGlobal/issues"
   },
-  "homepage": "https://github.com/Roll-NFT/Roll-NFT-ETHGlobal#readme"
+  "homepage": "https://github.com/Roll-NFT/Roll-NFT-ETHGlobal#readme",
+  "devDependencies": {
+    "hardhat": "^2.11.1"
+  }
 }
