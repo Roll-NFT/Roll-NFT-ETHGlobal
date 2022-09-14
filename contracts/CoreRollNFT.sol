@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "./TicketsNFT.sol";
 import "./IddleAssets.sol";
 
@@ -8,6 +9,10 @@ import "./IddleAssets.sol";
 // import "hardhat/console.sol";
 
 contract CoreRollNFT {
+    using Counters for Counters.Counter;
+
+    /// @dev Current Roll ID
+    Counters.Counter private _currentRollID;
     
     /// @dev Owner
     address public owner;
@@ -17,9 +22,6 @@ contract CoreRollNFT {
     address internal immutable contractTicketsTemplate;
     /// @dev Ticket's NFT collection contract
     address internal immutable contractIddleAssets;
-    /// @dev Current Roll ID
-    uint public currentRollID;
-
     
     /// @dev event on successful Roll creation
     /// 
@@ -84,13 +86,13 @@ contract CoreRollNFT {
 
         /// @dev initialize Roll's Tickets NFT contract
         ticketsNFTContract.initialize(
-            string(abi.encodePacked("Roll #",currentRollID," tickets collection")),
+            string(abi.encodePacked("Roll #",_currentRollID," tickets collection")),
             string(abi.encodePacked("RTC")),
             _prizeAddress, 
             _prizeId,
             msg.sender,
             rollTypeID,
-            currentRollID
+            _currentRollID
         );
 
         /// @dev transfer Prize to CoreRollNFT contract
@@ -103,10 +105,10 @@ contract CoreRollNFT {
         _prizeAddress.transferFrom(address(this), contractIddleAssets, _prizeId);
 
         /// @dev emit event about hosted Roll
-        emit RollCreated(rollTypeID, currentRollID, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId);
+        emit RollCreated(rollTypeID, _currentRollID, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId);
 
-        /// @dev increment currentRollID
-        /// TODO
+        /// @dev increment _currentRollID
+        _currentRollID.increment();
 
     }
 
