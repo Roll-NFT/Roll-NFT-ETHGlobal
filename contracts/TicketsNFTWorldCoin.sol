@@ -13,7 +13,8 @@ contract RollXxxTicketsCollection is Clone, Initializable, ERC721, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("Roll #xxx tickets collection", "RTC") {}
+    constructor() ERC721("Roll #xxx tickets collection", "RPT") {}
+    constructor() ERC721("Roll #xxx participation tokens", "RPT") {}
 
     function _baseURI() internal pure override returns (string memory) {
         /// TODO implement auto setting for base URI

@@ -61,7 +61,7 @@ contract CoreRollNFT {
         contractIddleAssets = address(new IddleAssets());
     }
 
-    /// @dev create new raffle 
+    /// @dev host a Roll 
     function createRoll(
         uint64 _startTime,
         uint64 _endTime,
@@ -116,6 +116,27 @@ contract CoreRollNFT {
         _currentRollID.increment();
 
     }
+
+    /// @dev participate in Roll
+    function participate(uint256 _rollType, uint256 _rollID, uint256 _amount) external {
+        
+        /// @dev check that sales are open
+        
+        /// @dev check that _amount would not overflow maxParticipants
+        
+        /// @dev send payment to core contract
+
+        /// @dev send pyment to Iddle assets contract
+
+        /// @dev mint participation tokens
+        
+        /// @dev get Tickets contract address
+        address ticketsContract;
+
+        /// @dev emit event about minted tickets
+        emit TicketsMinted(_rollType, _rollID, ticketsContract, msg.sender, _amount);
+    
+    } 
 
     /// @dev set fee
     function setFee(uint256 _newFee) external {
