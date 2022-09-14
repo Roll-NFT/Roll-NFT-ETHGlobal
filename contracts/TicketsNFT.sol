@@ -17,6 +17,7 @@ contract RollXxxTicketsCollection is Clone, Initializable, ERC721, Ownable {
 
     function _baseURI() internal pure override returns (string memory) {
         /// TODO implement auto setting for base URI
+        /// 
         return "https://baseURI";
     }
 
