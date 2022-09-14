@@ -4,8 +4,11 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "clones-with-immutable-args/Clone.sol";
 
-contract RollXxxTicketsCollection is ERC721, Ownable {
+
+contract RollXxxTicketsCollection is Clone, Initializable, ERC721, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
@@ -13,6 +16,7 @@ contract RollXxxTicketsCollection is ERC721, Ownable {
     constructor() ERC721("Roll #xxx tickets collection", "RTC") {}
 
     function _baseURI() internal pure override returns (string memory) {
+        /// TODO implement auto setting for base URI
         return "https://baseURI";
     }
 
