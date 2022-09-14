@@ -25,31 +25,35 @@ contract CoreRollNFT {
     
     /// @dev event on successful Roll creation
     /// 
-    event RollCreated(uint indexed rollType, uint indexed rollID, address rollTicketsContract, address rollHost, address indexed prizeAddress, uint prizeID);
+    event RollCreated(uint indexed rollType, uint indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID);
 
     // mintTickets / ticketsMint / newParticipant
     // ??? What type should be amount?
-    event TicketsMinted(uint indexed rollType, uint indexed rollID, address rollTicketsContract, address participant, uint amount);
-
+    event TicketsMinted(uint indexed rollType, uint indexed rollID, address ticketsContract, address participant, uint amount);
+    
     // claimPrize
     // ?? Provide information about claimed NFT? address prize's Collection Address, uint prize's Token ID
-    // ?? Provide address rollTicketsContract
+    // ?? Provide ticketsContract address
     event PrizeClaimed(uint indexed rollType, uint indexed rollID, address winner, address indexed prizeAddress, uint prizeID);
-
+    
     // claimRevenue
-    // ?? Provide address rollTicketsContract
-    event RevenueClaimed(uint indexed rollType, uint indexed rollID, address rollOwner, address revenueTokenAddress, uint amount);
-
+    // ?? Provide ticketsContract address
+    event RevenueClaimed(uint indexed rollType, uint indexed rollID, indexed address rollOwner, address tokenAddress, uint amount);
+    
     // withdrawPrize - looks similar to claimPrize event
-    // ?? Provide address rollTicketsContract
+    // ?? Provide ticketsContract address
     event PrizeWithdrawn(uint indexed rollType, uint indexed rollID, address rollOwner, address indexed prizeAddress, uint prizeID);
-
+    
     // ticketsRefunded
-    // ?? Provide address rollTicketsContract
-    event TicketsRefunded(uint indexed rollType, uint indexed rollID, address participant, address refundTokenAddress, uint refundAmount, uint ticketsAmount);
+    // ?? Provide ticketsContract address
+    event TicketsRefunded(uint indexed rollType, uint indexed rollID, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
 
     // 
     event FeeSet(uint256 newFee);
+
+    /// @dev event emited upon winner definition
+    /// ? ticketsContract / 
+    event WinnerRolled(uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address indexed prizeAddress, uint prizeID, address host, address owner);
     
     constructor()  {
         owner = msg.sender;
@@ -88,6 +92,7 @@ contract CoreRollNFT {
         /// @param 
         ticketsNFTContract.initialize(
             string(abi.encodePacked("Roll #",_currentRollID," tickets collection")),
+            /// TODO form base URI with Roll's metadata and provide it instead of next perameters
             _prizeAddress, 
             _prizeId,
             msg.sender,
