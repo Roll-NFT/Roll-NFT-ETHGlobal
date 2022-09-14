@@ -7,49 +7,44 @@
                 "alt": "logo"
             }
         ],
-        "text": "Created with the collaboration of over 60 of the world's best Nuron Artists."
+        "text": "Created for the ETHOnline 2022 Hackathon by a team of passionate Web3 developers."
     },
     "newsletter-widget": {
         "title": "Get The Latest Nuron Updates",
         "note": "Email is safe. We don't spam."
     },
     "quicklink-widget": {
-        "title": "Nuron",
+        "title": "Categories",
         "menu": [
             {
                 "id": 1,
-                "text": "Protocol Explore",
+                "text": "Art",
                 "path": "/explore-01"
             },
             {
                 "id": 2,
-                "text": "System Token",
-                "path": "/about"
+                "text": "Music",
+                "path": "/explore-01"
             },
             {
                 "id": 3,
-                "text": "Otimize Time",
-                "path": "/about"
+                "text": "Metaverse",
+                "path": "/explore-01"
             },
             {
                 "id": 4,
-                "text": "Visual Checking",
-                "path": "/about"
+                "text": "Domain Name",
+                "path": "/explore-01"
             },
             {
                 "id": 5,
-                "text": "Fadeup System",
-                "path": "/blog"
+                "text": "Game",
+                "path": "/explore-01"
             },
             {
-                "id": 6,
-                "text": "Activity Log",
-                "path": "/activity"
-            },
-            {
-                "id": 7,
-                "text": "System Auto Since",
-                "path": "/blog"
+                "id": 5,
+                "text": "Collectibles",
+                "path": "/explore-01"
             }
         ]
     },
@@ -58,38 +53,23 @@
         "menu": [
             {
                 "id": 1,
-                "text": "Market Explore",
+                "text": "Explore",
                 "path": "/explore-01"
             },
             {
                 "id": 2,
-                "text": "Ready Token",
-                "path": "/about"
-            },
-            {
-                "id": 3,
-                "text": "Otimize Time",
-                "path": "/about"
-            },
-            {
-                "id": 4,
-                "text": "Main Option",
-                "path": "/about"
-            },
-            {
-                "id": 5,
-                "text": "Blog Grid",
-                "path": "/blog"
-            },
-            {
-                "id": 6,
                 "text": "About Us",
                 "path": "/about"
             },
             {
-                "id": 7,
-                "text": "Fix Bug",
-                "path": "/blog"
+                "id": 3,
+                "text": "Contact",
+                "path": "/about"
+            },
+            {
+                "id": 4,
+                "text": "Support/FAQ",
+                "path": "/about"
             }
         ]
     },
@@ -142,5 +122,5 @@
             }
         ]
     },
-    "copyright_text": "©2022 Nuron, Inc. All rights reserved"
+    "copyright_text": "©2022 NFT Roll. All rights reserved"
 }

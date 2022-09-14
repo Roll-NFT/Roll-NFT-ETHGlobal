@@ -56,9 +56,9 @@ const Footer = ({ space, className, data }) => (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div className="widget-content-wrapper">
                             <LogoWidget data={footerData["logo-widget"]} />
-                            <NewsletterWidget
+                            {/* <NewsletterWidget
                                 data={footerData["newsletter-widget"]}
-                            />
+                            /> */}
                         </div>
                     </div>
 

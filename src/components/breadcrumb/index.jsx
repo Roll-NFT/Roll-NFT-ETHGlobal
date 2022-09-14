@@ -2,7 +2,14 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import Anchor from "@ui/anchor";
 
-const Breadcrumb = ({ pageTitle, currentPage, className, space }) => (
+const Breadcrumb = ({
+    pageTitle,
+    currentPage,
+    className,
+    space,
+    rootPath,
+    rootTitle,
+}) => (
     <div
         className={clsx(
             "rn-breadcrumb-inner",
@@ -20,7 +27,7 @@ const Breadcrumb = ({ pageTitle, currentPage, className, space }) => (
                 <div className="col-lg-6 col-md-6 col-12">
                     <ul className="breadcrumb-list">
                         <li className="item">
-                            <Anchor path="/">Home</Anchor>
+                            <Anchor path={rootPath}>{rootTitle}</Anchor>
                         </li>
                         <li className="separator">
                             <i className="feather-chevron-right" />
@@ -36,6 +43,8 @@ const Breadcrumb = ({ pageTitle, currentPage, className, space }) => (
 );
 
 Breadcrumb.propTypes = {
+    rootPath: PropTypes.string,
+    rootTitle: PropTypes.string,
     pageTitle: PropTypes.string.isRequired,
     currentPage: PropTypes.string,
     className: PropTypes.string,
@@ -43,6 +52,8 @@ Breadcrumb.propTypes = {
 };
 
 Breadcrumb.defaultProps = {
+    rootPath: "/",
+    rootTitle: "Home",
     space: 1,
 };
 

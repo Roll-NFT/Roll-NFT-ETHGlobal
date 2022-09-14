@@ -11,10 +11,10 @@ export async function getStaticProps() {
 
 const Home = () => (
     <Wrapper>
-        <SEO pageTitle="Create New" />
+        <SEO pageTitle="Create New Raffle" />
         <Header />
         <main id="main-content">
-            <Breadcrumb pageTitle="Create New File" />
+            <Breadcrumb pageTitle="Create New Raffle" />
             <CreateNewArea />
         </main>
         <Footer />

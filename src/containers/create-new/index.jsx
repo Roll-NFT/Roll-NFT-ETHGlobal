@@ -7,6 +7,7 @@ import Button from "@ui/button";
 import ProductModal from "@components/modals/product-modal";
 import ErrorText from "@ui/error-text";
 import { toast } from "react-toastify";
+import Anchor from "@ui/anchor";
 
 const CreateNewArea = ({ className, space }) => {
     const [showProductModal, setShowProductModal] = useState(false);
@@ -67,47 +68,53 @@ const CreateNewArea = ({ className, space }) => {
                             <div className="col-lg-3 offset-1 ml_md--0 ml_sm--0">
                                 <div className="upload-area">
                                     <div className="upload-formate mb--30">
-                                        <h6 className="title">Upload file</h6>
+                                        <h6 className="title">Choose NFT</h6>
                                         <p className="formate">
-                                            Drag or choose your file to upload
+                                            Click the button below to select
+                                            from all NFTs inside your wallet
                                         </p>
                                     </div>
 
-                                    <div className="brows-file-wrapper">
-                                        <input
-                                            name="file"
-                                            id="file"
-                                            type="file"
-                                            className="inputfile"
-                                            data-multiple-caption="{count} files selected"
-                                            multiple
-                                            onChange={imageChange}
-                                        />
-                                        {selectedImage && (
-                                            <img
-                                                id="createfileImage"
-                                                src={URL.createObjectURL(
-                                                    selectedImage
-                                                )}
-                                                alt=""
-                                                data-black-overlay="6"
-                                            />
-                                        )}
+                                    <Anchor
+                                        path="/my-nfts"
+                                        className="select-nft"
+                                    >
+                                        <div className="brows-file-wrapper">
+                                            {/* <input
+                                                name="file"
+                                                id="file"
+                                                type="file"
+                                                className="inputfile"
+                                                data-multiple-caption="{count} files selected"
+                                                multiple
+                                                onChange={imageChange}
+                                            /> */}
+                                            {selectedImage && (
+                                                <img
+                                                    id="createfileImage"
+                                                    src={URL.createObjectURL(
+                                                        selectedImage
+                                                    )}
+                                                    alt=""
+                                                    data-black-overlay="6"
+                                                />
+                                            )}
 
-                                        <label
-                                            htmlFor="file"
-                                            title="No File Choosen"
-                                        >
-                                            <i className="feather-upload" />
-                                            <span className="text-center">
-                                                Choose a File
-                                            </span>
-                                            <p className="text-center mt--10">
-                                                PNG, GIF, WEBP, MP4 or MP3.{" "}
-                                                <br /> Max 1Gb.
-                                            </p>
-                                        </label>
-                                    </div>
+                                            <label
+                                                htmlFor="file"
+                                                title="No File Choosen"
+                                            >
+                                                <i className="feather-upload" />
+                                                <span className="text-center">
+                                                    Choose a NFT
+                                                </span>
+                                                {/* <p className="text-center mt--10">
+                                                    PNG, GIF, WEBP, MP4 or MP3.{" "}
+                                                    <br /> Max 1Gb.
+                                                </p> */}
+                                            </label>
+                                        </div>
+                                    </Anchor>
                                     {hasImageError && !selectedImage && (
                                         <ErrorText>Image is required</ErrorText>
                                     )}

@@ -32,11 +32,6 @@
     },
     {
         "id": 2,
-        "text": "About",
-        "path": "/about"
-    },
-    {
-        "id": 3,
         "text": "Explore",
         "path": "#!",
         "submenu": [
@@ -58,113 +53,8 @@
         ]
     },
     {
-        "id": 4,
-        "text": "Pages",
-        "path": "#!",
-        "megamenu": [
-            {
-                "id": 41,
-                "submenu": [
-                    {
-                        "id": 410,
-                        "text": "Create NFT",
-                        "path": "/create",
-                        "icon": "feather-file-plus"
-                    },
-                    {
-                        "id": 414,
-                        "text": "My Collection",
-                        "path": "/collection",
-                        "icon": "feather-package"
-                    }
-                ]
-            },
-            {
-                "id": 42,
-                "submenu": [
-                    {
-                        "id": 420,
-                        "text": "Log In",
-                        "path": "/login",
-                        "icon": "feather-log-in"
-                    },
-                    {
-                        "id": 421,
-                        "text": "Registration",
-                        "path": "/sign-up",
-                        "icon": "feather-user-plus"
-                    },
-                    {
-                        "id": 422,
-                        "text": "Forget Password",
-                        "path": "/forget",
-                        "icon": "feather-lock"
-                    }
-                ]
-            },
-            {
-                "id": 43,
-                "submenu": [
-                    {
-                        "id": 431,
-                        "text": "Product Details",
-                        "path": "/product/delta25",
-                        "icon": "feather-layout"
-                    },
-                    {
-                        "id": 434,
-                        "text": "Connect to Wallet",
-                        "path": "/connect",
-                        "icon": "feather-pocket"
-                    },
-                    {
-                        "id": 435,
-                        "text": "404",
-                        "path": "/404",
-                        "icon": "feather-alert-triangle"
-                    }
-                ]
-            },
-            {
-                "id": 44,
-                "submenu": [
-                    {
-                        "id": 441,
-                        "text": "About Us",
-                        "path": "/about",
-                        "icon": "feather-award"
-                    },
-                    {
-                        "id": 442,
-                        "text": "Contact",
-                        "path": "/contact",
-                        "icon": "feather-headphones"
-                    },
-                    {
-                        "id": 443,
-                        "text": "Support/FAQ",
-                        "path": "/support",
-                        "icon": "feather-help-circle"
-                    },
-                    {
-                        "id": 444,
-                        "text": "Privacy Policy",
-                        "path": "/privacy-policy",
-                        "icon": "feather-file-text"
-                    },
-                    {
-                        "id": 445,
-                        "text": "Terms & Condition",
-                        "path": "/terms-condition",
-                        "icon": "feather-list"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 6,
-        "text": "Contact",
-        "path": "/contact"
+        "id": 3,
+        "text": "Create a Raffle",
+        "path": "/create"
     }
 ]
