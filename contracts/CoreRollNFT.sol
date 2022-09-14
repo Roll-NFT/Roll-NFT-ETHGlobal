@@ -17,28 +17,31 @@ contract CoreRollNFT {
     // It makes sense to provide Condition parameters, such as:
     // endTime, minTickets, maxTickets
     // Should we provide information about prize / prizes? Contract, TokenID
-    event rollCreated(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address rollHost, address indexed prizeCollectionAddress, uint prizeTokenID);
+    event RollCreated(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address rollHost, address indexed prizeCollectionAddress, uint prizeTokenID);
 
     // mintTickets / ticketsMint / newParticipant
     // ??? What type should be amount?
-    event ticketsMinted(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address participant, uint amount);
+    event TicketsMinted(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address participant, uint amount);
 
     // claimPrize
     // ?? Provide information about claimed NFT? address prizeCollectionAddress, uint prizeTokenID
     // ?? Provide address rollTicketsContract
-    event prizeClaimed(uint indexed rollTypeID, uint indexed rollID, address winner, address indexed prizeCollectionAddress, uint prizeTokenID);
+    event PrizeClaimed(uint indexed rollTypeID, uint indexed rollID, address winner, address indexed prizeCollectionAddress, uint prizeTokenID);
 
     // claimRevenue
     // ?? Provide address rollTicketsContract
-    event revenueClaimed(uint indexed rollTypeID, uint indexed rollID, address rollOwner, address revenueTokenAddress, uint amount);
+    event RevenueClaimed(uint indexed rollTypeID, uint indexed rollID, address rollOwner, address revenueTokenAddress, uint amount);
 
     // withdrawPrize - looks similar to claimPrize event
     // ?? Provide address rollTicketsContract
-    event prizeWithdrawn(uint indexed rollTypeID, uint indexed rollID, address rollOwner, address indexed prizeCollectionAddress, uint prizeTokenID);
+    event PrizeWithdrawn(uint indexed rollTypeID, uint indexed rollID, address rollOwner, address indexed prizeCollectionAddress, uint prizeTokenID);
 
     // ticketsRefunded
     // ?? Provide address rollTicketsContract
-    event ticketsRefunded(uint indexed rollTypeID, uint indexed rollID, address participant, address refundTokenAddress, uint refundAmount, uint ticketsAmount);
+    event TicketsRefunded(uint indexed rollTypeID, uint indexed rollID, address participant, address refundTokenAddress, uint refundAmount, uint ticketsAmount);
+
+    // 
+    event FeeSet(uint256 newFee);
     
     constructor()  {
         //
@@ -61,7 +64,16 @@ contract CoreRollNFT {
         /// @dev mint Roll ownership token for caller
 
         /// @dev deploy / clone Roll tickets contract
-        
+
+    }
+
+    /// @dev set fee
+    function setFee(uint256 _newFee) external {
+        if(owner != msg.sender){ 
+            revert();
+        }
+        feePercent = _newFee;
+        emit FeeSet(_newFee);
     }
 
 }
