@@ -1,0 +1,18 @@
+Version 1.2.0 - 26 May 2022
+===================================
+
+1. Added: Home Page 10
+2. Added: Home Page 11
+3. Added: Home Page 12
+4. Added: Home Page 13
+5. Added: Home Page 14
+6. Added: Home Page 15
+7. Added: Home Page 16
+8. Added: Tilt animation
+9. Fixing: Some CSS Issues
+10. Fixing: Responsive Issue
+
+Version 1.0.0 - 28 March 2022
+===================================
+
+1. Initial release

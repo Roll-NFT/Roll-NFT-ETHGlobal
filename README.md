@@ -1,20 +1,34 @@
-# Roll NFT ETHGlobal
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Roll NFT project submission for ETH Global hackathon
+## Getting Started
 
-Roll NFT is an application that let users to create Rolls (raffles) with any NFT asset they own.
-And from other side it allows users to participate in existing Rolls to compete for prize pool.
+First, run the development server:
 
-Prize pool could be formed by any kind of NFT, whether it's an Avatar, Game asset, Digital art or Real world asset.
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-Active Rolls are available on dashboard and could be filtered by NFT collections and/or categories.
-On profile page available list of current, upcoming and past user Rolls. As well as watch lists of favourite collections and hosts.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Roll NFT extends options for trades with NFT assets and brings game factor to NFT exchanges.
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-# Technologies and hackathon partners used
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-Every hosted (created) Roll will be unique ERC721 smart contract - representing NFT entry (ticket) collection for that particular raffle.
-We consider to deploy smart contract on Polygon network.
-To handle network listening we consider to use TheGraph or Covalent.
-We like what Worldcoin offer for web3 developers, and we have ideas on how to implement it.
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
