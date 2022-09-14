@@ -1,32 +1,38 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+import "./TicketsNFT.sol";
+import "./IddleAssets.sol";
+
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
 contract CoreRollNFT {
     
-    /// @dev owner
+    /// @dev Owner
     address public owner;
-    /// @dev fee percentage i.e 1%(100/10000)
+    /// @dev Fee percentage i.e 1%(100/10000)
     uint256 public feePercent;
+    /// @dev Ticket's NFT collection contract
+    address internal immutable contractTicketsTemplate;
+    /// @dev Ticket's NFT collection contract
+    address internal immutable contractIddleAssets;
+    /// @dev Current Roll ID
+    uint public currentRollID;
 
-    // Events
-
-    // rollCreated
-    // It makes sense to provide Condition parameters, such as:
-    // endTime, minTickets, maxTickets
-    // Should we provide information about prize / prizes? Contract, TokenID
-    event RollCreated(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address rollHost, address indexed prizeCollectionAddress, uint prizeTokenID);
+    
+    /// @dev event on successful Roll creation
+    /// 
+    event RollCreated(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address rollHost, address indexed prizeAddress, uint prizeID);
 
     // mintTickets / ticketsMint / newParticipant
     // ??? What type should be amount?
     event TicketsMinted(uint indexed rollTypeID, uint indexed rollID, address rollTicketsContract, address participant, uint amount);
 
     // claimPrize
-    // ?? Provide information about claimed NFT? address prizeCollectionAddress, uint prizeTokenID
+    // ?? Provide information about claimed NFT? address prize's Collection Address, uint prize's Token ID
     // ?? Provide address rollTicketsContract
-    event PrizeClaimed(uint indexed rollTypeID, uint indexed rollID, address winner, address indexed prizeCollectionAddress, uint prizeTokenID);
+    event PrizeClaimed(uint indexed rollTypeID, uint indexed rollID, address winner, address indexed prizeAddress, uint prizeID);
 
     // claimRevenue
     // ?? Provide address rollTicketsContract
@@ -34,7 +40,7 @@ contract CoreRollNFT {
 
     // withdrawPrize - looks similar to claimPrize event
     // ?? Provide address rollTicketsContract
-    event PrizeWithdrawn(uint indexed rollTypeID, uint indexed rollID, address rollOwner, address indexed prizeCollectionAddress, uint prizeTokenID);
+    event PrizeWithdrawn(uint indexed rollTypeID, uint indexed rollID, address rollOwner, address indexed prizeAddress, uint prizeID);
 
     // ticketsRefunded
     // ?? Provide address rollTicketsContract
@@ -44,8 +50,9 @@ contract CoreRollNFT {
     event FeeSet(uint256 newFee);
     
     constructor()  {
-        //
         owner = msg.sender;
+        contractTicketsTemplate = address(new TicketsNFT());
+        contractIddleAssets = address(new IddleAssets());
     }
 
     /// @dev create new raffle 
@@ -56,14 +63,50 @@ contract CoreRollNFT {
         uint256 _maxParticipants,
         uint256 _participationCost,
         address _participationToken,
-        // Array of prizes
+        /// TODO Array of prizes
         IERC721 _prizeAddress,
         uint256 _prizeId
-    ) external returns(Raffle raffle){
+    ) external returns(TicketsNFT ticketsContract){
         
         /// @dev mint Roll ownership token for caller
+        
+        /// @dev define Roll type / variation
+        /// TODO implement function
+        uint rollTypeID;
 
-        /// @dev deploy / clone Roll tickets contract
+        /// @dev form abi data for Tickets NFT contract to be cloned
+        /// TODO define parameters to provide
+        bytes memory data = abi.encodePacked(
+        );
+        
+        /// @dev clone Roll's Tickets NFT contract
+        ticketsNFTContract = TicketsNFT(contractTicketsTemplate.clone(data));
+
+        /// @dev initialize Roll's Tickets NFT contract
+        ticketsNFTContract.initialize(
+            string(abi.encodePacked("Roll #",currentRollID," tickets collection")),
+            string(abi.encodePacked("RTC")),
+            _prizeAddress, 
+            _prizeId,
+            msg.sender,
+            rollTypeID,
+            currentRollID
+        );
+
+        /// @dev transfer Prize to CoreRollNFT contract
+        _prizeAddress.transferFrom(msg.sender, address(this), _prizeId);
+
+        /// @dev approve NFT prize token to IddleAssets contract
+        _prizeAddress.approve(contractIddleAssets, _prizeId);
+
+        /// @dev transfer NFT prize token to IddleAssets contract
+        _prizeAddress.transferFrom(address(this), contractIddleAssets, _prizeId);
+
+        /// @dev emit event about hosted Roll
+        emit RollCreated(rollTypeID, currentRollID, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId);
+
+        /// @dev increment currentRollID
+        /// TODO
 
     }
 
