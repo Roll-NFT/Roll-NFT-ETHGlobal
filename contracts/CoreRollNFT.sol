@@ -6,7 +6,10 @@ pragma solidity ^0.8.9;
 
 contract CoreRollNFT {
     
-    //
+    /// @dev owner
+    address public owner;
+    /// @dev fee percentage i.e 1%(100/10000)
+    uint256 public feePercent;
 
     // Events
 
@@ -39,6 +42,26 @@ contract CoreRollNFT {
     
     constructor()  {
         //
+        owner = msg.sender;
+    }
+
+    /// @dev create new raffle 
+    function createRoll(
+        uint64 _startTime,
+        uint64 _endTime,
+        uint256 _minParticipants,
+        uint256 _maxParticipants,
+        uint256 _participationCost,
+        address _participationToken,
+        // Array of prizes
+        IERC721 _prizeAddress,
+        uint256 _prizeId
+    ) external returns(Raffle raffle){
+        
+        /// @dev mint Roll ownership token for caller
+
+        /// @dev deploy / clone Roll tickets contract
+        
     }
 
 }
