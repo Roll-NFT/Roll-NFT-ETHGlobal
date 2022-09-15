@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -36,7 +36,7 @@ contract RollXxxTicketsCollection is Clone, Initializable, ERC721, Ownable {
         uint256 _rollType,
         uint256 _rollID
     ) public initializer {
-         __ERC721_init(_name, "RTC");
+         __ERC721_init(_name, "RPT");
          host = _host;
          prize.prizeAddress = _prizeAddress;
          prize.prizeId = _prizeId;

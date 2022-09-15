@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -31,10 +31,8 @@ contract CoreRollNFT {
     // ??? What type should be amount?
     event TicketsMinted(uint indexed rollType, uint indexed rollID, address ticketsContract, address participant, uint amount);
     
-    // claimPrize
-    // ?? Provide information about claimed NFT? address prize's Collection Address, uint prize's Token ID
-    // ?? Provide ticketsContract address
-    event PrizeClaimed(uint indexed rollType, uint indexed rollID, address winner, address indexed prizeAddress, uint prizeID);
+    /// @dev announce about claimed prize
+    event PrizeClaimed(uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address winner, address indexed prizeAddress, uint prizeID);
     
     // claimRevenue
     // ?? Provide ticketsContract address
@@ -51,9 +49,9 @@ contract CoreRollNFT {
     // 
     event FeeSet(uint256 newFee);
 
-    /// @dev event emited upon winner definition
+    /// @dev anounce roll results
     /// ? ticketsContract / 
-    event WinnerRolled(uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address indexed prizeAddress, uint prizeID, address host, address owner);
+    event RollPlayed(bool success, uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address indexed prizeAddress, uint prizeID, address host, address owner);
     
     constructor()  {
         owner = msg.sender;
@@ -61,7 +59,7 @@ contract CoreRollNFT {
         contractIddleAssets = address(new IddleAssets());
     }
 
-    /// @dev host a Roll 
+    /// @dev function to create (host) a new Roll 
     function createRoll(
         uint64 _startTime,
         uint64 _endTime,
@@ -117,7 +115,7 @@ contract CoreRollNFT {
 
     }
 
-    /// @dev participate in Roll
+    /// @dev function to participate in a Roll
     function participate(uint256 _rollType, uint256 _rollID, uint256 _amount) external {
         
         /// @dev check that sales are open
@@ -134,9 +132,42 @@ contract CoreRollNFT {
         address ticketsContract;
 
         /// @dev emit event about minted tickets
+        /// ? add minted token IDs
         emit TicketsMinted(_rollType, _rollID, ticketsContract, msg.sender, _amount);
     
-    } 
+    }
+
+    /// @dev function to claim prize
+    function claimPrize(uint256 _rollType, uint256 _rollID) external {
+        
+        /// @dev get roll details
+        
+        /// @dev check that sales are closed
+
+        /// @dev check that roll is successful
+
+        /// @dev check that prize prize is available to claim
+
+        /// @dev get winner ticket ID
+
+        /// @dev check that caller is a owner of winning ticket
+
+        /// @dev send prize token to caller
+
+        /// @dev change prize / roll status - prize claimed
+
+        /// @dev anounce about claimed prize - where, who and what
+        event PrizeClaimed(_rollType, _rollID, address ticketsContract, uint256 winningTicket, address winner, address indexed prizeAddress, uint prizeID);
+        
+    }
+
+    /// @dev function to claim revenue
+
+    /// @dev function to withdraw prize from unsuccessful Roll
+
+    /// @dev function to refund tickets from unsuccessful Roll
+
+    /// @dev function to define a winner
 
     /// @dev set fee
     function setFee(uint256 _newFee) external {
