@@ -40,9 +40,8 @@ contract CoreRollNFT {
     /// @dev announce about withdrawn prize from unsuccessful Roll
     event PrizeWithdrawn(uint indexed rollType, uint indexed rollID, address rollHost, address rollOwner, address indexed prizeAddress, uint prizeID);
     
-    // ticketsRefunded
-    // ?? Provide ticketsContract address
-    event TicketsRefunded(uint indexed rollType, uint indexed rollID, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
+    /// @dev announce about refunded tickets from unsuccessful Roll
+    event TicketsRefunded(uint indexed rollType, uint indexed rollID, address rollHost, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
 
     // 
     event FeeSet(uint256 newFee);
@@ -205,11 +204,34 @@ contract CoreRollNFT {
         /// @dev set prize status to unavailable to withdraw / claimed 
 
         /// @dev announce about withdrawn prize from unsuccessful Roll - where who what
-        event PrizeWithdrawn(_rollType, _rollID, rollHost, rollOwner, prizeAddress, prizeID);
+        emit PrizeWithdrawn(_rollType, _rollID, rollHost, rollOwner, prizeAddress, prizeID);
 
     }
 
     /// @dev function to refund tickets from unsuccessful Roll
+    function refundTickets(uint256 _rollType, uint256 _rollID, uint256[] calldata _ticketIds) external {
+        
+        /// @dev get roll details
+
+        /// @dev check that sales are closed
+
+        /// @dev check that roll is unsuccessful
+        
+        /// @dev Potentially:
+        /// @dev get list of ticket's IDs belonging to caller
+        /// @dev otherwise that provided ticket's IDs are belonging to caller
+
+        /// @dev burn tokens
+
+        /// @dev calculate amount to refund
+        /// @dev (ticketsAmount * _participationCost)
+        
+        /// @dev send refund to caller
+
+        /// @dev announce about refunded tickets from unsuccessful Roll
+        emit TicketsRefunded(_rollType, _rollID, rollHost, msg.sender, tokenAddress, refundAmount, ticketsAmount);
+
+    }
 
     /// @dev function to define a winner
 
