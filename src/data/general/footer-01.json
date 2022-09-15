@@ -49,27 +49,32 @@
         ]
     },
     "information-widget": {
-        "title": "Information",
+        "title": "Sitemap",
         "menu": [
             {
                 "id": 1,
+                "text": "Home",
+                "path": "/"
+            },
+            {
+                "id": 2,
                 "text": "Explore",
                 "path": "/explore-01"
             },
             {
-                "id": 2,
+                "id": 3,
+                "text": "Create Raffle",
+                "path": "/create"
+            },
+            {
+                "id": 4,
                 "text": "About Us",
                 "path": "/about"
             },
             {
-                "id": 3,
-                "text": "Contact",
-                "path": "/about"
-            },
-            {
-                "id": 4,
+                "id": 5,
                 "text": "Support/FAQ",
-                "path": "/about"
+                "path": "/support"
             }
         ]
     },

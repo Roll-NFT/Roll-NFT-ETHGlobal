@@ -54,7 +54,7 @@
     },
     {
         "id": 3,
-        "text": "Create a Raffle",
+        "text": "Create Raffle",
         "path": "/create"
     }
 ]

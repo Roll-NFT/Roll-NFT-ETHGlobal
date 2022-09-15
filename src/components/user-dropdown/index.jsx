@@ -6,7 +6,7 @@ const UserDropdown = () => {
     const { logout } = useMoralis();
     return (
         <div className="icon-box">
-            <Anchor path="/author">
+            <Anchor path="#">
                 <Image
                     src="/images/icons/boy-avater.png"
                     alt="Images"

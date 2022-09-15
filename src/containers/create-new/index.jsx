@@ -24,7 +24,7 @@ const CreateNewArea = ({ className, space }) => {
         mode: "onChange",
     });
 
-    const notify = () => toast("Your product has submitted");
+    const notify = () => toast("Raffle created successfully!");
     const handleProductModal = () => {
         setShowProductModal(false);
     };
@@ -68,7 +68,9 @@ const CreateNewArea = ({ className, space }) => {
                             <div className="col-lg-3 offset-1 ml_md--0 ml_sm--0">
                                 <div className="upload-area">
                                     <div className="upload-formate mb--30">
-                                        <h6 className="title">Choose NFT</h6>
+                                        <h6 className="title">
+                                            Choose NFT for Raffle
+                                        </h6>
                                         <p className="formate">
                                             Click the button below to select
                                             from all NFTs inside your wallet
@@ -119,7 +121,7 @@ const CreateNewArea = ({ className, space }) => {
                                         <ErrorText>Image is required</ErrorText>
                                     )}
                                 </div>
-
+                                {/*
                                 <div className="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
                                     <h5> Note: </h5>
                                     <span>
@@ -132,7 +134,7 @@ const CreateNewArea = ({ className, space }) => {
                                         You will receive :{" "}
                                         <strong>25.00 ETH $50,000</strong>
                                     </span>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="col-lg-7">
                                 <div className="form-wrapper-one">
@@ -143,19 +145,25 @@ const CreateNewArea = ({ className, space }) => {
                                                     htmlFor="name"
                                                     className="form-label"
                                                 >
-                                                    Product Name
+                                                    Raffle Title*
                                                 </label>
                                                 <input
-                                                    id="name"
-                                                    placeholder="e. g. `Digital Awesome Game`"
-                                                    {...register("name", {
-                                                        required:
-                                                            "Name is required",
-                                                    })}
+                                                    id="raffleTitle"
+                                                    placeholder="e.g. 'Super Awesome NFT Raffle'"
+                                                    {...register(
+                                                        "raffleTitle",
+                                                        {
+                                                            required:
+                                                                "Title is required",
+                                                        }
+                                                    )}
                                                 />
-                                                {errors.name && (
+                                                {errors.raffleTitle && (
                                                     <ErrorText>
-                                                        {errors.name?.message}
+                                                        {
+                                                            errors.raffleTitle
+                                                                ?.message
+                                                        }
                                                     </ErrorText>
                                                 )}
                                             </div>
@@ -164,27 +172,48 @@ const CreateNewArea = ({ className, space }) => {
                                         <div className="col-md-12">
                                             <div className="input-box pb--20">
                                                 <label
-                                                    htmlFor="Discription"
+                                                    htmlFor="description"
                                                     className="form-label"
                                                 >
-                                                    Discription
+                                                    Description
                                                 </label>
                                                 <textarea
-                                                    id="discription"
+                                                    id="description"
                                                     rows="3"
-                                                    placeholder="e. g. “After purchasing the product you can get item...”"
-                                                    {...register(
-                                                        "discription",
-                                                        {
-                                                            required:
-                                                                "Discription is required",
-                                                        }
-                                                    )}
+                                                    placeholder="e.g. 'This is the Super Awesome NFT Collection, the ultimate...'"
                                                 />
-                                                {errors.discription && (
+                                                {errors.description && (
                                                     <ErrorText>
                                                         {
-                                                            errors.discription
+                                                            errors.description
+                                                                ?.message
+                                                        }
+                                                    </ErrorText>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <div className="input-box pb--20">
+                                                <label
+                                                    htmlFor="endDate"
+                                                    className="form-label"
+                                                >
+                                                    Raffle End Date*
+                                                </label>
+                                                <input
+                                                    id="endDate"
+                                                    placeholder="e.g. '2022/12/31'"
+                                                    type="date"
+                                                    {...register("endDate", {
+                                                        required:
+                                                            "End date is required",
+                                                    })}
+                                                />
+                                                {errors.endDate && (
+                                                    <ErrorText>
+                                                        {
+                                                            errors.endDate
                                                                 ?.message
                                                         }
                                                     </ErrorText>
@@ -198,11 +227,11 @@ const CreateNewArea = ({ className, space }) => {
                                                     htmlFor="price"
                                                     className="form-label"
                                                 >
-                                                    Item Price in $
+                                                    Ticket Price (ETH)*
                                                 </label>
                                                 <input
                                                     id="price"
-                                                    placeholder="e. g. `20$`"
+                                                    placeholder="e.g. '0.5'"
                                                     {...register("price", {
                                                         pattern: {
                                                             value: /^[0-9]+$/,
@@ -224,74 +253,63 @@ const CreateNewArea = ({ className, space }) => {
                                         <div className="col-md-4">
                                             <div className="input-box pb--20">
                                                 <label
-                                                    htmlFor="Size"
+                                                    htmlFor="supply"
                                                     className="form-label"
                                                 >
-                                                    Size
+                                                    Ticket Supply*
                                                 </label>
                                                 <input
-                                                    id="size"
-                                                    placeholder="e. g. `Size`"
-                                                    {...register("size", {
+                                                    id="Supply"
+                                                    placeholder="e.g. '100'"
+                                                    {...register("supply", {
+                                                        pattern: {
+                                                            value: /^[0-9]+$/,
+                                                            message:
+                                                                "Please enter a number",
+                                                        },
                                                         required:
-                                                            "Size is required",
+                                                            "Supply is required",
                                                     })}
                                                 />
-                                                {errors.size && (
+                                                {errors.supply && (
                                                     <ErrorText>
-                                                        {errors.size?.message}
-                                                    </ErrorText>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4">
-                                            <div className="input-box pb--20">
-                                                <label
-                                                    htmlFor="Propertie"
-                                                    className="form-label"
-                                                >
-                                                    Properties
-                                                </label>
-                                                <input
-                                                    id="propertiy"
-                                                    placeholder="e. g. `Propertie`"
-                                                    {...register("propertiy", {
-                                                        required:
-                                                            "Propertiy is required",
-                                                    })}
-                                                />
-                                                {errors.propertiy && (
-                                                    <ErrorText>
-                                                        {
-                                                            errors.propertiy
-                                                                ?.message
-                                                        }
+                                                        {errors.supply?.message}
                                                     </ErrorText>
                                                 )}
                                             </div>
                                         </div>
 
                                         <div className="col-md-12">
-                                            <div className="input-box pb--20">
-                                                <label
-                                                    htmlFor="Royality"
-                                                    className="form-label"
-                                                >
-                                                    Royality
-                                                </label>
+                                            <div className="input-box pb--20 rn-check-box">
                                                 <input
-                                                    id="royality"
-                                                    placeholder="e. g. `20%`"
-                                                    {...register("royality", {
-                                                        required:
-                                                            "Royality is required",
-                                                    })}
+                                                    type="checkbox"
+                                                    className="rn-check-box-input"
+                                                    id="termsCheckbox"
+                                                    {...register(
+                                                        "termsCheckbox",
+                                                        {
+                                                            required:
+                                                                "You must accept the terms & conditions",
+                                                        }
+                                                    )}
                                                 />
-                                                {errors.royality && (
+                                                <label
+                                                    className="rn-check-box-label"
+                                                    htmlFor="termsCheckbox"
+                                                >
+                                                    I accept NFT Roll&nbsp;
+                                                    <Anchor
+                                                        path="/terms-condition"
+                                                        target="_blank"
+                                                    >
+                                                        terms & conditions
+                                                    </Anchor>
+                                                </label>
+                                                <br />
+                                                {errors.termsCheckbox && (
                                                     <ErrorText>
                                                         {
-                                                            errors.royality
+                                                            errors.termsCheckbox
                                                                 ?.message
                                                         }
                                                     </ErrorText>
@@ -299,55 +317,7 @@ const CreateNewArea = ({ className, space }) => {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-4 col-sm-4">
-                                            <div className="input-box pb--20 rn-check-box">
-                                                <input
-                                                    className="rn-check-box-input"
-                                                    type="checkbox"
-                                                    id="putonsale"
-                                                />
-                                                <label
-                                                    className="rn-check-box-label"
-                                                    htmlFor="putonsale"
-                                                >
-                                                    Put on Sale
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4 col-sm-4">
-                                            <div className="input-box pb--20 rn-check-box">
-                                                <input
-                                                    className="rn-check-box-input"
-                                                    type="checkbox"
-                                                    id="instantsaleprice"
-                                                />
-                                                <label
-                                                    className="rn-check-box-label"
-                                                    htmlFor="instantsaleprice"
-                                                >
-                                                    Instant Sale Price
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4 col-sm-4">
-                                            <div className="input-box pb--20 rn-check-box">
-                                                <input
-                                                    className="rn-check-box-input"
-                                                    type="checkbox"
-                                                    id="unlockpurchased"
-                                                />
-                                                <label
-                                                    className="rn-check-box-label"
-                                                    htmlFor="unlockpurchased"
-                                                >
-                                                    Unlock Purchased
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-12 col-xl-4">
+                                        {/* <div className="col-md-12 col-xl-4">
                                             <div className="input-box">
                                                 <Button
                                                     color="primary-alta"
@@ -361,30 +331,17 @@ const CreateNewArea = ({ className, space }) => {
                                                     Preview
                                                 </Button>
                                             </div>
-                                        </div>
+                                        </div> */}
 
-                                        <div className="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
-                                            <div className="input-box">
-                                                <Button type="submit" fullwidth>
-                                                    Submit Item
+                                        <div className="d-grid d-md-flex justify-content-md-end">
+                                            <div className="input-box ">
+                                                <Button type="submit">
+                                                    Create Raffle
                                                 </Button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
-                                <h5> Note: </h5>
-                                <span>
-                                    {" "}
-                                    Service fee : <strong>2.5%</strong>{" "}
-                                </span>{" "}
-                                <br />
-                                <span>
-                                    {" "}
-                                    You will receive :{" "}
-                                    <strong>25.00 ETH $50,000</strong>
-                                </span>
                             </div>
                         </div>
                     </div>

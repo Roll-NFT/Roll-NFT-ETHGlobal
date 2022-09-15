@@ -14,7 +14,7 @@ const Breadcrumb = ({
         className={clsx(
             "rn-breadcrumb-inner",
             className,
-            space === 1 && "ptb--30"
+            space === 1 && "ptb--10"
         )}
     >
         <div className="container">

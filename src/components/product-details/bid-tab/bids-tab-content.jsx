@@ -1,18 +1,27 @@
 import PropTypes from "prop-types";
-import TopSeller from "@components/top-seller/layout-02";
 import { IDType, ImageType } from "@utils/types";
+import Anchor from "@ui/anchor";
 
 const BidsTabContent = ({ bids }) => (
     <div>
         {bids?.map((bid) => (
-            <TopSeller
-                key={bid.id}
-                name={bid.user.name}
-                eth={bid.amount}
-                path={bid.user.slug}
-                time={bid.bidAt}
-                image={{ src: bid.user.image.src, width: 44, height: 44 }}
-            />
+            <div className="top-seller-inner-one mt-0">
+                <div className="top-seller-wrapper">
+                    <div className="top-seller-content">
+                        {bid.bidAt && (
+                            <span className="count-number">{bid.bidAt}</span>
+                        )}
+                        <span>
+                            {bid.amount && (
+                                <>{bid.amount} ticket(s) bought by</>
+                            )}{" "}
+                            <Anchor path="#" className="ms-0">
+                                0xe220...6957b00
+                            </Anchor>
+                        </span>
+                    </div>
+                </div>
+            </div>
         ))}
     </div>
 );

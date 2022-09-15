@@ -9,8 +9,8 @@ import { ImageType } from "@utils/types";
 const GalleryTab = ({ images }) => (
     <div className="product-tab-wrapper">
         <TabContainer defaultActiveKey="nav-0">
-            <div className="pd-tab-inner">
-                <Nav className="rn-pd-nav rn-pd-rt-content nav-pills">
+            <div className="pd-tab-inner justify-content-center">
+                <Nav className="rn-pd-nav rn-pd-rt-content nav-pills d-none">
                     {images?.map((image, index) => (
                         <Nav.Link
                             key={image.src}

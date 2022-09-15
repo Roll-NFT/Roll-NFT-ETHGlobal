@@ -20,44 +20,42 @@ const PlaceBidModal = ({ show, handleModal }) => (
             </button>
         )}
         <Modal.Header>
-            <h3 className="modal-title">Place a bid</h3>
+            <h3 className="modal-title">Order summary</h3>
         </Modal.Header>
         <Modal.Body>
-            <p>You are about to purchase This Product Form Nuron</p>
+            <p className="mb-0">You are about to purchase tickets for XXXXX</p>
             <div className="placebid-form-box">
-                <h5 className="title">Your bid</h5>
                 <div className="bid-content">
-                    <div className="bid-content-top">
-                        <div className="bid-content-left">
-                            <input id="value" type="text" name="value" />
-                            <span>wETH</span>
-                        </div>
-                    </div>
-
                     <div className="bid-content-mid">
                         <div className="bid-content-left">
-                            <span>Your Balance</span>
+                            <span>Number of tickets</span>
+                            <span>Ticket price</span>
                             <span>Service fee</span>
-                            <span>Total bid amount</span>
+                            <span>
+                                <b>Total amount</b>
+                            </span>
                         </div>
                         <div className="bid-content-right">
-                            <span>9578 wETH</span>
+                            <span>XXX</span>
+                            <span>XXX</span>
                             <span>10 wETH</span>
-                            <span>9588 wETH</span>
+                            <span>
+                                <b>9588 wETH</b>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div className="bit-continue-button">
-                    <Button path="/connect" size="medium" fullwidth>
-                        Place a bid
-                    </Button>
                     <Button
                         color="primary-alta"
                         size="medium"
-                        className="mt--10"
                         onClick={handleModal}
+                        className="float-start"
                     >
                         Cancel
+                    </Button>
+                    <Button path="/connect" size="medium" className="float-end">
+                        Buy tickets
                     </Button>
                 </div>
             </div>

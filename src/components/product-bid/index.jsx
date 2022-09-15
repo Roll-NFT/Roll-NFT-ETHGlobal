@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 const ProductBid = ({ price, likeCount }) => (
     <div className="bid-react-area">
+        Total value:
         <div className="last-bid">
             {price.amount}
             {price.currency}

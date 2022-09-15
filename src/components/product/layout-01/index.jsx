@@ -58,27 +58,22 @@ const Product = ({
                 </div>
                 <div className="product-share-wrapper">
                     <div className="profile-share">
-                        {authors?.map((client) => (
-                            <ClientAvatar
-                                key={client.name}
-                                slug={client.slug}
-                                name={client.name}
-                                image={client.image}
-                            />
-                        ))}
-                        <Anchor
-                            className="more-author-text"
-                            path={`/product/${slug}`}
-                        >
-                            {bitCount}+ Place Bit.
-                        </Anchor>
+                        <div>
+                            Collection Name
+                            <Anchor path={`/product/${slug}`}>
+                                <span className="product-name">{title}</span>
+                            </Anchor>
+                        </div>
                     </div>
                     {!disableShareDropdown && <ShareDropdown />}
                 </div>
-                <Anchor path={`/product/${slug}`}>
-                    <span className="product-name">{title}</span>
-                </Anchor>
-                <span className="latest-bid">Highest bid {latestBid}</span>
+
+                <div className="latest-bid mt-5">
+                    <b>Tickets sold:</b> {latestBid}
+                </div>
+                <div className="latest-bid mt-0">
+                    <b>Ticket price:</b> {price.amount} {price.currency}
+                </div>
                 <ProductBid price={price} likeCount={likeCount} />
             </div>
             <PlaceBidModal show={showBidModal} handleModal={handleBidModal} />

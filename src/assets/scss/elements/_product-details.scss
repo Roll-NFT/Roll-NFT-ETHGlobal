@@ -12,7 +12,7 @@
         max-width: 100%;
         display: flex;
         justify-content: space-between;
-        flex-basis: 25%;
+        flex-basis: 20%;
         flex-direction: column;
         margin: -10px;
         padding-right: 20px;
@@ -27,7 +27,7 @@
     .rn-pd-content {
         max-width: 100%;
         height: auto;
-        flex-basis: 75%;
+        flex-basis: 80%;
         padding-left: 20px;
 
         .tab-pane {
@@ -336,8 +336,13 @@
     }
 }
 
+.raffleQuantity {
+    border-radius: 10px;
+    text-align: center;
+}
+
 .rn-bid-details {
-    margin-top: 40px;
+    margin-top: 20px;
 
     .rn-bid-content {
         display: block;
