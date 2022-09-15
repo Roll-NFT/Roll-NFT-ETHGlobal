@@ -37,9 +37,8 @@ contract CoreRollNFT {
     /// @dev announce about Roll's claimed revenue
     event RevenueClaimed(uint indexed rollType, uint rollID, address indexed rollHost, address indexed rollOwner, address tokenAddress, uint amount);
     
-    // withdrawPrize - looks similar to claimPrize event
-    // ?? Provide ticketsContract address
-    event PrizeWithdrawn(uint indexed rollType, uint indexed rollID, address rollOwner, address indexed prizeAddress, uint prizeID);
+    /// @dev announce about withdrawn prize from unsuccessful Roll
+    event PrizeWithdrawn(uint indexed rollType, uint indexed rollID, address rollHost, address rollOwner, address indexed prizeAddress, uint prizeID);
     
     // ticketsRefunded
     // ?? Provide ticketsContract address
@@ -189,6 +188,26 @@ contract CoreRollNFT {
     }
 
     /// @dev function to withdraw prize from unsuccessful Roll
+    function withdrawPrize(uint256 _rollType, uint256 _rollID) external {
+        
+        /// @dev get roll details
+
+        /// @dev check that caller is a owner of the Roll
+        
+        /// @dev check that sales are closed
+
+        /// @dev check that roll is unsuccessful
+        
+        /// @dev check that prize is available to withdraw
+
+        /// @dev send prize token to caller
+        
+        /// @dev set prize status to unavailable to withdraw / claimed 
+
+        /// @dev announce about withdrawn prize from unsuccessful Roll - where who what
+        event PrizeWithdrawn(_rollType, _rollID, rollHost, rollOwner, prizeAddress, prizeID);
+
+    }
 
     /// @dev function to refund tickets from unsuccessful Roll
 
