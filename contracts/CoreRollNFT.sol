@@ -31,12 +31,11 @@ contract CoreRollNFT {
     // ??? What type should be amount?
     event TicketsMinted(uint indexed rollType, uint indexed rollID, address ticketsContract, address participant, uint amount);
     
-    /// @dev announce about claimed prize
-    event PrizeClaimed(uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address winner, address indexed prizeAddress, uint prizeID);
+    /// @dev announce about Roll's claimed prize
+    event PrizeClaimed(uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint prizeID);
     
-    // claimRevenue
-    // ?? Provide ticketsContract address
-    event RevenueClaimed(uint indexed rollType, uint indexed rollID, indexed address rollOwner, address tokenAddress, uint amount);
+    /// @dev announce about Roll's claimed revenue
+    event RevenueClaimed(uint indexed rollType, uint rollID, address indexed rollHost, address indexed rollOwner, address tokenAddress, uint amount);
     
     // withdrawPrize - looks similar to claimPrize event
     // ?? Provide ticketsContract address
@@ -59,7 +58,7 @@ contract CoreRollNFT {
         contractIddleAssets = address(new IddleAssets());
     }
 
-    /// @dev function to create (host) a new Roll 
+    /// @dev function to host (create) a new Roll 
     function createRoll(
         uint64 _startTime,
         uint64 _endTime,
@@ -137,16 +136,16 @@ contract CoreRollNFT {
     
     }
 
-    /// @dev function to claim prize
+    /// @dev function to claim prize from successfull Roll
     function claimPrize(uint256 _rollType, uint256 _rollID) external {
         
         /// @dev get roll details
-        
+
         /// @dev check that sales are closed
 
         /// @dev check that roll is successful
 
-        /// @dev check that prize prize is available to claim
+        /// @dev check that prize is available to claim
 
         /// @dev get winner ticket ID
 
@@ -156,12 +155,38 @@ contract CoreRollNFT {
 
         /// @dev change prize / roll status - prize claimed
 
-        /// @dev anounce about claimed prize - where, who and what
-        event PrizeClaimed(_rollType, _rollID, address ticketsContract, uint256 winningTicket, address winner, address indexed prizeAddress, uint prizeID);
+        /// @dev anounce about claimed prize - where who what
+        event PrizeClaimed(_rollType, _rollID, ticketsContract, winningTicketID, winner, prizeAddress, prizeID);
         
     }
 
-    /// @dev function to claim revenue
+    /// @dev function to claim revenue from successfull Roll
+    function claimRevenue(uint256 _rollType, uint256 _rollID) external {
+        
+        /// @dev get roll details
+
+        /// @dev check that caller is a owner of the Roll
+        
+        /// @dev check that sales are closed
+
+        /// @dev check that roll is successful
+        
+        /// @dev check that revenue is available to claim
+
+        /// @dev calculate revenue to claim
+        /// @dev (participantsAmount * _participationCost)
+        /// @dev include protocol fee
+        
+        /// @dev set revenue status to claimed
+
+        /// @dev send revenue to caller
+
+        /// @dev transfer fees to treasury
+
+        /// @dev announce about Roll's claimed revenue - where who what
+        emit RevenueClaimed(_rollType, _rollID, rollHost, rollOwner, tokenAddress, amount);
+
+    }
 
     /// @dev function to withdraw prize from unsuccessful Roll
 
