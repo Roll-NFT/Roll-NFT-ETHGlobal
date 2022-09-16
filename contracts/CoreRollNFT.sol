@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./TicketsNFT.sol";
@@ -8,6 +8,7 @@ import "./IddleAssets.sol";
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
+/// @custom:security-contact loizage@icloud.com
 contract CoreRollNFT {
     using Counters for Counters.Counter;
 

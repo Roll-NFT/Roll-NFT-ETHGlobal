@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -8,7 +8,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "clones-with-immutable-args/Clone.sol";
 
 
-contract RollXxxTicketsCollection is Clone, Initializable, ERC721, Ownable {
+/// @custom:security-contact loizage@icloud.com
+contract RollTixWorldCoin is Clone, Initializable, ERC721, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
