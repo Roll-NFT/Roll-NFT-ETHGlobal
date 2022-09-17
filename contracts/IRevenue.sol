@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /// @custom:security-contact loizage@icloud.com
-interface InterfaceRevenue {
+interface IRevenue {
     /// 
     struct Revenue {
         IERC20 revenueToken;

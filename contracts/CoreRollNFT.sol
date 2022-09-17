@@ -14,14 +14,9 @@ import "./IddleAssets.sol";
 contract CoreRollNFT is Pausable, Ownable {
     using Counters for Counters.Counter;
 
-    /// @dev Current Roll ID
+    /// @dev Roll ID counter
     Counters.Counter private _rollIdCounter;
     
-    /**
-     * @dev Owner of the contract
-     */
-    /// @dev Owner of the con
-    address public owner;
     /// @dev Fee percentage i.e 1%(100/10000)
     uint256 public feePercent;
     /// @dev Ticket's NFT collection contract

@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./InterfaceRollAssets.sol";
 
 /// @custom:security-contact loizage@icloud.com
-interface InterfaceRollData {
+interface IRoll {
     /// 
     struct Roll {
         uint type;
@@ -21,5 +21,7 @@ interface InterfaceRollData {
 
         InterfaceRollAssets.RollAssets Assets;
 
-    }    
+    }
+
+    function 
 }

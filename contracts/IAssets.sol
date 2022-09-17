@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /// @custom:security-contact loizage@icloud.com
-interface InterfaceRollAssets {
+interface IRollAssets {
     
     struct RollAssets {
         IERC721 prizeAddress;
