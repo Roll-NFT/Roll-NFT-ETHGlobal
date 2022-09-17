@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 import "./TicketsNFT.sol";
 import "./IddleAssets.sol";
 
@@ -11,7 +12,7 @@ import "./IddleAssets.sol";
 // import "hardhat/console.sol";
 
 /// @custom:security-contact loizage@icloud.com
-contract CoreRollNFT is Pausable, Ownable {
+contract CoreRollNFT is Pausable, Ownable, Context {
     using Counters for Counters.Counter;
 
     /// @dev Roll ID counter

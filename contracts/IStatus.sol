@@ -28,7 +28,7 @@ interface IStatus {
      * @dev Set Roll status to SalesOpen
      * Participants can buy Tix
      */
-    function _openSales() internal {
+    function _openSales(Status status) internal {
         /**
          * @dev Set status to SalesOpen
          */

@@ -39,6 +39,8 @@ npx hardhat run scripts/deploy.js
 
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/access/Ownable.sol
 
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 modifier onlyOwner() - Modifier to make a function callable only by the owner.
 
 function owner() public view virtual returns (address) - Returns the address of the current owner.
@@ -50,6 +52,8 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
 ## Pausable
 
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/security/Pausable.sol
+
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 modifier whenNotPaused() - Modifier to make a function callable only when the contract is paused.
 modifier whenPaused() - Modifier to make a function callable only when the contract is not paused.
@@ -63,7 +67,18 @@ event Unpaused(address account)
 
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/utils/Counters.sol
 
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 function current(Counter storage counter) internal view returns (uint256)
 function increment(Counter storage counter) internal
 function decrement(Counter storage counter) internal
 function reset(Counter storage counter) internal
+
+## Context (abstract contract)
+
+https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/utils/Context.sol
+
+import "@openzeppelin/contracts/utils/Context.sol";
+
+function _msgSender() internal view virtual returns (address)
+function _msgData() internal view virtual returns (bytes calldata)
