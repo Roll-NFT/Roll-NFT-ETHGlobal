@@ -15,7 +15,7 @@ contract CoreRollNFT is Pausable, Ownable {
     using Counters for Counters.Counter;
 
     /// @dev Current Roll ID
-    Counters.Counter private _currentRollID;
+    Counters.Counter private _rollIdCounter;
     
     /**
      * @dev Owner of the contract
@@ -109,16 +109,21 @@ contract CoreRollNFT is Pausable, Ownable {
         /// @dev clone Roll's Tickets NFT contract
         ticketsNFTContract = TicketsNFT(contractTicketsTemplate.clone(data));
 
+        /**
+         * @dev get current roll ID
+         */
+        uint rollId = _rollIdCounter.current();
+
         /// @dev initialize Roll's Tickets NFT contract
         /// @param 
         ticketsNFTContract.initialize(
-            string(abi.encodePacked("Roll #",_currentRollID," tickets collection")),
+            string(abi.encodePacked("Roll #",rollId," tickets collection")),
             /// TODO form base URI with Roll's metadata and provide it instead of next perameters
             _prizeAddress, 
             _prizeId,
             msg.sender,
             rollType,
-            _currentRollID
+            rollId
         );
 
         /// @dev transfer Prize to CoreRollNFT contract
@@ -131,10 +136,10 @@ contract CoreRollNFT is Pausable, Ownable {
         _prizeAddress.transferFrom(address(this), contractIddleAssets, _prizeId);
 
         /// @dev emit event about hosted Roll
-        emit RollCreated(rollType, _currentRollID, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
+        emit RollCreated(rollType, rollId, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
 
-        /// @dev increment _currentRollID
-        _currentRollID.increment();
+        /// @dev increment _rollIdCounter
+        _rollIdCounter.increment();
 
     }
 

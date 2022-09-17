@@ -36,15 +36,34 @@ npx hardhat run scripts/deploy.js
 # Smart contracts
 
 ## Ownable
+
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/access/Ownable.sol
 
+modifier onlyOwner() - Modifier to make a function callable only by the owner.
+
+function owner() public view virtual returns (address) - Returns the address of the current owner.
+function renounceOwnership() public virtual onlyOwner - Leaves the contract without owner.
+function transferOwnership(address newOwner) public virtual onlyOwner - Transfers ownership of the contract to a new account (`newOwner`).
+
+event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+
 ## Pausable
+
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/security/Pausable.sol
 
 modifier whenNotPaused() - Modifier to make a function callable only when the contract is paused.
 modifier whenPaused() - Modifier to make a function callable only when the contract is not paused.
 
-function paused() public view virtual returns (bool)
+function paused() public view virtual returns (bool) - Returns true if the contract is paused, and false otherwise.
 
 event Paused(address account)
 event Unpaused(address account)
+
+## Counters
+
+https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/utils/Counters.sol
+
+function current(Counter storage counter) internal view returns (uint256)
+function increment(Counter storage counter) internal
+function decrement(Counter storage counter) internal
+function reset(Counter storage counter) internal
