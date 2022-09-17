@@ -32,3 +32,19 @@ GAS_REPORT=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
+
+# Smart contracts
+
+## Ownable
+https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/access/Ownable.sol
+
+## Pausable
+https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/security/Pausable.sol
+
+modifier whenNotPaused() - Modifier to make a function callable only when the contract is paused.
+modifier whenPaused() - Modifier to make a function callable only when the contract is not paused.
+
+function paused() public view virtual returns (bool)
+
+event Paused(address account)
+event Unpaused(address account)

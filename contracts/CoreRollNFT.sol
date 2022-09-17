@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./TicketsNFT.sol";
 import "./IddleAssets.sol";
@@ -9,13 +11,16 @@ import "./IddleAssets.sol";
 // import "hardhat/console.sol";
 
 /// @custom:security-contact loizage@icloud.com
-contract CoreRollNFT {
+contract CoreRollNFT is Pausable, Ownable {
     using Counters for Counters.Counter;
 
     /// @dev Current Roll ID
     Counters.Counter private _currentRollID;
     
-    /// @dev Owner
+    /**
+     * @dev Owner of the contract
+     */
+    /// @dev Owner of the con
     address public owner;
     /// @dev Fee percentage i.e 1%(100/10000)
     uint256 public feePercent;
@@ -55,6 +60,26 @@ contract CoreRollNFT {
         owner = msg.sender;
         contractTicketsTemplate = address(new TicketsNFT());
         contractIddleAssets = address(new IddleAssets());
+    }
+
+    /**
+     * @dev set _paused state of the contract to True
+     * @dev has modifier whenNotPaused
+     * 
+     * @notice Trigger pause. The contract must not be paused.
+     */
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    /**
+     * @dev set _paused state of the contract to False
+     * @dev has modifier whenPaused
+     * 
+     * @notice Lift pause. The contract must be paused.
+     */
+    function unpause() public onlyOwner {
+        _unpause();
     }
 
     /// @dev function to host (create) a new Roll 
