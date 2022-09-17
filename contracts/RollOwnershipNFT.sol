@@ -6,4 +6,9 @@ contract RollOwnershipNFT {
     constructor() {
         
     }
+
+    /// @dev on burn
+    /// @dev check that roll is finished
+    /// @dev check that prize or revenue is claimed
+    /// @dev otherwise do not allow to burn
 }

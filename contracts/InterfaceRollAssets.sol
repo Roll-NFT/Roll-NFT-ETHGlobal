@@ -12,7 +12,8 @@ interface InterfaceRollAssets {
         uint prizeId;
         bool prizeAvailable;
         IERC20 entryToken;
+        uint entryPrice;
         bool revenueAvailable;
     }
-    
+
 }
