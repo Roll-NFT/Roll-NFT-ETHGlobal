@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Anchor from "@ui/anchor";
 import { useMoralis } from "react-moralis";
+import { getEllipsisTxt } from "@utils/format";
 
 const UserDropdown = () => {
-    const { logout } = useMoralis();
+    const { logout, user } = useMoralis();
     return (
         <div className="icon-box">
             <Anchor path="#">
@@ -18,11 +19,11 @@ const UserDropdown = () => {
             <div className="rn-dropdown">
                 <div className="rn-inner-top">
                     <h4 className="title">
-                        <Anchor path="#">Christopher William</Anchor>
+                        <Anchor path="#">
+                            {getEllipsisTxt(user.get("ethAddress") || "")}{" "}
+                            {user.id}
+                        </Anchor>
                     </h4>
-                    {/* <span>
-                        <Anchor path="/product">Set Display Name</Anchor>
-                    </span> */}
                 </div>
                 <div className="rn-product-inner">
                     <ul className="product-list">

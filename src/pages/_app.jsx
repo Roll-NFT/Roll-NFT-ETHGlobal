@@ -10,6 +10,7 @@ import "../assets/css/feather.css";
 import "../assets/css/modal-video.css";
 import "react-toastify/dist/ReactToastify.css";
 import "../assets/scss/style.scss";
+import { storeWrapper } from "../store";
 
 const MyApp = ({ Component, pageProps }) => {
     const router = useRouter();
@@ -29,7 +30,7 @@ const MyApp = ({ Component, pageProps }) => {
                 appId={process.env.NEXT_PUBLIC_MORALIS_APP_ID}
                 serverUrl={process.env.NEXT_PUBLIC_MORALIS_SERVER_URL}
             >
-                <ThemeProvider defaultTheme="dark">
+                <ThemeProvider defaultTheme="light">
                     <Component {...pageProps} />
                 </ThemeProvider>
             </MoralisProvider>
@@ -44,4 +45,4 @@ MyApp.propTypes = {
     }),
 };
 
-export default MyApp;
+export default storeWrapper.withRedux(MyApp);

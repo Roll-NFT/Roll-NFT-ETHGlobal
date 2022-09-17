@@ -4,7 +4,6 @@ import Image from "next/image";
 import clsx from "clsx";
 import Anchor from "@ui/anchor";
 import CountdownTimer from "@ui/countdown/layout-01";
-import ClientAvatar from "@ui/client-avatar";
 import ShareDropdown from "@components/share-dropdown";
 import ProductBid from "@components/product-bid";
 import Button from "@ui/button";
@@ -13,6 +12,7 @@ import PlaceBidModal from "@components/modals/placebid-modal";
 
 const Product = ({
     overlay,
+    collection,
     title,
     slug,
     latestBid,
@@ -20,8 +20,6 @@ const Product = ({
     likeCount,
     auction_date,
     image,
-    bitCount,
-    authors,
     placeBid,
     disableShareDropdown,
 }) => {
@@ -59,7 +57,7 @@ const Product = ({
                 <div className="product-share-wrapper">
                     <div className="profile-share">
                         <div>
-                            Collection Name
+                            {collection}
                             <Anchor path={`/product/${slug}`}>
                                 <span className="product-name">{title}</span>
                             </Anchor>
@@ -83,6 +81,7 @@ const Product = ({
 
 Product.propTypes = {
     overlay: PropTypes.bool,
+    collection: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     latestBid: PropTypes.string.isRequired,
@@ -93,14 +92,6 @@ Product.propTypes = {
     likeCount: PropTypes.number.isRequired,
     auction_date: PropTypes.string,
     image: ImageType.isRequired,
-    authors: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            slug: PropTypes.string.isRequired,
-            image: ImageType.isRequired,
-        })
-    ),
-    bitCount: PropTypes.number,
     placeBid: PropTypes.bool,
     disableShareDropdown: PropTypes.bool,
 };

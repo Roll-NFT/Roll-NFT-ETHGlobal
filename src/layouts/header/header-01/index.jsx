@@ -9,17 +9,28 @@ import FlyoutSearchForm from "@components/search-form/layout-02";
 import UserDropdown from "@components/user-dropdown";
 import ColorSwitcher from "@components/color-switcher";
 import BurgerButton from "@ui/burger-button";
-import Anchor from "@ui/anchor";
 import Button from "@ui/button";
 import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import headerData from "../../../data/general/header-01.json";
 import menuData from "../../../data/general/menu-01.json";
+import { userUpdate } from "../../../store/actions/users";
 
 const Header = ({ className }) => {
     const sticky = useSticky();
     const { offcanvas, offcanvasHandler } = useOffcanvas();
     const { search, searchHandler } = useFlyoutSearch();
-    const { authenticate, isAuthenticated } = useMoralis();
+    const { authenticate, isAuthenticated, user } = useMoralis();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (user) {
+            dispatch(
+                userUpdate({ id: user.id, address: user.get("ethAddress") })
+            );
+        }
+    }, [user]);
 
     return (
         <>
@@ -66,7 +77,12 @@ const Header = ({ className }) => {
                                             color="primary-alta"
                                             className="connectBtn"
                                             size="small"
-                                            onClick={() => authenticate()}
+                                            onClick={() =>
+                                                authenticate({
+                                                    signingMessage:
+                                                        "Roll NFT Authentication",
+                                                })
+                                            }
                                         >
                                             Wallet connect
                                         </Button>

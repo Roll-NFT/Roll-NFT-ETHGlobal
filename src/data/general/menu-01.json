@@ -2,55 +2,12 @@
     {
         "id": 1,
         "text": "Home",
-        "path": "/",
-        "submenu": [
-            {
-                "id": 15,
-                "text": "Home Page Five",
-                "path": "/index-05",
-                "icon": "feather-home"
-            },
-            {
-                "id": 16,
-                "text": "Home Page Six",
-                "path": "/index-06",
-                "icon": "feather-home"
-            },
-            {
-                "id": 121,
-                "text": "Home Page Eleven",
-                "path": "/index-11",
-                "icon": "feather-home"
-            },
-            {
-                "id": 126,
-                "text": "Home Page Sixteen",
-                "path": "/index-16",
-                "icon": "feather-home"
-            }
-        ]
+        "path": "/"
     },
     {
         "id": 2,
         "text": "Explore",
-        "path": "#!",
-        "submenu": [
-            {
-                "id": 11,
-                "text": "Explore Filter",
-                "path": "/explore-01"
-            },
-            {
-                "id": 31,
-                "text": "Explore Isotop",
-                "path": "/explore-02"
-            },
-            {
-                "id": 34,
-                "text": "Explore Place Bid",
-                "path": "/explore-05"
-            }
-        ]
+        "path": "/explore"
     },
     {
         "id": 3,

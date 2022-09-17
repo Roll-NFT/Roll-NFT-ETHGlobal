@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const SEO = ({ pageTitle }) => (
     <Head>
-        <title> {pageTitle} || Roll NFT - NFT Raffles</title>
+        <title> {pageTitle}</title>
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         <meta name="description" content="Roll NFT - NFT Raffles" />
         <meta name="robots" content="noindex, follow" />

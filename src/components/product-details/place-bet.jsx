@@ -8,6 +8,7 @@ import PlaceBidModal from "@components/modals/placebid-modal";
 import Countdown from "@ui/countdown/layout-02";
 import { ImageType } from "@utils/types";
 import ErrorText from "@ui/error-text";
+import { getEllipsisTxt } from "@utils/format";
 
 const PlaceBet = ({ highest_bid, auction_date, btnColor, className }) => {
     const [showBidModal, setShowBidModal] = useState(false);
@@ -41,7 +42,11 @@ const PlaceBet = ({ highest_bid, auction_date, btnColor, className }) => {
                         </h6>
                         <h6 className="title mb-3">
                             <b>Host</b>:{" "}
-                            <Anchor path="#">0xe220...6957b00</Anchor>
+                            <Anchor path="#">
+                                {getEllipsisTxt(
+                                    "0xe220825b597e4D5867218E0Efa9684Dd26957b00"
+                                )}
+                            </Anchor>
                         </h6>
                     </div>
                     {auction_date && (

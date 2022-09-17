@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { IDType, ImageType } from "@utils/types";
 import Anchor from "@ui/anchor";
+import { getEllipsisTxt } from "@utils/format";
 
 const BidsTabContent = ({ bids }) => (
     <div>
@@ -16,7 +17,9 @@ const BidsTabContent = ({ bids }) => (
                                 <>{bid.amount} ticket(s) bought by</>
                             )}{" "}
                             <Anchor path="#" className="ms-0">
-                                0xe220...6957b00
+                                {getEllipsisTxt(
+                                    "0xe220825b597e4D5867218E0Efa9684Dd26957b00"
+                                )}
                             </Anchor>
                         </span>
                     </div>

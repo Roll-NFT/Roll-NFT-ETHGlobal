@@ -44,17 +44,15 @@ const ExploreProductArea = ({ className, space, data }) => {
 
                 {products.length > 0 && (
                     <div className="row g-5">
-                        {products.map((prod) => (
+                        {products.map((prod, i) => (
                             <div className="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
                                 <Product
                                     overlay
-                                    placeBid={!!data.placeBid}
+                                    id={prod.id}
+                                    collection={prod.collection}
                                     title={prod.title}
                                     slug="/create"
-                                    latestBid={prod.latestBid}
-                                    price={prod.price}
-                                    image={prod.images?.[0]}
-                                    disableShareDropdown
+                                    image={prod.image}
                                 />
                             </div>
                         ))}

@@ -49,6 +49,7 @@ const Anchor = ({
                 href="passRef"
                 className={className}
                 aria-label={label}
+                onClick={onClick}
                 {...rest}
             >
                 {children}

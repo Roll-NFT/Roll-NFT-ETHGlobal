@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
@@ -8,12 +8,17 @@ import ProductModal from "@components/modals/product-modal";
 import ErrorText from "@ui/error-text";
 import { toast } from "react-toastify";
 import Anchor from "@ui/anchor";
+import { useDispatch, useSelector } from "react-redux";
+import { balanceSelect } from "src/store/actions/balances";
+import axios from "axios";
 
-const CreateNewArea = ({ className, space }) => {
+const CreateNewArea = ({ className, space, nft }) => {
     const [showProductModal, setShowProductModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [hasImageError, setHasImageError] = useState(false);
     const [previewData, setPreviewData] = useState({});
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     const {
         register,
@@ -24,17 +29,32 @@ const CreateNewArea = ({ className, space }) => {
         mode: "onChange",
     });
 
-    const notify = () => toast("Raffle created successfully!");
     const handleProductModal = () => {
         setShowProductModal(false);
     };
 
-    // This function will be triggered when the file field change
-    const imageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setSelectedImage(e.target.files[0]);
-        }
-    };
+    async function saveRaffle(formData) {
+        await axios
+            .post(
+                "/api/saveRaffle",
+                { userId: user.id, nft, form: formData },
+                {
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                toast(`Raffle saved successfully!`);
+                console.log(
+                    `Raffle '${response.data.raffleId}' saved successfully!`
+                );
+            })
+            .catch((errorResponse) => {
+                toast("Error saving Raffle, please try again later!");
+                console.log("Error saving Raffle: ", errorResponse);
+            });
+    }
 
     const onSubmit = (data, e) => {
         const { target } = e;
@@ -47,11 +67,18 @@ const CreateNewArea = ({ className, space }) => {
             setShowProductModal(true);
         }
         if (!isPreviewBtn) {
-            notify();
-            reset();
+            saveRaffle(data);
             setSelectedImage();
+            // dispatch(balanceSelect(0));
+            // reset();
         }
     };
+
+    useEffect(() => {
+        if (nft) {
+            setSelectedImage(nft.image);
+        }
+    }, [nft]);
 
     return (
         <>
@@ -82,43 +109,31 @@ const CreateNewArea = ({ className, space }) => {
                                         className="select-nft"
                                     >
                                         <div className="brows-file-wrapper">
-                                            {/* <input
-                                                name="file"
-                                                id="file"
-                                                type="file"
-                                                className="inputfile"
-                                                data-multiple-caption="{count} files selected"
-                                                multiple
-                                                onChange={imageChange}
-                                            /> */}
                                             {selectedImage && (
                                                 <img
                                                     id="createfileImage"
-                                                    src={URL.createObjectURL(
-                                                        selectedImage
-                                                    )}
+                                                    src={selectedImage}
                                                     alt=""
                                                     data-black-overlay="6"
                                                 />
                                             )}
-
                                             <label
                                                 htmlFor="file"
                                                 title="No File Choosen"
                                             >
-                                                <i className="feather-upload" />
-                                                <span className="text-center">
-                                                    Choose a NFT
-                                                </span>
-                                                {/* <p className="text-center mt--10">
-                                                    PNG, GIF, WEBP, MP4 or MP3.{" "}
-                                                    <br /> Max 1Gb.
-                                                </p> */}
+                                                {!selectedImage && (
+                                                    <>
+                                                        <i className="feather-upload" />
+                                                        <span className="text-center">
+                                                            Choose a NFT
+                                                        </span>
+                                                    </>
+                                                )}
                                             </label>
                                         </div>
                                     </Anchor>
                                     {hasImageError && !selectedImage && (
-                                        <ErrorText>Image is required</ErrorText>
+                                        <ErrorText>NFT is required</ErrorText>
                                     )}
                                 </div>
                                 {/*
@@ -150,6 +165,9 @@ const CreateNewArea = ({ className, space }) => {
                                                 <input
                                                     id="raffleTitle"
                                                     placeholder="e.g. 'Super Awesome NFT Raffle'"
+                                                    defaultValue={
+                                                        nft ? nft.title : ""
+                                                    }
                                                     {...register(
                                                         "raffleTitle",
                                                         {
@@ -181,6 +199,11 @@ const CreateNewArea = ({ className, space }) => {
                                                     id="description"
                                                     rows="3"
                                                     placeholder="e.g. 'This is the Super Awesome NFT Collection, the ultimate...'"
+                                                    defaultValue={
+                                                        nft
+                                                            ? nft.description
+                                                            : ""
+                                                    }
                                                 />
                                                 {errors.description && (
                                                     <ErrorText>
@@ -234,7 +257,7 @@ const CreateNewArea = ({ className, space }) => {
                                                     placeholder="e.g. '0.5'"
                                                     {...register("price", {
                                                         pattern: {
-                                                            value: /^[0-9]+$/,
+                                                            value: /^[0-9.]+$/,
                                                             message:
                                                                 "Please enter a number",
                                                         },
@@ -361,6 +384,7 @@ const CreateNewArea = ({ className, space }) => {
 CreateNewArea.propTypes = {
     className: PropTypes.string,
     space: PropTypes.oneOf([1]),
+    nft: PropTypes.shape(),
 };
 
 CreateNewArea.defaultProps = {

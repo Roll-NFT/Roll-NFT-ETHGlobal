@@ -42,7 +42,7 @@
                 "path": "/explore-01"
             },
             {
-                "id": 5,
+                "id": 6,
                 "text": "Collectibles",
                 "path": "/explore-01"
             }
@@ -79,7 +79,7 @@
         ]
     },
     "soldout-widget": {
-        "title": "Recent Sold Out",
+        "title": "Recent Roll Winners",
         "products": [
             {
                 "id": 1,

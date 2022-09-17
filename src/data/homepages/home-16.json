@@ -6,29 +6,29 @@
             "headings": [
                 {
                     "id": 1,
-                    "content": "Buy and sell <br /> digital art, <br /> <span>NFT's Collection</span>"
+                    "content": "Buy and sell NFTs in a<br /> <span>novel</span> and <span>accessible</span><br /> way through <span>Raffles</span>"
                 }
             ],
             "texts": [
                 {
                     "id": 1,
-                    "content": "There is enough digital artworks available online to help you put together crypto currency website."
+                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
                 },
                 {
                     "id": 2,
-                    "content": "Million of people are sell there NFTs in Nuron marketplaces. Create & Sell Your NFT's."
+                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
                 }
             ],
             "buttons": [
                 {
                     "id": 1,
                     "content": "Explore",
-                    "path": "/collection"
+                    "path": "/explore"
                 },
                 {
                     "id": 2,
                     "color": "primary-alta",
-                    "content": "Create Nft",
+                    "content": "Create Raffle",
                     "path": "/create"
                 }
             ],
@@ -99,37 +99,37 @@
                 {
                     "id": 1,
                     "title": "Art",
-                    "path": "/collection",
+                    "path": "/explore",
                     "icon": "feather-image"
                 },
                 {
                     "id": 2,
                     "title": "Music",
-                    "path": "/collection",
+                    "path": "/explore",
                     "icon": "feather-music"
                 },
                 {
                     "id": 3,
-                    "title": "Digital Worlds",
-                    "path": "/collection",
+                    "title": "Metaverse",
+                    "path": "/explore",
                     "icon": "feather-map"
                 },
                 {
                     "id": 4,
-                    "title": "Domane Name",
-                    "path": "/collection",
+                    "title": "Domain Name",
+                    "path": "/explore",
                     "icon": "feather-search"
                 },
                 {
                     "id": 5,
-                    "title": "Collectibles",
-                    "path": "/collection",
+                    "title": "Game",
+                    "path": "/explore",
                     "icon": "feather-grid"
                 },
                 {
                     "id": 6,
-                    "title": "Trending Cards",
-                    "path": "/collection",
+                    "title": "Collectibles",
+                    "path": "/explore",
                     "icon": "feather-activity"
                 }
             ]
@@ -137,13 +137,13 @@
         {
             "section": "live-explore-section",
             "section_title": {
-                "title": "Live Bidding"
+                "title": "Rolls Ending Soon"
             }
         },
         {
             "section": "service-section",
             "section_title": {
-                "title": "Create and sell your NFTs"
+                "title": "How it works"
             },
             "items": [
                 {
@@ -151,7 +151,7 @@
                     "title": "Set up your wallet",
                     "path": "/connect",
                     "subtitle": "Step-01",
-                    "description": "Powerful features and inclusions, which makes Nuron standout, easily customizable and scalable.",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                     "images": [
                         {
                             "src": "/images/icons/shape-7.png"
@@ -160,10 +160,10 @@
                 },
                 {
                     "id": 2,
-                    "title": "Create your collection",
-                    "path": "/collection",
+                    "title": "Select a NFT to create a new Roll",
+                    "path": "/create",
                     "subtitle": "Step-02",
-                    "description": "A great collection of beautiful website templates for your need. Choose the best suitable template.",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                     "images": [
                         {
                             "src": "/images/icons/shape-1.png"
@@ -172,10 +172,10 @@
                 },
                 {
                     "id": 3,
-                    "title": "Add your NFT's",
-                    "path": "/connect",
+                    "title": "Promote and Sell Tickets for the Roll",
+                    "path": "/explore",
                     "subtitle": "Step-03",
-                    "description": "We've made the template fully responsive, so it looks great on all devices: desktop, tablets and.",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                     "images": [
                         {
                             "src": "/images/icons/shape-5.png"
@@ -184,10 +184,10 @@
                 },
                 {
                     "id": 4,
-                    "title": "Sell Your NFT's",
-                    "path": "/creator",
+                    "title": "Draw the Roll and claim the tickets prize",
+                    "path": "/explore",
                     "subtitle": "Step-04",
-                    "description": "I throw myself down among the tall grass by the stream as I lie close to the earth NFT's.",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                     "images": [
                         {
                             "src": "/images/icons/shape-6.png"
@@ -218,7 +218,7 @@
         {
             "section": "explore-product-section",
             "section_title": {
-                "title": "Explore Product"
+                "title": "Explore all Rolls"
             }
         },
         {

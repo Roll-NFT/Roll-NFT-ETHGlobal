@@ -1,0 +1,5 @@
+export const BALANCES_UPDATE = "BALANCES_UPDATE";
+export const BALANCES_RESET = "BALANCES_RESET";
+export const BALANCE_SELECT = "BALANCE_SELECT";
+
+export const USER_UPDATE = "USER_UPDATE";

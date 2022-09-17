@@ -1,78 +1,68 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import Image from "next/image";
 import clsx from "clsx";
 import Anchor from "@ui/anchor";
-import ClientAvatar from "@ui/client-avatar";
-import ShareDropdown from "@components/share-dropdown";
 import { ImageType } from "@utils/types";
-import PlaceBidModal from "@components/modals/placebid-modal";
+import Router from "next/router";
+import { useDispatch } from "react-redux";
+import { balanceSelect } from "src/store/actions/balances";
 
-const Product = ({
-    overlay,
-    title,
-    slug,
-    image,
-    authors,
-    disableShareDropdown,
-}) => {
-    const [showBidModal, setShowBidModal] = useState(false);
-    const handleBidModal = () => {
-        setShowBidModal((prev) => !prev);
+const Product = ({ overlay, collection, title, slug, image, id }) => {
+    const dispatch = useDispatch();
+    const handleClick = (event) => {
+        event.preventDefault();
+        dispatch(balanceSelect(id));
+        Router.push(slug);
     };
+
     return (
-        <>
-            <div
-                className={clsx("product-style-one", !overlay && "no-overlay")}
-            >
-                <div className="card-thumbnail">
-                    {image?.src && (
-                        <Anchor path={slug}>
-                            <Image
-                                src={image.src}
-                                alt={image?.alt || "NFT_portfolio"}
-                                width={533}
-                                height={533}
-                            />
-                        </Anchor>
-                    )}
-                </div>
-                <div className="product-share-wrapper">
-                    <div className="profile-share">
-                        {authors?.map((client) => (
-                            <ClientAvatar
-                                key={client.name}
-                                slug={client.slug}
-                                name={client.name}
-                                image={client.image}
-                            />
-                        ))}
-                        <Anchor className="more-author-text" path={slug} />
-                    </div>
-                    {!disableShareDropdown && <ShareDropdown />}
-                </div>
-                <Anchor path={slug}>
-                    <span className="product-name">{title}</span>
-                </Anchor>
+        <div
+            className={clsx("product-style-one", !overlay && "no-overlay")}
+            key={`item-${id}`}
+        >
+            <div className="card-thumbnail">
+                {image && (
+                    <Anchor
+                        path={slug}
+                        onClick={(e) => {
+                            handleClick(e);
+                        }}
+                    >
+                        <Image
+                            src={image}
+                            alt={title}
+                            width={533}
+                            height={533}
+                        />
+                    </Anchor>
+                )}
             </div>
-            <PlaceBidModal show={showBidModal} handleModal={handleBidModal} />
-        </>
+            <div className="product-share-wrapper">
+                <div className="profile-share">
+                    <div>
+                        {collection}
+                        <Anchor
+                            path={slug}
+                            onClick={(e) => {
+                                handleClick(e);
+                            }}
+                        >
+                            <span className="product-name">{title}</span>
+                        </Anchor>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 
 Product.propTypes = {
     overlay: PropTypes.bool,
+    collection: PropTypes.string,
     title: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
-    image: ImageType.isRequired,
-    authors: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            slug: PropTypes.string.isRequired,
-            image: ImageType.isRequired,
-        })
-    ),
-    disableShareDropdown: PropTypes.bool,
+    image: PropTypes.string,
+    id: PropTypes.number.isRequired,
 };
 
 Product.defaultProps = {

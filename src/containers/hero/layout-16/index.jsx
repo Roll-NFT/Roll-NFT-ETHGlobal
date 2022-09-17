@@ -49,7 +49,7 @@ const HeroArea = ({
                                 </Button>
                             ))}
                         </div>
-                        <div className="odometer-area-slide ">
+                        {/* <div className="odometer-area-slide ">
                             {items?.map((item, i) => (
                                 <FunFact
                                     data-sal-delay={400 + i * 200}
@@ -60,7 +60,7 @@ const HeroArea = ({
                                     counter={item.counter}
                                 />
                             ))}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="col-lg-6 order-lg-2 order-md-1 order-sm-1 order-1">
