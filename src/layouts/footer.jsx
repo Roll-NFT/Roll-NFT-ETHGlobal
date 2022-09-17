@@ -11,8 +11,8 @@ import SocialWidget from "@widgets/social-widget";
 import { ItemType } from "@utils/types";
 
 // Demo data
-import footerData from "../../../data/general/footer-01.json";
-import contactData from "../../../data/general/contact.json";
+import footerData from "../data/footer.json";
+import contactData from "../data/contact.json";
 
 const Footer = ({ space, className, data }) => (
     <>

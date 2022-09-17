@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import SEO from "@components/seo";
 import Wrapper from "@layout/wrapper";
-import Header from "@layout/header/header-01";
-import Footer from "@layout/footer/footer-01";
+import Header from "@layout/header";
+import Footer from "@layout/footer";
 import Breadcrumb from "@components/breadcrumb";
-import ExploreProductArea from "@containers/explore-product/layout-simple";
+import ExploreProductArea from "@containers/explore-product/layout-03";
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";

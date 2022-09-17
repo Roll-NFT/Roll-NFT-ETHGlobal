@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import SectionTitle from "@components/section-title/layout-02";
 import Product from "@components/product/layout-01";
-import ProductFilter from "@components/product-filter/layout-01";
+import ProductFilter from "@components/product-filter";
 import FilterButton from "@ui/filter-button";
 import { slideToggle } from "@utils/methods";
 import { SectionTitleType, ProductType } from "@utils/types";

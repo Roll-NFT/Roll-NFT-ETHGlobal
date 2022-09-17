@@ -69,8 +69,8 @@ const CreateNewArea = ({ className, space, nft }) => {
         if (!isPreviewBtn) {
             saveRaffle(data);
             setSelectedImage();
-            // dispatch(balanceSelect(0));
-            // reset();
+            dispatch(balanceSelect(0));
+            reset();
         }
     };
 

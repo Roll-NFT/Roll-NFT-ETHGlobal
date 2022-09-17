@@ -1,17 +1,17 @@
 import SEO from "@components/seo";
 import Wrapper from "@layout/wrapper";
-import Header from "@layout/header/header-01";
-import Footer from "@layout/footer/footer-01";
-import HeroArea from "@containers/hero/layout-16";
-import CategoryArea from "@containers/category/layout-01";
-import LiveExploreArea from "@containers/live-explore/layout-01";
-import ServiceArea from "@containers/services/layout-01";
+import Header from "@layout/header";
+import Footer from "@layout/footer";
+import HeroArea from "@containers/hero";
+import CategoryArea from "@containers/category";
+import LiveExploreArea from "@containers/live-explore";
+import ServiceArea from "@containers/services";
 import TopSellerArea from "@containers/top-seller/layout-01";
 import ExploreProductArea from "@containers/explore-product/layout-01";
 import { normalizedData } from "@utils/methods";
 
 // Demo Data
-import homepageData from "../data/homepages/home-16.json";
+import homepageData from "../data/home.json";
 import productData from "../data/products.json";
 import sellerData from "../data/sellers.json";
 
