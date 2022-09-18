@@ -7,9 +7,12 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
-import "./TicketsNFT.sol";
+import "./RollTickets.sol";
 import "./IddleAssets.sol";
-import "./IRoll.sol";
+import "./IRoll.sol"; // IRoll.Roll
+import "./IPrize.sol"; // IPrize.Prize
+import "./IRollAssets.sol"; // IRollAssets.RollAssets
+import "./RollOwnershipToken.sol"; // RollOwnershipToken.
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
@@ -23,32 +26,41 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     
     /// @dev Fee percentage i.e 1%(100/10000)
     uint256 public protocolFee;
+    
     /// @dev Wirefram - Ticket's (Tix) NFT collection contract 
-    address internal immutable contractTicketsTemplate;
-    /// @dev Contract that will hold assets
-    /// To implement logic for assets in future
+    IERC721 internal immutable contractTicketsTemplate;
+    
+    /**
+     * @dev Contract that will hold assets
+     * To implement logic for assets in future
+     */
     address internal immutable contractIddleAssets;
+    
     /**
-     * @dev Contract that is erc721 NFT collection of Roll ownership tokens
+     * @dev Contract that is ERC721 NFT collection of Roll Ownership Tokens (ROT)
      */
-    address internal immutable contractRollTokens;
+    address internal immutable contractRollOwnershipToken;
 
-    /**
-     * @dev 
-     */
-    IRoll.
     /**
      * @dev Mapping rollId to tixContract
      * 
      * @notice To get anddress of NFT smart contract of Tickets for provided Roll ID
      */
     mapping (uint => address) tixContracts;
+    
     /**
-     * @dev Mapping rollId to rollData structure
+     * @dev Mapping rollId to Roll data
      * 
      * @notice To get Roll data for provided Roll ID
      */
-    mapping (uint => rollData) rolls;
+    mapping (uint => IRoll.Roll) rolls;
+    
+    /**
+     * @dev Mapping rollId to Prize data
+     * 
+     * @notice To get Prize data for provided Roll ID
+     */
+    mapping (uint => IPrize.Prize) prizes;
     
     /// @dev announce about successful Roll creation
     event RollCreated(uint256 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
@@ -77,7 +89,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     
     constructor() {
         owner = msg.sender;
-        contractTicketsTemplate = address(new TicketsNFT());
+        contractTicketsTemplate = address(new RollTickets());
         contractIddleAssets = address(new IddleAssets());
     }
 
@@ -103,49 +115,28 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /// @dev function to host (create) a new Roll 
     function createRoll(
-        uint64 _startTime,
-        uint64 _endTime,
-        uint256 _minParticipants,
-        uint256 _maxParticipants,
-        uint256 _participationCost,
-        address _participationToken,
-        /// TODO Array of prizes
+        uint64 _rollTime,
+        uint _minParticipants,
+        uint _maxParticipants,
+        uint _participationPrice,
+        IERC20 _participationToken,
         IERC721 _prizeAddress,
-        uint256 _prizeId
+        uint _prizeId
     ) external returns(TicketsNFT ticketsContract){
+
+        /// @dev check that _prizeAddress is set and is not 0
+        require(_prizeAddress != address(0), 'Missing Prize collection address')
+
+        /// @dev check that _prizeAddress is set and is not 0
+        require(_participationToken != address(0), 'Missing participation token address')
+
+        /// @dev check that _rollTime is provided and is in future
+        require(_rollTime > 0 && _rollTime > block.timestamp, 'End time should be in feature')
+
+        /// @dev define host
+        address host = _msgSender();
         
-        /// @dev mint Roll ownership token for caller
-        
-        /// @dev define Roll type / variation
-        /// TODO implement function
-        uint rollType;
-
-        /// @dev form abi data for Tickets NFT contract to be cloned
-        /// TODO define parameters to provide
-        bytes memory data = abi.encodePacked(
-        );
-        
-        /// @dev clone Roll's Tickets NFT contract
-        ticketsNFTContract = TicketsNFT(contractTicketsTemplate.clone(data));
-
-        /**
-         * @dev get current roll ID
-         */
-        uint rollId = _rollIdCounter.current();
-
-        /// @dev initialize Roll's Tickets NFT contract
-        /// @param 
-        ticketsNFTContract.initialize(
-            string(abi.encodePacked("Roll #",rollId," tickets collection")),
-            /// TODO form base URI with Roll's metadata and provide it instead of next perameters
-            _prizeAddress, 
-            _prizeId,
-            msg.sender,
-            rollType,
-            rollId
-        );
-
-        /// @dev transfer Prize to CoreRollNFT contract
+        /// @dev transfer NFT prize to CoreRollNFT contract
         _prizeAddress.transferFrom(msg.sender, address(this), _prizeId);
 
         /// @dev approve NFT prize token to IddleAssets contract
@@ -154,11 +145,61 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev transfer NFT prize token to IddleAssets contract
         _prizeAddress.transferFrom(address(this), contractIddleAssets, _prizeId);
 
+        /// @dev mint Roll ownership token for caller
+        rollToken().mintRollToken()
+        /// rollToken().mint(address _host, string memory rollURI, uint newRollId)
+        
+        /// @dev declare rollType variable
+        uint rollType;
+
+        /// @dev define Roll type / variation
+        if (_maxParticipants == 0) {
+            
+            if (_minParticipants == 0) {
+                rollType = 1;
+            } else {
+                rollTyoe = 2;
+            }
+
+        } else {
+            require(_maxParticipants > _minParticipants)
+
+            if (_minParticipants == 0) {
+                rollType = 3;
+            } else {
+                rollTyoe = 4;
+            }
+            
+        }
+        
+        /// @dev increment Roll ID counter
+        _rollIdCounter.increment();
+
+        /// @dev get current Roll ID
+        uint rollId = _rollIdCounter.current();
+
+        /**
+         * @dev define and save Roll structure to rolls mapping
+         * 
+         * @dev Structure that contain crucial Roll parameters and conditions, that are checked on Roll execution
+         * 
+         * @param rollType define logic to be cheked on roll execution. Determinated on Roll creatinon according to provided arguments minParticipants, maxParticipants
+         * @param host address who created the Roll
+         * @param rollTimestamp block that will stop Roll entries sales, and to select winner or close the Roll
+         * @param minParticipants Roll participants minimum amount 
+         * @param maxParticipants Roll participants maximum amount
+         * @param entryToken address of erc20 token that is used to participate in that Roll
+         * @param entryPrice amount to be paid to mint one participation ticket
+         */
+        rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _participationToken, _participationPrice);
+
+
+
+        /// @dev clone contract tickets contract
+        address ticketsNFTContract = cloneTicketsContract(rollId, rollURI);
+        
         /// @dev emit event about hosted Roll
         emit RollCreated(rollType, rollId, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
-
-        /// @dev increment _rollIdCounter
-        _rollIdCounter.increment();
 
     }
 
@@ -303,4 +344,38 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         emit FeeSet(_newFee);
     }
 
+    /// @dev get Roll ownership NFT contract address
+    function rollToken() public pure returns(IERC721){
+        return IERC721(contractRollOwnershipToken);
+    }
+
+    /// @dev 
+    function cloneTicketsContract(string memory rollURI) {
+        
+        /// @dev form abi data for Tickets NFT contract to be cloned
+        /// TODO define parameters to provide
+        bytes memory data = abi.encodePacked(
+        );
+        
+        /// @dev clone Roll's Tickets NFT contract
+        ticketsNFTContract = TicketsNFT(contractTicketsTemplate.clone(data));
+
+        /**
+         * @dev get current roll ID
+         */
+        
+
+        /// @dev initialize Roll's Tickets NFT contract
+        /// @param 
+        ticketsNFTContract.initialize(
+            string(abi.encodePacked("Roll #",rollId," tickets collection")),
+            /// TODO form base URI with Roll's metadata and provide it instead of next perameters
+            _prizeAddress, 
+            _prizeId,
+            msg.sender,
+            rollType,
+            rollId
+        );
+
+    }
 }

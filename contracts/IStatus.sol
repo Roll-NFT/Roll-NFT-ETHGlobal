@@ -2,15 +2,15 @@
 pragma solidity ^0.8.4;
 
 /// @custom:security-contact loizage@icloud.com
-abstract contract IStatus {
+interface IStatus {
     
     /**
      * @dev Roll statuses and possible variations
      * 
-     * SalesOpen (Open) - Roll is on going and available to participate. Tix sales are open.
-     * SalesClosed (Closed) - Ready to select winner. Roll is on going and is not available to participate. Tix sales are closed.
-     * Finished (Succeed) - Winner selected. Roll is finished and is not available to participate. Tix sales are closed. Winner can claim the Prize. Roll owner can claim Revenue.
-     * Closed (Unsucceed) - No winner selected. Roll is finished and is not available to participate. Tix sales are closed. Roll owner can withdraw the Prize. Participant can refund Tix.
+     * @param SalesOpen (Open) - Roll is on going and available to participate. Tix sales are open.
+     * @param SalesClosed (Closed) - Ready to select winner. Roll is on going and is not available to participate. Tix sales are closed.
+     * @param Finished (Succeed) - Winner selected. Roll is finished and is not available to participate. Tix sales are closed. Winner can claim the Prize. Roll owner can claim Revenue.
+     * @param Closed (Unsucceed) - No winner selected. Roll is finished and is not available to participate. Tix sales are closed. Roll owner can withdraw the Prize. Participant can refund Tix.
      * 
      */
     enum Status {
@@ -20,19 +20,6 @@ abstract contract IStatus {
         Finished,
         Closed
 
-    }
-
-    /**
-     * @dev Mapping for rollId to Roll structure with Roll's data / parameters 
-     * 
-     * @notice Contains crucial Roll data structure
-     */
-    mapping (uint => Roll) public rolls;
-
-    constructor() {
-        /**
-         * 
-         */
     }
 
     /**

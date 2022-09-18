@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 interface IPrize {
     
     struct Prize {
-        IERC721 collection;
+        IERC721 collectionAddr;
         uint tokenId;
-        bool available;
+        bool claimAvailable;
     }
 
 }

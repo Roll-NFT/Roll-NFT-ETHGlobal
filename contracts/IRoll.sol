@@ -20,11 +20,11 @@ interface IRoll {
     struct Roll {
         uint rollType;
         address host;
-        uint64 rollTimestamp;
+        uint64 rollTime;
         uint minParticipants;
         uint maxParticipants;
-        IERC20 entryToken;
-        uint entryPrice;
+        IERC20 participationToken;
+        uint participationPrice;
     }
 
 }
