@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 /// @custom:security-contact loizage@icloud.com
-interface IStatus {
+abstract contract IStatus {
     
     /**
      * @dev Roll statuses and possible variations
@@ -22,7 +22,18 @@ interface IStatus {
 
     }
 
-    Status status;
+    /**
+     * @dev Mapping for rollId to Roll structure with Roll's data / parameters 
+     * 
+     * @notice Contains crucial Roll data structure
+     */
+    mapping (uint => Roll) public rolls;
+
+    constructor() {
+        /**
+         * 
+         */
+    }
 
     /**
      * @dev Set Roll status to SalesOpen
@@ -40,7 +51,7 @@ interface IStatus {
      * 
      * Period to finish (choose winner) or close the Roll
      */
-    function _closeSales() internal {
+    function _closeSales(Status status) internal {
         /**
          * @dev Set status to SalesClosed
          */
@@ -54,7 +65,7 @@ interface IStatus {
      * 
      * Happens when Roll was successfully played
      */
-    function _finishRoll() internal {
+    function _finishRoll(Status status) internal {
         /**
          * @dev Set status to Finished
          */
@@ -68,7 +79,7 @@ interface IStatus {
      * 
      * Happens when conditions to play the Roll are not met
      */
-    function _closeRoll() internal {
+    function _closeRoll(Status status) internal {
         /**
          * @dev set status to Closed
          */
@@ -78,12 +89,13 @@ interface IStatus {
     /**
      * @dev Get status of the Roll
      */
-    function _getStatus() internal return (Status) {
+    function rollStatus(uint _rollId, uint _rollType) public view virtual returns (Status) {
+        
         return();
     }
 
     modifier rollOnSale() {
-        require();
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
         _;
     }
 

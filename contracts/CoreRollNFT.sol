@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "./TicketsNFT.sol";
 import "./IddleAssets.sol";
+import "./IRoll.sol";
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
@@ -19,15 +22,35 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     Counters.Counter private _rollIdCounter;
     
     /// @dev Fee percentage i.e 1%(100/10000)
-    uint256 public feePercent;
-    /// @dev Ticket's NFT collection contract
+    uint256 public protocolFee;
+    /// @dev Wirefram - Ticket's (Tix) NFT collection contract 
     address internal immutable contractTicketsTemplate;
-    /// @dev Ticket's NFT collection contract
+    /// @dev Contract that will hold assets
+    /// To implement logic for assets in future
     address internal immutable contractIddleAssets;
+    /**
+     * @dev Contract that is erc721 NFT collection of Roll ownership tokens
+     */
+    address internal immutable contractRollTokens;
+
+    /**
+     * @dev 
+     */
+    IRoll.
+    /**
+     * @dev Mapping rollId to tixContract
+     * 
+     * @notice To get anddress of NFT smart contract of Tickets for provided Roll ID
+     */
+    mapping (uint => address) tixContracts;
+    /**
+     * @dev Mapping rollId to rollData structure
+     * 
+     * @notice To get Roll data for provided Roll ID
+     */
+    mapping (uint => rollData) rolls;
     
     /// @dev announce about successful Roll creation
-    /// ??? Provide Roll's conditions: min / max participants, entry price, token to pay with
-    // event RollCreated(uint256 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID);
     event RollCreated(uint256 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
     
     /// @dev announce about Roll's new participants / minted tickets
@@ -52,7 +75,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /// ? ticketsContract / 
     event RollPlayed(bool success, uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address indexed prizeAddress, uint prizeID, address host, address owner);
     
-    constructor()  {
+    constructor() {
         owner = msg.sender;
         contractTicketsTemplate = address(new TicketsNFT());
         contractIddleAssets = address(new IddleAssets());
