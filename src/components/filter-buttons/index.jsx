@@ -26,7 +26,7 @@ const FilterButtons = ({ buttons, filterHandler, active }) => (
 FilterButtons.propTypes = {
     buttons: PropTypes.arrayOf(PropTypes.string),
     filterHandler: PropTypes.func,
-    active: PropTypes.string.isRequired,
+    active: PropTypes.string,
 };
 
 FilterButtons.defaultProps = {
