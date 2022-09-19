@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { rollUpdate } from "@store/actions/rolls";
+import { useMoralis } from "react-moralis";
 
 const PlaceBet = ({
     title,
@@ -30,6 +31,7 @@ const PlaceBet = ({
     const user = useSelector((state) => state.user);
     const router = useRouter();
     const dispatch = useDispatch();
+    const { authenticate, isAuthenticated } = useMoralis();
     const { slug } = router.query;
     const {
         register,
@@ -44,7 +46,6 @@ const PlaceBet = ({
     };
 
     const buyTickets = async () => {
-        console.log("buyTickets");
         await axios
             .put(
                 `/api/rolls/${slug}`,
@@ -68,6 +69,12 @@ const PlaceBet = ({
     };
 
     const onSubmit = async (data) => {
+        if (!isAuthenticated) {
+            authenticate({
+                signingMessage: "Roll NFT Authentication",
+            });
+            return;
+        }
         handleBidModal();
         const _quantity = parseInt(data.quantity, 10);
         const _fee = _quantity * ticketPrice * 0.05;

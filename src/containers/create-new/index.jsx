@@ -12,12 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Router from "next/router";
 import { balanceSelect } from "@store/actions/balances";
+import { useMoralis } from "react-moralis";
 
 const CreateNewArea = ({ className, space, nft }) => {
     const [showProductModal, setShowProductModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [hasImageError, setHasImageError] = useState(false);
     const [previewData, setPreviewData] = useState({});
+    const { authenticate, isAuthenticated } = useMoralis();
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
@@ -58,18 +60,29 @@ const CreateNewArea = ({ className, space, nft }) => {
             });
     };
 
+    const handleClick = (event) => {
+        event.preventDefault();
+        if (isAuthenticated) {
+            Router.push("/select-nft");
+        } else {
+            authenticate({
+                signingMessage: "Roll NFT Authentication",
+            });
+        }
+    };
     const onSubmit = (data, e) => {
+        if (hasImageError) {
+            return;
+        }
         const { target } = e;
         const submitBtn =
             target.localName === "span" ? target.parentElement : target;
         const isPreviewBtn = submitBtn.dataset?.btn;
-        setHasImageError(!selectedImage);
         if (isPreviewBtn && selectedImage) {
             setPreviewData({ ...data, image: selectedImage });
             setShowProductModal(true);
         }
         if (!isPreviewBtn) {
-            setSelectedImage();
             dispatch(balanceSelect(0));
             reset();
             saveRaffle(data);
@@ -81,6 +94,10 @@ const CreateNewArea = ({ className, space, nft }) => {
             setSelectedImage(nft.image);
         }
     }, [nft]);
+
+    useEffect(() => {
+        setHasImageError(!selectedImage);
+    }, [selectedImage]);
 
     return (
         <>
@@ -107,8 +124,11 @@ const CreateNewArea = ({ className, space, nft }) => {
                                     </div>
 
                                     <Anchor
-                                        path="/select-nft"
+                                        path="#"
                                         className="select-nft"
+                                        onClick={(e) => {
+                                            handleClick(e);
+                                        }}
                                     >
                                         <div className="brows-file-wrapper">
                                             {selectedImage && (

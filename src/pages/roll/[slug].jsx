@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { rollUpdate } from "@store/actions/rolls";
 
 const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
-    // const [roll, setRoll] = useState(null);
     const router = useRouter();
     const roll = useSelector((state) => state.roll);
     const dispatch = useDispatch();
