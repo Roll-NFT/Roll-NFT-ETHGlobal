@@ -3,7 +3,7 @@ import clsx from "clsx";
 import SectionTitle from "@components/section-title/layout-01";
 import Product from "@components/product/layout-01";
 import Slider, { SliderItem } from "@ui/slider";
-import { SectionTitleType, ProductType } from "@utils/types";
+import { SectionTitleType, ProductType, RollType } from "@utils/types";
 
 const SliderOptions = {
     infinite: true,
@@ -73,17 +73,20 @@ const LiveExploreArea = ({ data, className, space }) => (
                                     className="single-slide-product"
                                 >
                                     <Product
-                                        overlay
                                         placeBid={!!data.placeBid}
                                         title={prod.title}
-                                        slug={prod.slug}
-                                        latestBid={prod.latestBid}
-                                        price={prod.price}
+                                        slug={prod.raffleId}
+                                        latestBid={1}
+                                        price={{
+                                            amount: prod.ticketPrice,
+                                            currency: prod.ticketCurrency,
+                                        }}
+                                        auction_date={prod.endDate}
                                         likeCount={prod.likeCount}
-                                        auction_date={prod.auction_date}
-                                        image={prod.images?.[0]}
-                                        authors={prod.authors}
-                                        bitCount={prod.bitCount}
+                                        image={{
+                                            src: prod.nftImage,
+                                            alt: prod.title,
+                                        }}
                                     />
                                 </SliderItem>
                             ))}
@@ -100,7 +103,7 @@ LiveExploreArea.propTypes = {
     space: PropTypes.oneOf([1, 2]),
     data: PropTypes.shape({
         section_title: SectionTitleType,
-        products: PropTypes.arrayOf(ProductType).isRequired,
+        products: PropTypes.arrayOf(RollType).isRequired,
         placeBid: PropTypes.bool,
     }),
 };

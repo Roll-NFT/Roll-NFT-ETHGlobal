@@ -6,7 +6,9 @@ import SectionTitle from "@components/section-title/layout-02";
 import Product from "@components/product/layout-01";
 import FilterButtons from "@components/filter-buttons";
 import { flatDeep } from "@utils/methods";
-import { SectionTitleType, ProductType } from "@utils/types";
+import { SectionTitleType, RollType } from "@utils/types";
+import { useDispatch, useSelector } from "react-redux";
+import { categoryUpdate } from "@store/actions/rolls";
 
 const ExploreProductArea = ({ className, space, data }) => {
     const filters = [
@@ -15,9 +17,7 @@ const ExploreProductArea = ({ className, space, data }) => {
         ),
     ];
     const [products, setProducts] = useState([]);
-    useEffect(() => {
-        setProducts(data?.products);
-    }, [data?.products]);
+    const category = useSelector((state) => state.category);
 
     const filterHandler = (filterKey) => {
         const prods = data?.products ? [...data.products] : [];
@@ -30,6 +30,16 @@ const ExploreProductArea = ({ className, space, data }) => {
         );
         setProducts(filterProds);
     };
+
+    useEffect(() => {
+        setProducts(data?.products);
+        filterHandler(category);
+    }, [data?.products]);
+
+    useEffect(() => {
+        filterHandler(category);
+    }, [category]);
+
     return (
         <div
             className={clsx(
@@ -53,6 +63,7 @@ const ExploreProductArea = ({ className, space, data }) => {
                         <FilterButtons
                             buttons={filters}
                             filterHandler={filterHandler}
+                            filterDefault={category}
                         />
                     </div>
                 </div>
@@ -67,13 +78,20 @@ const ExploreProductArea = ({ className, space, data }) => {
                                 <Product
                                     placeBid={!!data.placeBid}
                                     title={prod.title}
-                                    slug={prod.slug}
-                                    latestBid={prod.latestBid}
-                                    price={prod.price}
+                                    slug={prod.raffleId}
+                                    price={{
+                                        amount: prod.ticketPrice,
+                                        currency: prod.ticketCurrency,
+                                    }}
+                                    auction_date={prod.endDate}
                                     likeCount={prod.likeCount}
-                                    image={prod.images?.[0]}
-                                    authors={prod.authors}
-                                    bitCount={prod.bitCount}
+                                    ticketSupply={prod.ticketSupply}
+                                    ticketsSold={prod.ticketsSold}
+                                    ticketsTotal={prod.ticketsTotal}
+                                    image={{
+                                        src: prod.nftImage,
+                                        alt: prod.title,
+                                    }}
                                 />
                             </motion.div>
                         ))}
@@ -89,7 +107,7 @@ ExploreProductArea.propTypes = {
     space: PropTypes.oneOf([1, 2]),
     data: PropTypes.shape({
         section_title: SectionTitleType,
-        products: PropTypes.arrayOf(ProductType),
+        products: PropTypes.arrayOf(RollType),
         placeBid: PropTypes.bool,
     }),
 };

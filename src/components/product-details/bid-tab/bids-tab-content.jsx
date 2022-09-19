@@ -1,26 +1,51 @@
 import PropTypes from "prop-types";
-import { IDType, ImageType } from "@utils/types";
+import { RollType } from "@utils/types";
 import Anchor from "@ui/anchor";
 import { getEllipsisTxt } from "@utils/format";
+import { formatDistance } from "date-fns";
 
-const BidsTabContent = ({ bids }) => (
+const pluralize = require("pluralize");
+
+const BidsTabContent = ({ bids, showAddress }) => (
     <div>
         {bids?.map((bid) => (
-            <div className="top-seller-inner-one mt-0">
+            <div
+                className="top-seller-inner-one mt-0"
+                key={`${bid.createdAt}-${showAddress}`}
+                id={`${bid.createdAt}-${showAddress}`}
+            >
                 <div className="top-seller-wrapper">
                     <div className="top-seller-content">
-                        {bid.bidAt && (
-                            <span className="count-number">{bid.bidAt}</span>
-                        )}
                         <span>
-                            {bid.amount && (
-                                <>{bid.amount} ticket(s) bought by</>
+                            {showAddress ? (
+                                <Anchor
+                                    path={`${process.env.NEXT_PUBLIC_ETHERSCAN_URL}/address/${bid.userAddress}`}
+                                    className="ms-0"
+                                    target="_blank"
+                                >
+                                    {getEllipsisTxt(bid.userAddress)}
+                                </Anchor>
+                            ) : (
+                                "You"
                             )}{" "}
-                            <Anchor path="#" className="ms-0">
-                                {getEllipsisTxt(
-                                    "0xe220825b597e4D5867218E0Efa9684Dd26957b00"
-                                )}
-                            </Anchor>
+                            bought{" "}
+                            {bid.quantity && (
+                                <>
+                                    {bid.quantity}{" "}
+                                    {pluralize("ticket", bid.quantity)}
+                                </>
+                            )}{" "}
+                            {bid.createdAt && (
+                                <span>
+                                    {formatDistance(
+                                        new Date(bid.createdAt),
+                                        new Date(),
+                                        {
+                                            addSuffix: true,
+                                        }
+                                    )}
+                                </span>
+                            )}
                         </span>
                     </div>
                 </div>
@@ -30,18 +55,8 @@ const BidsTabContent = ({ bids }) => (
 );
 
 BidsTabContent.propTypes = {
-    bids: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: IDType.isRequired,
-            user: PropTypes.shape({
-                name: PropTypes.string.isRequired,
-                slug: PropTypes.string.isRequired,
-                image: ImageType.isRequired,
-            }),
-            amount: PropTypes.string.isRequired,
-            bidAt: PropTypes.string.isRequired,
-        })
-    ),
+    bids: PropTypes.arrayOf(RollType),
+    showAddress: PropTypes.bool,
 };
 
 export default BidsTabContent;

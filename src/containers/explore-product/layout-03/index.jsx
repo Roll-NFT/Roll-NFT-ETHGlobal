@@ -4,7 +4,7 @@ import clsx from "clsx";
 import SectionTitle from "@components/section-title/layout-02";
 import Product from "@components/product/layout-02";
 import Button from "@ui/button";
-import { SectionTitleType, ProductType } from "@utils/types";
+import { SectionTitleType, RollType } from "@utils/types";
 
 const ExploreProductArea = ({ className, space, data }) => {
     const [products, setProducts] = useState([]);
@@ -51,7 +51,7 @@ const ExploreProductArea = ({ className, space, data }) => {
                                     id={prod.id}
                                     collection={prod.collection}
                                     title={prod.title}
-                                    slug="/create"
+                                    slug="/roll/create"
                                     image={prod.image}
                                 />
                             </div>
@@ -86,7 +86,7 @@ ExploreProductArea.propTypes = {
     space: PropTypes.oneOf([1, 2]),
     data: PropTypes.shape({
         section_title: SectionTitleType,
-        products: PropTypes.arrayOf(ProductType),
+        products: PropTypes.arrayOf(RollType),
         placeBid: PropTypes.bool,
     }),
 };

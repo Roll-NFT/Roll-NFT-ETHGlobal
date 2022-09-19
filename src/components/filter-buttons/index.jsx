@@ -2,8 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 
-const FilterButtons = ({ buttons, filterHandler }) => {
-    const [active, setActive] = useState("all");
+const FilterButtons = ({ buttons, filterHandler, filterDefault }) => {
+    const [active, setActive] = useState(filterDefault);
     const activeHandler = (filterKey) => {
         setActive(filterKey);
         filterHandler(filterKey);
@@ -34,6 +34,11 @@ const FilterButtons = ({ buttons, filterHandler }) => {
 FilterButtons.propTypes = {
     buttons: PropTypes.arrayOf(PropTypes.string),
     filterHandler: PropTypes.func,
+    filterDefault: PropTypes.string.isRequired,
+};
+
+FilterButtons.defaultProps = {
+    filterDefault: "all",
 };
 
 export default FilterButtons;

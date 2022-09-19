@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { IDType, ImageType } from "@utils/types";
+import { IDType, ImageType, RollAttributeType } from "@utils/types";
 
 const DetailsTabContent = ({ owner, properties, tags }) => (
     <div className="rn-pd-bd-wrapper mt--20">
@@ -8,9 +8,12 @@ const DetailsTabContent = ({ owner, properties, tags }) => (
                 <h6 className="pd-property-title">Property</h6>
                 <div className="property-wrapper">
                     {properties.map((property) => (
-                        <div key={property.id} className="pd-property-inner">
+                        <div
+                            key={property.trait_type}
+                            className="pd-property-inner"
+                        >
                             <span className="color-body type">
-                                {property.type}
+                                {property.trait_type}
                             </span>
                             <span className="color-white value">
                                 {property.value}
@@ -22,14 +25,12 @@ const DetailsTabContent = ({ owner, properties, tags }) => (
         )}
         {tags && (
             <div className="rn-pd-sm-property-wrapper">
-                <h6 className="pd-property-title">Tags</h6>
+                <h6 className="pd-property-title">Tag</h6>
                 <div className="catagory-wrapper">
                     {tags.map((tag) => (
                         <div key={tag.id} className="pd-property-inner">
-                            <span className="color-body type">{tag.type}</span>
-                            <span className="color-white value">
-                                {tag.value}
-                            </span>
+                            {/* <span className="color-body type">{tag.type}</span> */}
+                            <span className="color-white value">{tag}</span>
                         </div>
                     ))}
                 </div>
@@ -45,20 +46,8 @@ DetailsTabContent.propTypes = {
         slug: PropTypes.string,
         image: ImageType,
     }),
-    properties: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: IDType,
-            type: PropTypes.string,
-            value: PropTypes.string,
-        })
-    ),
-    tags: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: IDType,
-            type: PropTypes.string,
-            value: PropTypes.string,
-        })
-    ),
+    properties: PropTypes.arrayOf(PropTypes.objectOf(RollAttributeType)),
+    tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default DetailsTabContent;

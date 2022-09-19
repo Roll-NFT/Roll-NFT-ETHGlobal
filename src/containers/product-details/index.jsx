@@ -5,11 +5,11 @@ import GalleryTab from "@components/product-details/gallery-tab";
 import ProductTitle from "@components/product-details/title";
 import BidTab from "@components/product-details/bid-tab";
 import PlaceBet from "@components/product-details/place-bet";
-import { ImageType } from "@utils/types";
+import { RollType } from "@utils/types";
 
 // Demo Image
 
-const ProductDetailsArea = ({ space, className, product }) => (
+const ProductDetailsArea = ({ space, className, roll }) => (
     <div
         className={clsx(
             "product-details-area",
@@ -21,43 +21,46 @@ const ProductDetailsArea = ({ space, className, product }) => (
             <div className="row g-5">
                 <div className="col-lg-6 col-md-12 col-sm-12">
                     <Sticky>
-                        <GalleryTab images={product.images} />
+                        <GalleryTab
+                            images={[{ src: roll.nftImage, alt: roll.title }]}
+                        />
                     </Sticky>
                 </div>
                 <div className="col-lg-6 col-md-12 col-sm-12 mt_md--50 mt_sm--60">
                     <div className="rn-pd-content-area">
-                        <span>Collection name</span>
                         <ProductTitle
-                            title={product.title}
-                            likeCount={product.likeCount}
+                            collection={roll.nftCollection}
+                            title={roll.title}
+                            likeCount={roll.likeCount}
                         />
                         <div className="bid">
                             <span className="price me-4">
-                                <b>Total Ticket Value:</b>{" "}
-                                {product.price.amount}
-                                {product.price.currency}
+                                <b>Total Ticket Value:</b> {roll.ticketsTotal}{" "}
+                                {roll.ticketCurrency}
                             </span>
                             <span className="me-4">
                                 <b>|</b>
                             </span>
                             <span className="price">
-                                <b>NFT Floor price:</b> {product.price.amount}
-                                {product.price.currency}
+                                <b>NFT Floor price:</b> ???
                             </span>
                         </div>
 
                         <div className="rn-bid-details">
                             <PlaceBet
-                                highest_bid={product.highest_bid}
-                                auction_date={product?.auction_date}
+                                title={roll.title}
+                                ticketSold={roll.ticketsSold}
+                                ticketSupply={roll.ticketSupply}
+                                ticketPrice={roll.ticketPrice}
+                                ticketCurrency={roll.ticketCurrency}
+                                endDate={roll.endDate}
+                                host={roll.userAddress}
                             />
                             <br />
                             <BidTab
-                                bids={product?.bids}
-                                owner={product.owner}
-                                properties={product?.properties}
-                                tags={product?.tags}
-                                history={product?.history}
+                                bids={roll.tickets}
+                                properties={roll.attributes}
+                                tags={roll.categories}
                             />
                         </div>
                     </div>
@@ -70,27 +73,33 @@ const ProductDetailsArea = ({ space, className, product }) => (
 ProductDetailsArea.propTypes = {
     space: PropTypes.oneOf([1, 2]),
     className: PropTypes.string,
-    product: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        likeCount: PropTypes.number,
-        price: PropTypes.shape({
-            amount: PropTypes.number.isRequired,
-            currency: PropTypes.string.isRequired,
-        }).isRequired,
-        owner: PropTypes.shape({}),
-        collection: PropTypes.shape({}),
-        bids: PropTypes.arrayOf(PropTypes.shape({})),
-        properties: PropTypes.arrayOf(PropTypes.shape({})),
-        tags: PropTypes.arrayOf(PropTypes.shape({})),
-        history: PropTypes.arrayOf(PropTypes.shape({})),
-        highest_bid: PropTypes.shape({}),
-        auction_date: PropTypes.string,
-        images: PropTypes.arrayOf(ImageType),
-    }),
+    roll: PropTypes.objectOf(RollType),
 };
 
 ProductDetailsArea.defaultProps = {
     space: 1,
+    roll: {
+        raffleId: "1",
+        userId: "1",
+        userAddress: "",
+        nftId: "1",
+        nftContractAddress: "",
+        nftCollection: "Roll Collection",
+        nftImage: "/images/portfolio/lg/portfolio-01.jpg",
+        nftTokenId: "",
+        description: "Roll Description",
+        title: "Roll Title",
+        endDate: String(Date.now()),
+        ticketPrice: 0,
+        ticketCurrency: "ETH",
+        ticketSupply: 0,
+        likeCount: 0,
+        properties: [],
+        tags: [],
+        tickets: [],
+        ticketsSold: 0,
+        ticketsTotal: 0,
+    },
 };
 
 export default ProductDetailsArea;

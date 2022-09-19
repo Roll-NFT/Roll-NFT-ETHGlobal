@@ -29,7 +29,8 @@
                     ["@containers", "./src/containers/"],
                     ["@layout", "./src/layouts/"],
                     ["@utils", "./src/utils/"],
-                    ["@hooks", "./src/hooks/"]
+                    ["@hooks", "./src/hooks/"],
+                    ["@store", "./src/store/"]
                 ],
                 "extensions": [".js", ".jsx"]
             },

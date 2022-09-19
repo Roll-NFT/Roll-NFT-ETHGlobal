@@ -12,6 +12,6 @@
     {
         "id": 3,
         "text": "Create Raffle",
-        "path": "/create"
+        "path": "/roll/create"
     }
 ]

@@ -82,7 +82,7 @@
             "buttons": [
                 {
                     "id": 1,
-                    "path": "/create",
+                    "path": "/roll/create",
                     "content": "Create"
                 },
                 {

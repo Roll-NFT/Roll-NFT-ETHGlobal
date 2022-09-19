@@ -19,32 +19,32 @@
             {
                 "id": 1,
                 "text": "Art",
-                "path": "/explore-01"
+                "path": "/explore"
             },
             {
                 "id": 2,
                 "text": "Music",
-                "path": "/explore-01"
+                "path": "/explore"
             },
             {
                 "id": 3,
                 "text": "Metaverse",
-                "path": "/explore-01"
+                "path": "/explore"
             },
             {
                 "id": 4,
                 "text": "Domain Name",
-                "path": "/explore-01"
+                "path": "/explore"
             },
             {
                 "id": 5,
                 "text": "Game",
-                "path": "/explore-01"
+                "path": "/explore"
             },
             {
                 "id": 6,
                 "text": "Collectibles",
-                "path": "/explore-01"
+                "path": "/explore"
             }
         ]
     },
@@ -59,12 +59,12 @@
             {
                 "id": 2,
                 "text": "Explore",
-                "path": "/explore-01"
+                "path": "/explore"
             },
             {
                 "id": 3,
                 "text": "Create Raffle",
-                "path": "/create"
+                "path": "/roll/create"
             },
             {
                 "id": 4,

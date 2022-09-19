@@ -1,14 +1,19 @@
 import PropTypes from "prop-types";
 import Anchor from "@ui/anchor";
 
-const QuicklinkWidget = ({ data }) => (
+const QuicklinkWidget = ({ data, onClick }) => (
     <div className="footer-widget widget-quicklink">
         <h6 className="widget-title">{data.title}</h6>
         {data?.menu && (
             <ul className="footer-list-one">
                 {data.menu.map((nav) => (
                     <li key={nav.id} className="single-list">
-                        <Anchor path={nav.path}>{nav.text}</Anchor>
+                        <Anchor
+                            path={nav.path}
+                            onClick={() => onClick(nav.text)}
+                        >
+                            {nav.text}
+                        </Anchor>
                     </li>
                 ))}
             </ul>
@@ -28,6 +33,7 @@ QuicklinkWidget.propTypes = {
             })
         ),
     }),
+    onClick: PropTypes.func,
 };
 
 export default QuicklinkWidget;

@@ -61,7 +61,7 @@ const SupportArea = ({ className, space }) => (
                                 </p>
                             </div>
                         </div>
-                        <Button path="/create" className="mr--15">
+                        <Button path="/roll/create" className="mr--15">
                             Create
                         </Button>
                         <Button href="/contact" color="primary-alta">

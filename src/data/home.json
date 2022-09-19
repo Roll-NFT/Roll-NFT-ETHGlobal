@@ -1,5 +1,5 @@
 {
-    "title": "home-15",
+    "title": "Home",
     "content": [
         {
             "section": "hero-section",
@@ -29,7 +29,7 @@
                     "id": 2,
                     "color": "primary-alta",
                     "content": "Create Raffle",
-                    "path": "/create"
+                    "path": "/roll/create"
                 }
             ],
             "image": {
@@ -161,7 +161,7 @@
                 {
                     "id": 2,
                     "title": "Select a NFT to create a new Roll",
-                    "path": "/create",
+                    "path": "/roll/create",
                     "subtitle": "Step-02",
                     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                     "images": [

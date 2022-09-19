@@ -6,96 +6,162 @@ import Anchor from "@ui/anchor";
 import Button from "@ui/button";
 import PlaceBidModal from "@components/modals/placebid-modal";
 import Countdown from "@ui/countdown/layout-02";
-import { ImageType } from "@utils/types";
 import ErrorText from "@ui/error-text";
 import { getEllipsisTxt } from "@utils/format";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { rollUpdate } from "@store/actions/rolls";
 
-const PlaceBet = ({ highest_bid, auction_date, btnColor, className }) => {
+const PlaceBet = ({
+    title,
+    ticketSold,
+    ticketSupply,
+    ticketPrice,
+    ticketCurrency,
+    endDate,
+    host,
+    btnColor,
+    className,
+}) => {
     const [showBidModal, setShowBidModal] = useState(false);
+    const [ticket, setTicket] = useState(null);
+    const user = useSelector((state) => state.user);
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const { slug } = router.query;
     const {
         register,
         handleSubmit,
         formState: { errors },
-        reset,
     } = useForm({
         mode: "onChange",
     });
+
     const handleBidModal = () => {
         setShowBidModal((prev) => !prev);
+    };
+
+    const buyTickets = async () => {
+        console.log("buyTickets");
+        await axios
+            .put(
+                `/api/rolls/${slug}`,
+                { ticket },
+                {
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                handleBidModal();
+                dispatch(rollUpdate(response.data.data));
+                toast(`Tickets acquired successfully!`);
+                console.log(`Tickets acquired successfully!`);
+            })
+            .catch((errorResponse) => {
+                toast("Error updating Raffle, please try again later!");
+                console.log("Error saving Raffle: ", errorResponse);
+            });
+    };
+
+    const onSubmit = async (data) => {
+        handleBidModal();
+        const _quantity = parseInt(data.quantity, 10);
+        const _fee = _quantity * ticketPrice * 0.05;
+        const _total = _quantity * ticketPrice + _fee;
+        setTicket({
+            quantity: _quantity,
+            userId: user.id,
+            userAddress: user.address,
+            total: _total,
+            fee: _fee,
+            createdAt: new Date(),
+        });
     };
     return (
         <>
             <div className={clsx("place-bet-area", className)}>
                 <div className="rn-bet-create">
                     <div className="bid-list winning-bid">
-                        {/* <div className="latest-bid mt-5">
-                            <b>Tickets sold:</b> xxxxx
-                        </div>
-                        <div className="latest-bid mt-0">
-                            <b>Ticket price:</b> xxxxx
-                        </div> */}
                         <h6 className="title mb-3">
-                            <b>Tickets sold</b>: 100/500
+                            <b>Tickets sold</b>: {ticketSold}/{ticketSupply}
                         </h6>
                         <h6 className="title mb-3">
-                            <b>Ticket price</b>: 0.5 ETH
+                            <b>Ticket price</b>: {ticketPrice}
+                            {ticketCurrency}
                         </h6>
                         <h6 className="title mb-3">
                             <b>Host</b>:{" "}
-                            <Anchor path="#">
-                                {getEllipsisTxt(
-                                    "0xe220825b597e4D5867218E0Efa9684Dd26957b00"
-                                )}
+                            <Anchor
+                                path={`${process.env.NEXT_PUBLIC_ETHERSCAN_URL}/address/${host}`}
+                            >
+                                {getEllipsisTxt(host || "")}
                             </Anchor>
                         </h6>
                     </div>
-                    {auction_date && (
+                    {endDate && (
                         <div className="bid-list left-bid">
                             <h6 className="title">Time remaining:</h6>
-                            <Countdown className="mt--15" date={auction_date} />
+                            <Countdown className="mt--15" date={endDate} />
                         </div>
                     )}
                 </div>
-                <div className="row mt--20">
-                    <div className="col-md-2">
-                        <input
-                            id="quantity"
-                            placeholder="Quantity"
-                            className="h-100 border border-4 raffleQuantity"
-                            {...register("quantity", {
-                                required: "Qty is required",
-                            })}
-                        />
-                        {errors.quantity && (
-                            <ErrorText>{errors.quantity?.message}</ErrorText>
-                        )}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="row mt--20">
+                        <div className="col-md-2">
+                            <input
+                                id="quantity"
+                                placeholder="Quantity"
+                                className="h-100 border border-4 raffleQuantity"
+                                {...register("quantity", {
+                                    required: "Qty is required",
+                                })}
+                            />
+                            {errors.quantity && (
+                                <ErrorText>
+                                    {errors.quantity?.message}
+                                </ErrorText>
+                            )}
+                        </div>
+                        <div className="col-md-1" />
+                        <div className="col-md-9">
+                            <Button
+                                type="submit"
+                                color={btnColor || "primary-alta"}
+                                // onClick={handleBidModal}
+                            >
+                                Buy Raffle Tickets
+                            </Button>
+                        </div>
                     </div>
-                    <div className="col-md-1" />
-                    <div className="col-md-9">
-                        <Button
-                            color={btnColor || "primary-alta"}
-                            onClick={handleBidModal}
-                        >
-                            Buy Raffle Tickets
-                        </Button>
-                    </div>
-                </div>
+                </form>
             </div>
-            <PlaceBidModal show={showBidModal} handleModal={handleBidModal} />
+            {ticket && (
+                <PlaceBidModal
+                    show={showBidModal}
+                    cancel={handleBidModal}
+                    confirm={buyTickets}
+                    title={title}
+                    ticketPrice={ticketPrice}
+                    ticketCurrency={ticketCurrency}
+                    ticket={ticket}
+                />
+            )}
         </>
     );
 };
 
 PlaceBet.propTypes = {
-    highest_bid: PropTypes.shape({
-        amount: PropTypes.string,
-        bidder: PropTypes.shape({
-            name: PropTypes.string,
-            image: ImageType,
-            slug: PropTypes.string,
-        }),
-    }),
-    auction_date: PropTypes.string,
+    title: PropTypes.string,
+    ticketSold: PropTypes.number,
+    ticketSupply: PropTypes.number,
+    ticketPrice: PropTypes.number,
+    ticketCurrency: PropTypes.string,
+    endDate: PropTypes.string,
+    host: PropTypes.string,
     btnColor: PropTypes.string,
     className: PropTypes.string,
 };

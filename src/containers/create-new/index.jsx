@@ -9,8 +9,9 @@ import ErrorText from "@ui/error-text";
 import { toast } from "react-toastify";
 import Anchor from "@ui/anchor";
 import { useDispatch, useSelector } from "react-redux";
-import { balanceSelect } from "src/store/actions/balances";
 import axios from "axios";
+import Router from "next/router";
+import { balanceSelect } from "@store/actions/balances";
 
 const CreateNewArea = ({ className, space, nft }) => {
     const [showProductModal, setShowProductModal] = useState(false);
@@ -33,11 +34,11 @@ const CreateNewArea = ({ className, space, nft }) => {
         setShowProductModal(false);
     };
 
-    async function saveRaffle(formData) {
+    const saveRaffle = async (form) => {
         await axios
             .post(
-                "/api/saveRaffle",
-                { userId: user.id, nft, form: formData },
+                "/api/rolls",
+                { user, nft, form },
                 {
                     headers: {
                         "content-type": "application/json",
@@ -49,12 +50,13 @@ const CreateNewArea = ({ className, space, nft }) => {
                 console.log(
                     `Raffle '${response.data.raffleId}' saved successfully!`
                 );
+                Router.push(`/roll/${response.data.raffleId}`);
             })
             .catch((errorResponse) => {
                 toast("Error saving Raffle, please try again later!");
                 console.log("Error saving Raffle: ", errorResponse);
             });
-    }
+    };
 
     const onSubmit = (data, e) => {
         const { target } = e;
@@ -67,10 +69,10 @@ const CreateNewArea = ({ className, space, nft }) => {
             setShowProductModal(true);
         }
         if (!isPreviewBtn) {
-            saveRaffle(data);
             setSelectedImage();
             dispatch(balanceSelect(0));
             reset();
+            saveRaffle(data);
         }
     };
 
@@ -105,7 +107,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                                     </div>
 
                                     <Anchor
-                                        path="/my-nfts"
+                                        path="/select-nft"
                                         className="select-nft"
                                     >
                                         <div className="brows-file-wrapper">

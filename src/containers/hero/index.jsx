@@ -112,7 +112,7 @@ const HeroArea = ({
                                             path="/author"
                                             tabIndex="0"
                                         >
-                                            More Then 25K
+                                            More Than 25K
                                         </Anchor>
                                     </div>
                                 </div>

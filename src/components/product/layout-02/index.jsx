@@ -2,10 +2,9 @@ import PropTypes from "prop-types";
 import Image from "next/image";
 import clsx from "clsx";
 import Anchor from "@ui/anchor";
-import { ImageType } from "@utils/types";
 import Router from "next/router";
 import { useDispatch } from "react-redux";
-import { balanceSelect } from "src/store/actions/balances";
+import { balanceSelect } from "@store/actions/balances";
 
 const Product = ({ overlay, collection, title, slug, image, id }) => {
     const dispatch = useDispatch();

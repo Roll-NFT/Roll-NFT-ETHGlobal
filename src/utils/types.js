@@ -56,6 +56,42 @@ export const ItemType = PropTypes.shape({
     image: ImageType,
 });
 
+export const RollTicketType = PropTypes.shape({
+    quantity: PropTypes.number,
+    userId: PropTypes.string,
+    userAddress: PropTypes.string,
+    total: PropTypes.number,
+    fee: PropTypes.number,
+});
+
+export const RollType = PropTypes.shape({
+    raffleId: PropTypes.string,
+    userId: PropTypes.string,
+    userAddress: PropTypes.string,
+    nftId: PropTypes.string,
+    nftContractAddress: PropTypes.string,
+    nftCollection: PropTypes.string,
+    nftImage: PropTypes.string,
+    nftTokenId: PropTypes.string,
+    description: PropTypes.string,
+    title: PropTypes.string,
+    endDate: PropTypes.string,
+    ticketPrice: PropTypes.number,
+    ticketCurrency: PropTypes.string,
+    ticketSupply: PropTypes.number,
+    likeCount: PropTypes.number,
+    attributes: PropTypes.arrayOf(PropTypes.shape({})),
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
+    tickets: PropTypes.arrayOf(PropTypes.objectOf(RollTicketType)),
+    ticketsSold: PropTypes.number,
+    ticketsTotal: PropTypes.number,
+});
+
+export const RollAttributeType = PropTypes.shape({
+    trait_type: PropTypes.string,
+    value: PropTypes.string,
+});
+
 export const ProductType = PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     title: PropTypes.string.isRequired,

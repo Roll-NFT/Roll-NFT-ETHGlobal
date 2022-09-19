@@ -7,13 +7,12 @@ import CategoryArea from "@containers/category";
 import LiveExploreArea from "@containers/live-explore";
 import ServiceArea from "@containers/services";
 import TopSellerArea from "@containers/top-seller/layout-01";
-import ExploreProductArea from "@containers/explore-product/layout-01";
+import ExploreProductArea from "@containers/explore-product/layout-02";
 import { normalizedData } from "@utils/methods";
-
+import axios from "axios";
+import { useState, useEffect } from "react";
 // Demo Data
 import homepageData from "../data/home.json";
-import productData from "../data/products.json";
-import sellerData from "../data/sellers.json";
 
 export async function getStaticProps() {
     return {
@@ -23,44 +22,69 @@ export async function getStaticProps() {
 
 const Home = () => {
     const content = normalizedData(homepageData?.content || []);
-    const liveAuctionData = productData.filter(
-        (prod) =>
-            prod?.auction_date && new Date() <= new Date(prod?.auction_date)
-    );
-    const newestData = productData
-        .sort(
-            (a, b) =>
-                Number(new Date(b.published_at)) -
-                Number(new Date(a.published_at))
-        )
-        .slice(0, 5);
+
+    function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    const [endingSoonRaffles, setEndingSoonRaffles] = useState([]);
+    async function getEndingSoonRaffles() {
+        const soonish = 5;
+        const startDate = new Date();
+        const endDate = addDays(startDate, soonish);
+        await axios(`/api/rolls`, {
+            params: { startDate, endDate },
+        })
+            .then((response) => {
+                setEndingSoonRaffles(response.data.data);
+            })
+            .catch((errorResponse) => {
+                console.log(errorResponse);
+            });
+    }
+
+    useEffect(() => {
+        getEndingSoonRaffles();
+    }, []);
 
     return (
         <Wrapper>
             <SEO pageTitle="Roll NFT" />
             <Header />
             <main id="main-content">
-                <HeroArea data={content["hero-section"]} />
+                <HeroArea
+                    data={{
+                        ...content["hero-section"],
+                        image: {
+                            src: "/images/banner/banner-01.jpg",
+                        },
+                        products: endingSoonRaffles,
+                    }}
+                />
                 <ServiceArea data={content["service-section"]} />
-                <CategoryArea data={content["category-section"]} />
                 <LiveExploreArea
                     data={{
                         ...content["live-explore-section"],
-                        products: liveAuctionData,
+                        products: endingSoonRaffles,
                     }}
                 />
-                <TopSellerArea
+                <CategoryArea data={content["category-section"]} />
+
+                {/* <TopSellerArea
                     data={{
                         ...content["top-sller-section"],
                         sellers: sellerData,
                     }}
-                />
-                <ExploreProductArea
+                /> */}
+                {/* <ExploreProductArea
                     data={{
-                        ...content["explore-product-section"],
-                        products: productData,
+                        ...content["live-explore-section"],
+                        products: endingSoonRaffles,
                     }}
-                />
+                    className="rn-live-bidding-area"
+                /> */}
             </main>
             <Footer />
         </Wrapper>

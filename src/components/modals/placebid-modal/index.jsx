@@ -1,12 +1,21 @@
 import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 import Button from "@ui/button";
+import { RollTicketType } from "@utils/types";
 
-const PlaceBidModal = ({ show, handleModal }) => (
+const PlaceBidModal = ({
+    show,
+    cancel,
+    confirm,
+    title,
+    ticketPrice,
+    ticketCurrency,
+    ticket,
+}) => (
     <Modal
         className="rn-popup-modal placebid-modal-wrapper"
         show={show}
-        onHide={handleModal}
+        onHide={cancel}
         centered
     >
         {show && (
@@ -14,7 +23,7 @@ const PlaceBidModal = ({ show, handleModal }) => (
                 type="button"
                 className="btn-close"
                 aria-label="Close"
-                onClick={handleModal}
+                onClick={cancel}
             >
                 <i className="feather-x" />
             </button>
@@ -23,24 +32,35 @@ const PlaceBidModal = ({ show, handleModal }) => (
             <h3 className="modal-title">Order summary</h3>
         </Modal.Header>
         <Modal.Body>
-            <p className="mb-0">You are about to purchase tickets for XXXXX</p>
+            <p className="mb-0">
+                You are about to purchase tickets for: {title}
+            </p>
             <div className="placebid-form-box">
                 <div className="bid-content">
                     <div className="bid-content-mid">
                         <div className="bid-content-left">
                             <span>Number of tickets</span>
                             <span>Ticket price</span>
-                            <span>Service fee</span>
+                            <span>Service fee (5%)</span>
                             <span>
                                 <b>Total amount</b>
                             </span>
                         </div>
                         <div className="bid-content-right">
-                            <span>XXX</span>
-                            <span>XXX</span>
-                            <span>10 wETH</span>
+                            <span>{ticket.quantity}</span>
                             <span>
-                                <b>9588 wETH</b>
+                                {ticketPrice}
+                                {ticketCurrency}
+                            </span>
+                            <span>
+                                {ticket.fee}
+                                {ticketCurrency}
+                            </span>
+                            <span>
+                                <b>
+                                    {ticket.total}
+                                    {ticketCurrency}
+                                </b>
                             </span>
                         </div>
                     </div>
@@ -49,12 +69,16 @@ const PlaceBidModal = ({ show, handleModal }) => (
                     <Button
                         color="primary-alta"
                         size="medium"
-                        onClick={handleModal}
+                        onClick={cancel}
                         className="float-start"
                     >
                         Cancel
                     </Button>
-                    <Button path="/connect" size="medium" className="float-end">
+                    <Button
+                        size="medium"
+                        className="float-end"
+                        onClick={confirm}
+                    >
                         Buy tickets
                     </Button>
                 </div>
@@ -65,6 +89,11 @@ const PlaceBidModal = ({ show, handleModal }) => (
 
 PlaceBidModal.propTypes = {
     show: PropTypes.bool.isRequired,
-    handleModal: PropTypes.func.isRequired,
+    cancel: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired,
+    title: PropTypes.string,
+    ticketPrice: PropTypes.number,
+    ticketCurrency: PropTypes.string,
+    ticket: PropTypes.objectOf(RollTicketType),
 };
 export default PlaceBidModal;

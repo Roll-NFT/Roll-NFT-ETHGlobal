@@ -13,14 +13,16 @@ const GalleryTab = ({ images }) => (
                 <Nav className="rn-pd-nav rn-pd-rt-content nav-pills d-none">
                     {images?.map((image, index) => (
                         <Nav.Link
+                            id={`nav-link-${index}`}
                             key={image.src}
                             as="button"
                             eventKey={`nav-${index}`}
                         >
                             <span className="rn-pd-sm-thumbnail">
                                 <Image
+                                    id={`nav-link-image-${index}`}
                                     src={image.src}
-                                    alt={image?.alt || "Product"}
+                                    alt={image?.alt || "NFT"}
                                     width={167}
                                     height={167}
                                 />
@@ -30,11 +32,16 @@ const GalleryTab = ({ images }) => (
                 </Nav>
                 <TabContent className="rn-pd-content">
                     {images?.map((image, index) => (
-                        <TabPane key={image.src} eventKey={`nav-${index}`}>
+                        <TabPane
+                            key={image.src}
+                            eventKey={`nav-${index}`}
+                            id={`tab-pane-${index}`}
+                        >
                             <div className="rn-pd-thumbnail">
                                 <Image
+                                    id={`tab-pane-image-${index}`}
                                     src={image.src}
-                                    alt={image?.alt || "Product"}
+                                    alt={image?.alt || "NFT"}
                                     width={560}
                                     height={560}
                                 />

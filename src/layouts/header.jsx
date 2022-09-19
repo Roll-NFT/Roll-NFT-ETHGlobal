@@ -13,9 +13,9 @@ import Button from "@ui/button";
 import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { userUpdate } from "@store/actions/users";
 import headerData from "../data/header.json";
 import menuData from "../data/menu.json";
-import { userUpdate } from "../store/actions/users";
 
 const Header = ({ className }) => {
     const sticky = useSticky();

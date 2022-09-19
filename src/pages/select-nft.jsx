@@ -8,11 +8,18 @@ import ExploreProductArea from "@containers/explore-product/layout-03";
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { balancesUpdate } from "../store/actions/balances";
+import { balancesUpdate } from "@store/actions/balances";
+
+export async function getStaticProps() {
+    return { props: { className: "template-color-1" } };
+}
 
 const prepareData = (obj) =>
     obj.items
-        .filter((item) => item.type === "nft")
+        .filter(
+            (item) =>
+                item.type === "nft" && item.supports_erc.includes("erc721")
+        )
         .map((collection, i) =>
             collection.nft_data.map((nft, j) => ({
                 id: (i + 1) * 100 + j,
@@ -61,14 +68,14 @@ const MyNFTs = () => {
 
     return (
         <Wrapper>
-            <SEO pageTitle="My NFTs" />
+            <SEO pageTitle="Select NFT" />
             <Header />
             <main id="main-content">
                 <Breadcrumb
-                    pageTitle="Select a NFT for this Raffle"
+                    pageTitle="Select NFT for this Raffle"
                     currentPage="Select NFT"
                     rootTitle="Create New Raffle"
-                    rootPath="/create"
+                    rootPath="/roll/create"
                 />
                 {balances?.length ? (
                     <ExploreProductArea
