@@ -25,8 +25,8 @@ contract TicketsContract is Clone, Initializable, ERC721, ERC721Burnable, Ownabl
     }
 
     function safeMint(address to) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter.current();
         _safeMint(to, tokenId);
     }
 

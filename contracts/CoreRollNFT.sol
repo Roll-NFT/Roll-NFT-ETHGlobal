@@ -95,23 +95,34 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     // 
     event FeeSet(uint256 newFee);
 
-    /// @dev anounce roll results
-    /// ? ticketsContract / 
-    event RollPlayed(bool success, uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address indexed prizeAddress, uint prizeID, address host, address owner);
-
     /**
-     * @dev anounce about closed Roll
-     * Happens when Roll conditions are not met. There is no winner selected.
+     * @dev anounce about closed Roll (unsucceed)
+     * 
+     * @notice Announced when Roll conditions are not met. There is no winner selected. Prize is available to withdraw by Roll owner. Tickets are available to refund to participants.
      * 
      * @param rollType - Roll type, defines Roll executinion logic
      * @param rollID - Roll ID, unique number of every Roll and it's ownership token
      * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
-     * @param owner - Roll owner address, for owner to be informed that prize is available to withdraw
+     * @param owner - Roll owner address, for owner to be informed that Prize is available to withdraw
      * @param prizeAddress - Prize token collection address
      * @param prizeID - Prize token ID
      */
     event RollClosed(uint rollType, uint rollID, address indexed ticketsContract, address indexed owner, address indexed prizeAddress, uint prizeID);
-    event RollFinsihed();
+    
+    /**
+     * @dev announce about successfuly finished Roll
+     * 
+     * @notice Announced when Roll conditions are met. Winning token is selected. Prize is available to claim by winning token owner. Revenue available to claim by Roll owner.
+     * 
+     * @param rollType - Roll type, defines Roll executinion logic
+     * @param rollID - Roll ID, unique number of every Roll and it's ownership token
+     * @param winnerToken - Winner token ID
+     * @param winnerAddr - Winner token owner's address, for winner to be informed that Prize is available to claim
+     * @param owner - Roll owner address, for owner to be informed that Revenue is available to claim
+     * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
+     * @param host - Roll host address
+     */
+    event RollFinsihed(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
     constructor(TicketsContract _implementationTickectsContract;) {
         owner = msg.sender;
