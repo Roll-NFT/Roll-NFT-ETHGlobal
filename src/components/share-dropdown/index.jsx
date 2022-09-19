@@ -2,16 +2,26 @@ import { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import ShareModal from "@components/modals/share-modal";
 import ReportModal from "@components/modals/report-modal";
+import { useCopyToClipboard } from "react-use";
+import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
-const ShareDropdown = () => {
+const ShareDropdown = ({ shareUrl }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [showReportModal, setShowReportModal] = useState(false);
-    const handleShareModal = () => {
-        setShowShareModal((prev) => !prev);
+    const [state, copyToClipboard] = useCopyToClipboard();
+    const handleShare = () => {
+        if (shareUrl) {
+            copyToClipboard(shareUrl);
+            toast(`Roll link copied to clipboard!`);
+        } else {
+            setShowShareModal((prev) => !prev);
+        }
     };
-    const handleReportModal = () => {
+    const handleReport = () => {
         setShowReportModal((prev) => !prev);
     };
+
     return (
         <>
             <Dropdown className="share-btn share-btn-activation">
@@ -36,26 +46,27 @@ const ShareDropdown = () => {
                     <button
                         type="button"
                         className="btn-setting-text share-text"
-                        onClick={handleShareModal}
+                        onClick={handleShare}
                     >
                         Share
                     </button>
                     <button
                         type="button"
                         className="btn-setting-text report-text"
-                        onClick={handleReportModal}
+                        onClick={handleReport}
                     >
                         Report
                     </button>
                 </Dropdown.Menu>
             </Dropdown>
-            <ShareModal show={showShareModal} handleModal={handleShareModal} />
-            <ReportModal
-                show={showReportModal}
-                handleModal={handleReportModal}
-            />
+            <ShareModal show={showShareModal} handleModal={handleShare} />
+            <ReportModal show={showReportModal} handleModal={handleReport} />
         </>
     );
+};
+
+ShareDropdown.propTypes = {
+    shareUrl: PropTypes.string,
 };
 
 export default ShareDropdown;

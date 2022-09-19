@@ -12,7 +12,7 @@ const BidTab = ({ className, bids, owner, properties, tags }) => {
     const user = useSelector((state) => state.user);
 
     return (
-        <TabContainer defaultActiveKey="nav-home">
+        <TabContainer defaultActiveKey="nav-profile">
             <div className={clsx("tab-wrapper-one", className)}>
                 <nav className="tab-button-one">
                     <Nav as="div" className="nav-tabs">

@@ -13,7 +13,7 @@ const ContactFormArea = ({ space, className }) => (
     >
         <div className="container">
             <div className="row g-5">
-                <div
+                {/* <div
                     className="col-lg-6"
                     data-sal="slide-up"
                     data-sal-delay="150"
@@ -29,7 +29,8 @@ const ContactFormArea = ({ space, className }) => (
                             />
                         </div>
                     </div>
-                </div>
+                </div> */}
+                <div className="col-lg-3" />
                 <div
                     className="col-lg-6"
                     data-sal="slide-up"
@@ -38,6 +39,7 @@ const ContactFormArea = ({ space, className }) => (
                 >
                     <ContactForm />
                 </div>
+                <div className="col-lg-3" />
             </div>
         </div>
     </div>

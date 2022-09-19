@@ -342,7 +342,8 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                     className="rn-check-box-label"
                                                     htmlFor="termsCheckbox"
                                                 >
-                                                    I accept NFT Roll&nbsp;
+                                                    I accept Roll
+                                                    NFT&apos;s&nbsp;
                                                     <Anchor
                                                         path="/terms-condition"
                                                         target="_blank"

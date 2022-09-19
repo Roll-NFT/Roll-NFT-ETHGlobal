@@ -3,6 +3,7 @@ import Button from "@ui/button";
 import ErrorText from "@ui/error-text";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import Anchor from "@ui/anchor";
 
 const ContactForm = () => {
     const {
@@ -122,7 +123,10 @@ const ContactForm = () => {
                         })}
                     />
                     <label htmlFor="condition" className="rn-check-box-label">
-                        Allow to all tearms & condition
+                        I accept Roll NFT&apos;s&nbsp;
+                        <Anchor path="/terms-condition" target="_blank">
+                            terms & conditions
+                        </Anchor>
                     </label>
                     <br />
                     {errors.condition && (

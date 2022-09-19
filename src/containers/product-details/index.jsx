@@ -32,6 +32,7 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                             collection={roll.nftCollection}
                             title={roll.title}
                             likeCount={roll.likeCount}
+                            shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/roll/${roll.raffleId}`}
                         />
                         <div className="bid">
                             <span className="price me-4">

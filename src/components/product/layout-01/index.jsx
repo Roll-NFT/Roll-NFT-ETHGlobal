@@ -8,6 +8,7 @@ import ShareDropdown from "@components/share-dropdown";
 import ProductBid from "@components/product-bid";
 import Button from "@ui/button";
 import { ImageType } from "@utils/types";
+import PlaceBidModal from "@components/modals/placebid-modal";
 
 const Product = ({
     overlay,
@@ -29,55 +30,67 @@ const Product = ({
         setShowBidModal((prev) => !prev);
     };
     return (
-        <div
-            className={clsx(
-                "product-style-one",
-                !overlay && "no-overlay",
-                placeBid && "with-placeBid"
-            )}
-        >
-            <div className="card-thumbnail">
-                {image?.src && (
-                    <Anchor path={`/roll/${slug}`}>
-                        <Image
-                            src={image.src}
-                            alt={image?.alt || "NFT_portfolio"}
-                            width={533}
-                            height={533}
-                        />
-                    </Anchor>
+        <>
+            <div
+                className={clsx(
+                    "product-style-one",
+                    !overlay && "no-overlay",
+                    placeBid && "with-placeBid"
                 )}
-                {auction_date && <CountdownTimer date={auction_date} />}
-                {placeBid && (
-                    <Button onClick={handleBidModal} size="small">
-                        Place Bid
-                    </Button>
-                )}
-            </div>
-            <div className="product-share-wrapper">
-                <div className="profile-share">
-                    <div>
-                        {collection}
+            >
+                <div className="card-thumbnail">
+                    {image?.src && (
                         <Anchor path={`/roll/${slug}`}>
-                            <span className="product-name">{title}</span>
+                            <Image
+                                src={image.src}
+                                alt={image?.alt || "NFT_portfolio"}
+                                width={533}
+                                height={533}
+                            />
                         </Anchor>
-                    </div>
+                    )}
+                    {auction_date && <CountdownTimer date={auction_date} />}
+                    {placeBid && (
+                        <Button onClick={handleBidModal} size="small">
+                            Place Bid
+                        </Button>
+                    )}
                 </div>
-                {!disableShareDropdown && <ShareDropdown />}
-            </div>
+                <div className="product-share-wrapper">
+                    <div className="profile-share">
+                        <div>
+                            {collection}
+                            <Anchor path={`/roll/${slug}`}>
+                                <span className="product-name">{title}</span>
+                            </Anchor>
+                        </div>
+                    </div>
+                    {!disableShareDropdown && (
+                        <ShareDropdown
+                            shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/roll/${slug}`}
+                        />
+                    )}
+                </div>
 
-            <div className="latest-bid mt-5">
-                <b>Tickets sold:</b> {ticketsSold}/{ticketSupply}
+                <div className="latest-bid mt-5">
+                    <b>Tickets sold:</b> {ticketsSold}/{ticketSupply}
+                </div>
+                <div className="latest-bid mt-0">
+                    <b>Ticket price:</b> {price.amount} {price.currency}
+                </div>
+                <ProductBid
+                    price={{ amount: ticketsTotal, currency: price.currency }}
+                    likeCount={likeCount}
+                    ticketsTotal={ticketsTotal}
+                />
             </div>
-            <div className="latest-bid mt-0">
-                <b>Ticket price:</b> {price.amount} {price.currency}
-            </div>
-            <ProductBid
-                price={{ amount: ticketsTotal, currency: price.currency }}
-                likeCount={likeCount}
-                ticketsTotal={ticketsTotal}
-            />
-        </div>
+            {placeBid && (
+                <PlaceBidModal
+                    show={showBidModal}
+                    handleModal={handleBidModal}
+                />
+            )}
+        </>
     );
 };
 
