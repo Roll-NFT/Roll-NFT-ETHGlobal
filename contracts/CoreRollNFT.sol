@@ -7,7 +7,8 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
-import "./RollTickets.sol";
+import {ClonesWithImmutableArgs} from "clones-with-immutable-args/ClonesWithImmutableArgs.sol";
+import "./TicketsContract.sol";
 import "./IddleAssets.sol";
 import "./IRoll.sol"; // IRoll.Roll IRoll.Status
 import "./IPrize.sol"; // IPrize.Prize
@@ -20,14 +21,25 @@ import "./RollOwnershipToken.sol"; // RollOwnershipToken.
 /// @custom:security-contact loizage@icloud.com
 contract CoreRollNFT is Pausable, Ownable, Context {
     using Counters for Counters.Counter;
+    using ClonesWithImmutableArgs for address;
+
+    /**
+     * @dev declare Roll tickets contract implementation to be cloned
+     * That contract will be cloned with immutable arguments pattern implementation
+     */
+    TicketsContract public implementationTickectsContract;
 
     /// @dev Roll ID counter
     Counters.Counter private _rollIdCounter;
     
-    /// @dev Fee percentage i.e 1%(100/10000)
+    /**
+     *  @dev Fee percentage i.e 1%(100/10000)
+     * 
+     *  @notice percentage fee that applied when Roll owner claim Revenue
+     */
     uint256 public protocolFee;
     
-    /// @dev Wirefram - Ticket's (Tix) NFT collection contract 
+    /// @dev Wirefram - Ticket's NFT collection contract 
     IERC721 internal immutable contractTicketsTemplate;
     
     /**
@@ -86,9 +98,24 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /// @dev anounce roll results
     /// ? ticketsContract / 
     event RollPlayed(bool success, uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicket, address indexed prizeAddress, uint prizeID, address host, address owner);
+
+    /**
+     * @dev anounce about closed Roll
+     * Happens when Roll conditions are not met. There is no winner selected.
+     * 
+     * @param rollType - Roll type, defines Roll executinion logic
+     * @param rollID - Roll ID, unique number of every Roll and it's ownership token
+     * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
+     * @param owner - Roll owner address, for owner to be informed that prize is available to withdraw
+     * @param prizeAddress - Prize token collection address
+     * @param prizeID - Prize token ID
+     */
+    event RollClosed(uint rollType, uint rollID, address indexed ticketsContract, address indexed owner, address indexed prizeAddress, uint prizeID);
+    event RollFinsihed();
     
-    constructor() {
+    constructor(TicketsContract _implementationTickectsContract;) {
         owner = msg.sender;
+        implementationTickectsContract = _implementationTickectsContract;
         contractTicketsTemplate = address(new RollTickets());
         contractIddleAssets = address(new IddleAssets());
     }
@@ -122,7 +149,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         IERC20 _participationToken,
         IERC721 _prizeAddress,
         uint _prizeId
-    ) external returns(TicketsNFT ticketsContract){
+    ) external returns(TicketsContract ticketsContract){
 
         /// @dev check that _prizeAddress is set and is not 0
         require(_prizeAddress != address(0), 'Missing Prize collection address')
@@ -185,33 +212,23 @@ contract CoreRollNFT is Pausable, Ownable, Context {
          */
         prizes[rollId] = IPrize.Prize(_prizeAddress, _prizeId, false);
 
-        /**
-         * @dev get rollURI
-         * TODO
-         * 
-         * @param rollType
-         * @param host
-         * @param rollTimestamp
-         * @param minParticipants
-         * @param maxParticipants
-         * @param 
-         */
-        string memory rollURI = 'rollURI';
+        /// @dev form Roll URI
+        string memory rollURI = getRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _prizeAddress, _prizeId);
         
         /// @dev mint Roll ownership token for caller
         rollToken().safeMint(host, rollId, rollURI)
         
         /// @dev clone tickets NFT contract
-        address ticketsNFTContract = cloneTicketsContract(rollId, rollURI);
+        address TicketsContract = cloneTicketsContract(rollId, rollURI);
 
         /// @dev store tickets NFT contract address at ticketsAddr mapping
-        ticketsAddr[rollId] = ticketsNFTContract;
+        ticketsAddr[rollId] = TicketsContract;
 
         /// @dev define and store Roll structure to rolls mapping
         rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _participationToken, _participationPrice, IRoll.Status.SalesOpen);
         
         /// @dev emit event about hosted Roll
-        emit RollCreated(rollType, rollId, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
+        emit RollCreated(rollType, rollId, TicketsContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
 
     }
 
@@ -369,33 +386,72 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         return IERC721(ticketsAddr[_rollId]);
     }
 
-    /// @dev 
-    function cloneTicketsContract(string memory rollURI) {
+    /**
+     * @dev 
+     */
+    function cloneTicketsContract(uint _rollId, string memory _rollURI) internal {
         
         /// @dev form abi data for Tickets NFT contract to be cloned
         /// TODO define parameters to provide
         bytes memory data = abi.encodePacked(
+            _rollId,
+            _rollURI
         );
         
         /// @dev clone Roll's Tickets NFT contract
-        ticketsNFTContract = TicketsNFT(contractTicketsTemplate.clone(data));
-
-        /**
-         * @dev get current roll ID
-         */
-        
+        ticketsContract = TicketsNFT(contractTicketsTemplate.clone(data));
+        implementationTickectsContract
+        clone = ExampleClone(address(implementation).clone(data));
 
         /// @dev initialize Roll's Tickets NFT contract
         /// @param 
-        ticketsNFTContract.initialize(
+        ticketsContract.initialize(
             string(abi.encodePacked("Roll #",rollId," tickets collection")),
             /// TODO form base URI with Roll's metadata and provide it instead of next perameters
-            _prizeAddress, 
-            _prizeId,
-            msg.sender,
-            rollType,
-            rollId
+            
         );
 
     }
+
+    /**
+     * @dev Function that creates Roll metadata and forms URI
+     * 
+     * @param rollId
+     * @param rollType
+     * @param host
+     * @param _rollTime
+     * @param _minParticipants
+     * @param _maxParticipants
+     * @param _prizeAddress, 
+     * @param _prizeId,
+     * 
+     * @return 
+     */
+    function makeRollURI(
+        uint _rollId,
+        uint _rollType,
+        address _host,
+        uint64 _rollTime,
+        uint _minParticipants,
+        uint _maxParticipants,
+        IERC721 _prizeAddress,
+        uint _prizeId
+    ) internal returns(string memory rollURI) {
+        
+        /// @dev create Tableland table with Roll metadata
+        /// TODO
+
+    };
+
+    /**
+     * @dev function that return Roll URI according to provided Roll ID
+     */
+    function getRollURI(uint _rollId) public view pure return(string memory rollURI) {
+        
+        /// @dev get tickets contract address
+        tickets
+
+
+    }
+        
 }

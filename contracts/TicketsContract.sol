@@ -10,7 +10,7 @@ import "clones-with-immutable-args/Clone.sol";
 
 
 /// @custom:security-contact loizage@icloud.com
-contract RollTicketsContract is Clone, Initializable, ERC721, ERC721Burnable, Ownable {
+contract TicketsContract is Clone, Initializable, ERC721, ERC721Burnable, Ownable {
     
     using Strings for uint256;
     
