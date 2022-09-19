@@ -6,17 +6,13 @@
             "headings": [
                 {
                     "id": 1,
-                    "content": "Buy and sell NFTs in a<br /> <span>novel</span> and <span>accessible</span><br /> way through <span>Raffles</span>"
+                    "content": "Buy and sell NFTs in a<br /> <span>novel</span> and <span>accessible</span><br /> web3 plataform"
                 }
             ],
             "texts": [
                 {
                     "id": 1,
-                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                },
-                {
-                    "id": 2,
-                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
+                    "content": "Roll NFT is a unique web3 platform where NFT enthusiasts can explore, buy, and sell NFTs through Raffles (a.k.a Rolls :)"
                 }
             ],
             "buttons": [

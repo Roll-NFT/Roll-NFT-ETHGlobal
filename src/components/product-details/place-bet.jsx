@@ -28,8 +28,8 @@ const PlaceBet = ({
 }) => {
     const [showBidModal, setShowBidModal] = useState(false);
     const [ticket, setTicket] = useState(null);
-    const user = useSelector((state) => state.user);
     const router = useRouter();
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const { authenticate, isAuthenticated } = useMoralis();
     const { slug } = router.query;

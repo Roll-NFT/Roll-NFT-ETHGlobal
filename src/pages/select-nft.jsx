@@ -50,7 +50,6 @@ const MyNFTs = () => {
         const covalentUrl = `${covalentEndpoint}/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${covalentKey}`;
         await axios(covalentUrl)
             .then((response) => {
-                console.log("Preparing data...");
                 const _balances = prepareData(response.data.data);
                 dispatch(balancesUpdate(_balances));
             })

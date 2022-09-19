@@ -15,7 +15,7 @@ const CategoryArea = ({ className, space, data: { items } }) => {
         <div
             className={clsx(
                 "category-area",
-                space === 1 && "pt--70",
+                space === 1 && "pt--100",
                 className
             )}
         >

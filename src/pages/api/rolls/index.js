@@ -43,9 +43,10 @@ export default async (req, res) => {
             res.status(400).json({ error });
             console.error(error);
         }
+    }
 
-        // GET /api/rolls/
-    } else if (req.method === "GET") {
+    // GET /api/rolls/
+    if (req.method === "GET") {
         const { query } = req;
         try {
             let filter = { $gte: query.startDate };

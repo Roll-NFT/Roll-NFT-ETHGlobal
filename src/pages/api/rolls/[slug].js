@@ -5,6 +5,23 @@ export default async (req, res) => {
     await connectDB();
 
     const { slug } = req.query;
+
+    // POST /api/rolls/hero
+    if (req.method === "POST" && slug === "hero") {
+        try {
+            const { filter, sort } = req.body;
+            const data = await Raffles.find({
+                filter,
+            })
+                .sort(sort)
+                .limit(2);
+            res.status(200).json({ data });
+        } catch (error) {
+            res.status(400).json({ error });
+        }
+        return;
+    }
+
     let data = null;
     const filter = { raffleId: slug };
     console.log(`Searching for Raffle with id '${slug}' in the MondoDB... `);
@@ -22,11 +39,13 @@ export default async (req, res) => {
         });
     }
 
+    // GET /api/rolls
     if (req.method === "GET") {
         console.log("Raffle found!");
         res.status(200).json({ data });
     }
 
+    // PUT /api/rolls
     if (req.method === "PUT") {
         console.log(`data is: `);
         console.log(data);

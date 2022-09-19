@@ -43,7 +43,7 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                                 <b>|</b>
                             </span>
                             <span className="price">
-                                <b>NFT Floor price:</b> ???
+                                <b>NFT Floor price:</b> 0
                             </span>
                         </div>
 
