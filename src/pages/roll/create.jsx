@@ -7,10 +7,6 @@ import CreateNewArea from "@containers/create-new";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export async function getStaticProps() {
-    return { props: { className: "template-color-1" } };
-}
-
 const Home = () => {
     const balances = useSelector((state) => state.balances);
     const [nft, setNft] = useState(null);
@@ -34,5 +30,9 @@ const Home = () => {
         </Wrapper>
     );
 };
+
+export async function getStaticProps() {
+    return { props: { className: "template-color-1" } };
+}
 
 export default Home;

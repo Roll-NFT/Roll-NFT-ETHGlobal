@@ -75,6 +75,17 @@ const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
     );
 };
 
+export async function getStaticPaths() {
+    return {
+        paths: [], // indicates that no page needs be created at build time
+        fallback: "blocking", // indicates the type of fallback
+    };
+}
+
+export async function getStaticProps() {
+    return { props: { className: "template-color-1" } };
+}
+
 ProductDetails.propTypes = {
     recentViewRolls: PropTypes.arrayOf(PropTypes.shape({})),
     relatedRolls: PropTypes.arrayOf(PropTypes.shape({})),
