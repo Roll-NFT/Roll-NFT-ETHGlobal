@@ -124,11 +124,9 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      */
     event RollFinsihed(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
-    constructor(TicketsContract _implementationTickectsContract;) {
+    constructor() {
         owner = msg.sender;
-        implementationTickectsContract = _implementationTickectsContract;
-        contractTicketsTemplate = address(new RollTickets());
-        contractIddleAssets = address(new IddleAssets());
+        implementationTickectsContract = address(new TicketsContract());
     }
 
     /**
@@ -224,7 +222,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         prizes[rollId] = IPrize.Prize(_prizeAddress, _prizeId, false);
 
         /// @dev form Roll URI
-        string memory rollURI = getRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _prizeAddress, _prizeId);
+        string memory rollURI = makeRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _prizeAddress, _prizeId);
         
         /// @dev mint Roll ownership token for caller
         rollToken().safeMint(host, rollId, rollURI)
@@ -433,10 +431,11 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param _rollTime
      * @param _minParticipants
      * @param _maxParticipants
-     * @param _prizeAddress, 
-     * @param _prizeId,
+     * @param _prizeAddress 
+     * @param _prizeId 
+     * @param __ticketsAddr - Roll tickets collection address
      * 
-     * @return 
+     * @return - URI address to Roll metadata
      */
     function makeRollURI(
         uint _rollId,
@@ -451,6 +450,10 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         
         /// @dev create Tableland table with Roll metadata
         /// TODO
+
+        /// @dev Do we want to add Tickets collection address to metadata after creating one?
+
+        /// @dev we need to do it step by step. Since we want to provide URI to tickets contract 
 
     };
 
