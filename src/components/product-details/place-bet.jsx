@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import PropTypes from "prop-types";
@@ -17,7 +17,7 @@ import { useMoralis } from "react-moralis";
 
 const PlaceBet = ({
     title,
-    ticketSold,
+    ticketsSold,
     ticketSupply,
     ticketPrice,
     ticketCurrency,
@@ -33,6 +33,7 @@ const PlaceBet = ({
     const dispatch = useDispatch();
     const { authenticate, isAuthenticated } = useMoralis();
     const { slug } = router.query;
+    const stock = ticketSupply - ticketsSold;
     const {
         register,
         handleSubmit,
@@ -88,13 +89,14 @@ const PlaceBet = ({
             createdAt: new Date(),
         });
     };
+
     return (
         <>
             <div className={clsx("place-bet-area", className)}>
                 <div className="rn-bet-create">
                     <div className="bid-list winning-bid">
                         <h6 className="title mb-3">
-                            <b>Tickets sold</b>: {ticketSold}/{ticketSupply}
+                            <b>Tickets sold</b>: {ticketsSold}/{ticketSupply}
                         </h6>
                         <h6 className="title mb-3">
                             <b>Ticket price</b>: {ticketPrice}
@@ -125,6 +127,14 @@ const PlaceBet = ({
                                 className="h-100 border border-4 raffleQuantity"
                                 {...register("quantity", {
                                     required: "Qty is required",
+                                    min: {
+                                        value: 1,
+                                        message: "Qty is required",
+                                    },
+                                    max: {
+                                        value: stock,
+                                        message: "Unavailable",
+                                    },
                                 })}
                             />
                             {errors.quantity && (
@@ -163,7 +173,7 @@ const PlaceBet = ({
 
 PlaceBet.propTypes = {
     title: PropTypes.string,
-    ticketSold: PropTypes.number,
+    ticketsSold: PropTypes.number,
     ticketSupply: PropTypes.number,
     ticketPrice: PropTypes.number,
     ticketCurrency: PropTypes.string,

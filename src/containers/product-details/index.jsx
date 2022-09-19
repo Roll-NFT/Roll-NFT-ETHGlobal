@@ -49,7 +49,7 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                         <div className="rn-bid-details">
                             <PlaceBet
                                 title={roll.title}
-                                ticketSold={roll.ticketsSold}
+                                ticketsSold={roll.ticketsSold}
                                 ticketSupply={roll.ticketSupply}
                                 ticketPrice={roll.ticketPrice}
                                 ticketCurrency={roll.ticketCurrency}
