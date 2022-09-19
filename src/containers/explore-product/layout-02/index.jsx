@@ -18,27 +18,33 @@ const ExploreProductArea = ({ className, space, data }) => {
     ];
     const [products, setProducts] = useState([]);
     const category = useSelector((state) => state.category);
+    const dispatch = useDispatch();
 
     const filterHandler = (filterKey) => {
         const prods = data?.products ? [...data.products] : [];
         if (filterKey === "all") {
             setProducts(data?.products);
+            dispatch(categoryUpdate("all"));
             return;
         }
         const filterProds = prods.filter((prod) =>
             prod.categories.includes(filterKey)
         );
-        setProducts(filterProds);
+        if (filterProds.length === 0) {
+            filterHandler("all");
+        } else {
+            setProducts(filterProds);
+            dispatch(categoryUpdate(filterKey));
+        }
     };
 
     useEffect(() => {
         setProducts(data?.products);
-        filterHandler(category);
     }, [data?.products]);
 
     useEffect(() => {
         filterHandler(category);
-    }, [category]);
+    }, []);
 
     return (
         <div
@@ -63,7 +69,7 @@ const ExploreProductArea = ({ className, space, data }) => {
                         <FilterButtons
                             buttons={filters}
                             filterHandler={filterHandler}
-                            filterDefault={category}
+                            active={category}
                         />
                     </div>
                 </div>

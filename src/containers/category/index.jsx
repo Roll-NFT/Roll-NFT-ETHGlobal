@@ -8,7 +8,6 @@ const CategoryArea = ({ className, space, data: { items } }) => {
     const dispatch = useDispatch();
 
     const onClick = (category) => {
-        console.log("category is: ", category);
         dispatch(categoryUpdate(category));
     };
 
