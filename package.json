@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Roll-NFT/Roll-NFT-ETHGlobal#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "clones-with-immutable-args": "^1.0.0",
     "hardhat": "^2.11.1"
   }
 }

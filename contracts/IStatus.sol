@@ -9,16 +9,16 @@ interface IStatus {
      * 
      * @param SalesOpen (Open) - Roll is on going and available to participate. Tix sales are open.
      * @param SalesClosed (Closed) - Ready to select winner. Roll is on going and is not available to participate. Tix sales are closed.
-     * @param Finished (Succeed) - Winner selected. Roll is finished and is not available to participate. Tix sales are closed. Winner can claim the Prize. Roll owner can claim Revenue.
-     * @param Closed (Unsucceed) - No winner selected. Roll is finished and is not available to participate. Tix sales are closed. Roll owner can withdraw the Prize. Participant can refund Tix.
+     * @param RollFinished (Succeed) - Winner selected. Roll is finished and is not available to participate. Tix sales are closed. Winner can claim the Prize. Roll owner can claim Revenue.
+     * @param RollClosed (Unsucceed) - No winner selected. Roll is finished and is not available to participate. Tix sales are closed. Roll owner can withdraw the Prize. Participant can refund Tix.
      * 
      */
     enum Status {
         
         SalesOpen,
         SalesClosed,
-        Finished,
-        Closed
+        RollFinished,
+        RollClosed
 
     }
 

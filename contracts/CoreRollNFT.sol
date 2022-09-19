@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "./RollTickets.sol";
 import "./IddleAssets.sol";
-import "./IRoll.sol"; // IRoll.Roll
+import "./IRoll.sol"; // IRoll.Roll IRoll.Status
 import "./IPrize.sol"; // IPrize.Prize
 import "./IRollAssets.sol"; // IRollAssets.RollAssets
 import "./RollOwnershipToken.sol"; // RollOwnershipToken.
@@ -46,7 +46,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @notice To get anddress of NFT smart contract of Tickets for provided Roll ID
      */
-    mapping (uint => address) tixContracts;
+    mapping (uint => IERC721) ticketsAddr;
     
     /**
      * @dev Mapping rollId to Roll data
@@ -145,10 +145,6 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev transfer NFT prize token to IddleAssets contract
         _prizeAddress.transferFrom(address(this), contractIddleAssets, _prizeId);
 
-        /// @dev mint Roll ownership token for caller
-        rollToken().mintRollToken()
-        /// rollToken().mint(address _host, string memory rollURI, uint newRollId)
-        
         /// @dev declare rollType variable
         uint rollType;
 
@@ -179,24 +175,40 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         uint rollId = _rollIdCounter.current();
 
         /**
-         * @dev define and save Roll structure to rolls mapping
+         * @dev define and store Prize structure to prizes mapping
          * 
          * @dev Structure that contain crucial Roll parameters and conditions, that are checked on Roll execution
          * 
-         * @param rollType define logic to be cheked on roll execution. Determinated on Roll creatinon according to provided arguments minParticipants, maxParticipants
-         * @param host address who created the Roll
-         * @param rollTimestamp block that will stop Roll entries sales, and to select winner or close the Roll
-         * @param minParticipants Roll participants minimum amount 
-         * @param maxParticipants Roll participants maximum amount
-         * @param entryToken address of erc20 token that is used to participate in that Roll
-         * @param entryPrice amount to be paid to mint one participation ticket
+         * @param collectionAddr NFT collection address of the Prize
+         * @param tokenId Prize token ID
+         * @param claimAvailable True when prize available to claim by winner or by owner when roll was closed.
          */
-        rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _participationToken, _participationPrice);
+        prizes[rollId] = IPrize.Prize(_prizeAddress, _prizeId, false);
 
-
-
-        /// @dev clone contract tickets contract
+        /**
+         * @dev get rollURI
+         * TODO
+         * 
+         * @param rollType
+         * @param host
+         * @param rollTimestamp
+         * @param minParticipants
+         * @param maxParticipants
+         * @param 
+         */
+        string memory rollURI = 'rollURI';
+        
+        /// @dev mint Roll ownership token for caller
+        rollToken().safeMint(host, rollId, rollURI)
+        
+        /// @dev clone tickets NFT contract
         address ticketsNFTContract = cloneTicketsContract(rollId, rollURI);
+
+        /// @dev store tickets NFT contract address at ticketsAddr mapping
+        ticketsAddr[rollId] = ticketsNFTContract;
+
+        /// @dev define and store Roll structure to rolls mapping
+        rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _participationToken, _participationPrice, IRoll.Status.SalesOpen);
         
         /// @dev emit event about hosted Roll
         emit RollCreated(rollType, rollId, ticketsNFTContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
@@ -268,6 +280,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev check that caller is a owner of the Roll
 
         /// @dev burn ownership token
+        rollToken().burn(_rollID);
         
         /// @dev calculate revenue to claim
         /// @dev (participantsAmount * _participationCost)
@@ -298,6 +311,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev check that owner's assets are available to withdraw
 
         /// @dev burn roll ownership token
+        rollToken().burn(_rollID);
         
         /// @dev send prize token to caller
         
@@ -322,6 +336,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev otherwise that provided ticket's IDs are belonging to caller
 
         /// @dev burn tokens
+        rollToken().burn(_rollID);
 
         /// @dev calculate amount to refund
         /// @dev (ticketsAmount * _participationCost)
@@ -345,8 +360,13 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     }
 
     /// @dev get Roll ownership NFT contract address
-    function rollToken() public pure returns(IERC721){
+    function getRollToken() public pure returns(IERC721){
         return IERC721(contractRollOwnershipToken);
+    }
+
+    /// @dev get Roll tickets NFT contract address
+    function getTicketsAddr(uint _rollId) public pure return(IERC721){
+        return IERC721(ticketsAddr[_rollId]);
     }
 
     /// @dev 
