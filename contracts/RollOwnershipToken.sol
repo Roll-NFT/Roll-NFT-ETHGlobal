@@ -15,15 +15,13 @@ import "@openzeppelin/contracts/utils/Context.sol";
  * 
  * Contract is {ERC721URIStorage} - to set individual URIs with Roll metadata
  * 
- * Contract is {ERC721Enumerable} - to get all token ID of the address
- * 
  * Contract is pausable - that stops ERC721 transfers. Mint and Burn functions are not affected by Pause trigger
  * See {ERC721Pausable - _beforeTokenTransfer}
  * 
  * @notice 
  * @custom:security-contact loizage@icloud.com
  */
-contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable, ERC721Enumerable, ERC721URIStorage {
+contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable, ERC721URIStorage {
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
