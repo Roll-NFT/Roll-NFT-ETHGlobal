@@ -63,6 +63,8 @@ function paused() public view virtual returns (bool) - Returns true if the contr
 event Paused(address account)
 event Unpaused(address account)
 
+Used in Roll Ownership Token and Roll Tickets ERC721 contracts, to Pause any transfers in an emergency case
+
 ## Counters
 
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.7.3/contracts/utils/Counters.sol

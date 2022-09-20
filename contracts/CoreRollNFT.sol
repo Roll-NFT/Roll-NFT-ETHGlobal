@@ -7,13 +7,13 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
-import {ClonesWithImmutableArgs} from "clones-with-immutable-args/ClonesWithImmutableArgs.sol";
+import "./IERC721Roll.sol";
 import "./TicketsContract.sol";
 import "./IddleAssets.sol";
 import "./IRoll.sol"; // IRoll.Roll IRoll.Status
 import "./IPrize.sol"; // IPrize.Prize
 import "./IRollAssets.sol"; // IRollAssets.RollAssets
-import "./RollOwnershipToken.sol"; // RollOwnershipToken.
+import "./RollOwnershipToken.sol";
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
@@ -21,13 +21,13 @@ import "./RollOwnershipToken.sol"; // RollOwnershipToken.
 /// @custom:security-contact loizage@icloud.com
 contract CoreRollNFT is Pausable, Ownable, Context {
     using Counters for Counters.Counter;
-    using ClonesWithImmutableArgs for address;
+    using Strings for uint256;
 
     /**
      * @dev declare Roll tickets contract implementation to be cloned
      * That contract will be cloned with immutable arguments pattern implementation
      */
-    TicketsContract public implementationTickectsContract;
+    // TicketsContract public implementationTickectsContract;
 
     /// @dev Roll ID counter
     Counters.Counter private _rollIdCounter;
@@ -40,7 +40,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     uint256 public protocolFee;
     
     /// @dev Wirefram - Ticket's NFT collection contract 
-    IERC721 internal immutable contractTicketsTemplate;
+    // IERC721 internal immutable contractTicketsTemplate;
     
     /**
      * @dev Contract that will hold assets
@@ -49,9 +49,18 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     address internal immutable contractIddleAssets;
     
     /**
-     * @dev Contract that is ERC721 NFT collection of Roll Ownership Tokens (ROT)
+     * @dev Roll ownership Token collection (ROLT) - ERC721 contract
+     * 
+     * Minted:
+     * - To host on Roll creation
+     * 
+     * Burned:
+     * - On claiming Revenue
+     * - On prize withdrawal
+     * 
+     * @notice Roll ownership Token collection (ROLT) address
      */
-    address internal immutable contractRollOwnershipToken;
+    address public immutable RollOwnershipToken;
 
     /**
      * @dev Mapping rollId to tixContract
@@ -107,7 +116,9 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param prizeAddress - Prize token collection address
      * @param prizeID - Prize token ID
      */
-    event RollClosed(uint rollType, uint rollID, address indexed ticketsContract, address indexed owner, address indexed prizeAddress, uint prizeID);
+    event RollClosed(uint rollType, uint indexed rollID, address indexed prizeAddress, uint prizeID);
+    /// address indexed ticketsContract, address indexed owner
+    /// 
     
     /**
      * @dev announce about successfuly finished Roll
@@ -126,7 +137,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     
     constructor() {
         owner = msg.sender;
-        implementationTickectsContract = address(new TicketsContract());
+        RollOwnershipToken = address(new RollOwnershipToken());
+        // implementationTickectsContract = address(new TicketsContract());
     }
 
     /**
@@ -222,10 +234,11 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         prizes[rollId] = IPrize.Prize(_prizeAddress, _prizeId, false);
 
         /// @dev form Roll URI
+        /// TODO
         string memory rollURI = makeRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _prizeAddress, _prizeId);
         
         /// @dev mint Roll ownership token for caller
-        rollToken().safeMint(host, rollId, rollURI)
+        getRollTokenContract().safeMint(host, rollId, rollURI);
         
         /// @dev clone tickets NFT contract
         address TicketsContract = cloneTicketsContract(rollId, rollURI);
@@ -235,7 +248,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
         /// @dev define and store Roll structure to rolls mapping
         rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _participationToken, _participationPrice, IRoll.Status.SalesOpen);
-        
+
         /// @dev emit event about hosted Roll
         emit RollCreated(rollType, rollId, TicketsContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
 
@@ -305,8 +318,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
         /// @dev check that caller is a owner of the Roll
 
-        /// @dev burn ownership token
-        rollToken().burn(_rollID);
+        /// @dev burn Roll ownership token
+        getRollTokenContract().burn(_rollID);
         
         /// @dev calculate revenue to claim
         /// @dev (participantsAmount * _participationCost)
@@ -326,18 +339,18 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /// @dev function to withdraw prize from unsuccessful Roll
     function withdrawPrize(uint256 _rollType, uint256 _rollID) external {
         
-        /// @dev get roll details
+        /// @dev get Roll details
 
         /// @dev check that caller is a owner of the Roll
         
         /// @dev check that sales are closed
 
-        /// @dev check that roll is unsuccessful
+        /// @dev check that Roll is unsuccessful
         
         /// @dev check that owner's assets are available to withdraw
 
-        /// @dev burn roll ownership token
-        rollToken().burn(_rollID);
+        /// @dev burn Roll ownership token
+        getRollTokenContract().burn(_rollID);
         
         /// @dev send prize token to caller
         
@@ -348,21 +361,31 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     }
 
-    /// @dev function to refund tickets from unsuccessful Roll
-    function refundTickets(uint256 _rollType, uint256 _rollID, uint256[] calldata _ticketIds) external {
+    /**
+     * @dev refund tickets for Closed Roll
+     * 
+     * TODO make refund function to be single ticket
+     * TODO implememnt multi call pattern on backend for banch refund
+     */
+    function refundTicket(uint256 _rollType, uint256 _rollID, uint256 _ticketId) external {
         
-        /// @dev get roll details
+        /// @dev get Roll details
 
         /// @dev check that sales are closed
 
-        /// @dev check that roll is unsuccessful
+        /// @dev check that Roll is unsuccessful
         
         /// @dev Potentially:
-        /// @dev get list of ticket's IDs belonging to caller
-        /// @dev otherwise that provided ticket's IDs are belonging to caller
+        /// @dev get list of Ticket's IDs belonging to caller
+        /// @dev otherwise that provided Ticket's IDs are belonging to caller
 
-        /// @dev burn tokens
-        rollToken().burn(_rollID);
+        /// @dev burn Participation tokens (Tickets)
+        /// TODO check if cuntion name is correct
+        getRollTicketsContract(_rollID).burn(_ticketId);
+        
+        /// @dev get winning token ID
+        // uint winnerId = prizes[rollId].winnerId;
+
 
         /// @dev calculate amount to refund
         /// @dev (ticketsAmount * _participationCost)
@@ -385,14 +408,23 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         emit FeeSet(_newFee);
     }
 
-    /// @dev get Roll ownership NFT contract address
-    function getRollToken() public pure returns(IERC721){
-        return IERC721(contractRollOwnershipToken);
+    /**
+     * @dev get Roll ownership NFT contract address
+     * 
+     * That implements interface {IERC721Roll - safeMint, burn}
+     */
+    function getRollTokenContract() public pure returns(IERC721Roll){
+        return IERC721Roll(RollOwnershipToken);
     }
 
-    /// @dev get Roll tickets NFT contract address
-    function getTicketsAddr(uint _rollId) public pure return(IERC721){
-        return IERC721(ticketsAddr[_rollId]);
+    /// 
+    /**
+     * @dev get Roll tickets NFT contract address
+     * 
+     * That implements interface {IERC721Roll - safeMint, burn}
+     */
+    function getRollTicketsContract(uint _rollId) public pure return(IERC721Roll){
+        return IERC721Roll(ticketsAddr[_rollId]);
     }
 
     /**
@@ -400,26 +432,10 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      */
     function cloneTicketsContract(uint _rollId, string memory _rollURI) internal {
         
-        /// @dev form abi data for Tickets NFT contract to be cloned
-        /// TODO define parameters to provide
-        bytes memory data = abi.encodePacked(
-            _rollId,
-            _rollURI
-        );
-        
-        /// @dev clone Roll's Tickets NFT contract
-        ticketsContract = TicketsNFT(contractTicketsTemplate.clone(data));
-        implementationTickectsContract
-        clone = ExampleClone(address(implementation).clone(data));
-
         /// @dev initialize Roll's Tickets NFT contract
-        /// @param 
-        ticketsContract.initialize(
-            string(abi.encodePacked("Roll #",rollId," tickets collection")),
-            /// TODO form base URI with Roll's metadata and provide it instead of next perameters
-            
-        );
-
+        string(abi.encodePacked("Roll #",rollId," tickets collection")),
+        /// TODO form base URI with Roll's metadata and provide it instead of next perameters
+        
     }
 
     /**
@@ -433,7 +449,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param _maxParticipants
      * @param _prizeAddress 
      * @param _prizeId 
-     * @param __ticketsAddr - Roll tickets collection address
+     * @param _ticketsContract - Roll tickets collection address
      * 
      * @return - URI address to Roll metadata
      */
@@ -445,7 +461,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         uint _minParticipants,
         uint _maxParticipants,
         IERC721 _prizeAddress,
-        uint _prizeId
+        uint _prizeId,
+        IERC721 _ticketsContract
     ) internal returns(string memory rollURI) {
         
         /// @dev create Tableland table with Roll metadata

@@ -18,7 +18,7 @@ contract TicketsContract is Clone, Initializable, ERC721, ERC721Burnable, Ownabl
 
     Counters.Counter private _tokenIdCounter;
 
-    string public rollURI;
+    string public _rollURI;
 
     constructor(string memory _rollURI) ERC721("Roll #ID Tickets contract", "RTIX") {
         rollURI = _rollURI;

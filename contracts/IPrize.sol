@@ -12,11 +12,13 @@ interface IPrize {
      * @param collectionAddr NFT collection address of the Prize
      * @param tokenId Prize token ID
      * @param claimAvailable True when prize available to claim by winner or by owner when roll was closed.
+     * @param winnerId - Winner token ID
      */
     struct Prize {
         IERC721 collectionAddr;
         uint tokenId;
         bool claimAvailable;
+        uint winnerId;
     }
 
 }
