@@ -72,7 +72,7 @@ const Product = ({
                     )}
                 </div>
 
-                <div className="latest-bid mt-5">
+                <div className="latest-bid mt-2">
                     <b>Tickets sold:</b> {ticketsSold}/{ticketSupply}
                 </div>
                 <div className="latest-bid mt-0">

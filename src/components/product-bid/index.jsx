@@ -2,10 +2,12 @@ import PropTypes from "prop-types";
 
 const ProductBid = ({ price, likeCount }) => (
     <div className="bid-react-area">
-        <div className="last-bid">
-            Total value: {price.amount}
-            {price.currency}
-        </div>
+        {price.amount > 0 && (
+            <div className="last-bid">
+                Total value: {price.amount}
+                {price.currency}
+            </div>
+        )}
         {/* <div className="react-area">
             <svg
                 viewBox="0 0 17 16"
