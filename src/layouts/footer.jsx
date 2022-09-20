@@ -61,7 +61,7 @@ const Footer = ({ space, className, data }) => {
 
                 <div className="container">
                     <div className="row gx-5">
-                        <div className="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <div className="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div className="widget-content-wrapper">
                                 <LogoWidget data={footerData["logo-widget"]} />
                                 {/* <NewsletterWidget
@@ -70,24 +70,24 @@ const Footer = ({ space, className, data }) => {
                             </div>
                         </div>
 
-                        <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt_mobile--40">
+                        <div className="col-lg-4 col-md-6 col-sm-6 col-12 mt_mobile--40">
                             <QuicklinkWidget
                                 data={footerData["quicklink-widget"]}
                                 onClick={onClick}
                             />
                         </div>
 
-                        <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt_md--40 mt_sm--40">
+                        <div className="col-lg-4 col-md-6 col-sm-6 col-12 mt_md--40 mt_sm--40">
                             <InformationWidget
                                 data={footerData["information-widget"]}
                             />
                         </div>
 
-                        <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt_md--40 mt_sm--40">
+                        {/* <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt_md--40 mt_sm--40">
                             <SoldOutWidget
                                 data={footerData["soldout-widget"]}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

@@ -3,24 +3,24 @@
         "id": 1,
         "text": "Home",
         "path": "/",
-        "prod": true
+        "env": "*"
     },
     {
         "id": 2,
         "text": "Explore",
         "path": "/explore",
-        "prod": true
+        "env": "*"
     },
     {
         "id": 3,
         "text": "Create Raffle",
         "path": "/roll/create",
-        "prod": true
+        "env": "*"
     },
     {
         "id": 4,
         "text": "NFT Faucet",
         "path": "/faucet",
-        "prod": false
+        "env": "dev"
     }
 ]

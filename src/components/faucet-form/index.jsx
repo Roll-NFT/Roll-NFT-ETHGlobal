@@ -2,23 +2,16 @@ import { useState, useEffect } from "react";
 import Button from "@ui/button";
 import ErrorText from "@ui/error-text";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+import { useMoralis } from "react-moralis";
 import countriesData from "../../data/countries.json";
 import nftFaucet from "../../lib/NFTFaucet.json";
 
 const FaucetForm = () => {
-    const user = useSelector((state) => state.user);
+    const { authenticate, isAuthenticated, user } = useMoralis();
     const [contract, setContract] = useState(null);
     const [tokenId, setTokenId] = useState("");
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        mode: "onChange",
-    });
     const [mintingState, setMintingState] = useState({
         minting: false,
         status: null,
@@ -76,12 +69,19 @@ const FaucetForm = () => {
         }
     };
 
-    const onSubmit = () => {
-        mintNFT();
+    const onClick = () => {
+        console.log("onClick");
+        if (isAuthenticated) {
+            mintNFT();
+        } else {
+            authenticate({
+                signingMessage: "Roll NFT Authentication",
+            });
+        }
     };
 
     useEffect(() => {
-        if (user) {
+        if (isAuthenticated) {
             getCurrentTokenId();
         }
     }, [user]);
@@ -117,36 +117,14 @@ const FaucetForm = () => {
     return (
         <div className="form-wrapper-one registration-area">
             <h3 className="mb--30">NFT Faucet</h3>
-            <form
-                className="rwt-dynamic-form"
-                id="contact-form"
-                onSubmit={handleSubmit(onSubmit)}
-            >
-                <div className="mb-5">
-                    <label htmlFor="address" className="form-label">
-                        Your Address
-                    </label>
-                    <input
-                        id="address"
-                        type="text"
-                        value={user.address}
-                        {...register("address", {
-                            required: "Address is required",
-                        })}
-                    />
-                    {errors.address && (
-                        <ErrorText>{errors.address?.message}</ErrorText>
-                    )}
-                </div>
-                <Button type="submit" size="medium">
-                    Mint NFT
-                </Button>
-                {mintingState.status && (
-                    <p className={`mt-4 font-14 ${mintingState.status.class}`}>
-                        {mintingState.status.msg}
-                    </p>
-                )}
-            </form>
+            <Button type="submit" size="medium" onClick={onClick}>
+                Mint NFT
+            </Button>
+            {mintingState.status && (
+                <p className={`mt-4 font-14 ${mintingState.status.class}`}>
+                    {mintingState.status.msg}
+                </p>
+            )}
         </div>
     );
 };

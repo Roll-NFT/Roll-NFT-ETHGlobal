@@ -55,7 +55,7 @@ const Header = ({ className }) => {
                             </div>
                         </div>
                         <div className="header-right">
-                            <div className="setting-option d-none d-lg-block">
+                            {/* <div className="setting-option d-none d-lg-block">
                                 <SearchForm />
                             </div>
                             <div className="setting-option rn-icon-list d-block d-lg-none">
@@ -69,7 +69,7 @@ const Header = ({ className }) => {
                                     </button>
                                 </div>
                                 <FlyoutSearchForm isOpen={search} />
-                            </div>
+                            </div> */}
                             {!isAuthenticated && (
                                 <div className="setting-option header-btn">
                                     <div className="icon-box">
