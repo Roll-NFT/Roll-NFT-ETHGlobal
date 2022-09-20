@@ -229,6 +229,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         }
         
         /// @dev increment Roll ID counter
+        /// To start first Roll with ID 1
         _rollIdCounter.increment();
 
         /// @dev get current Roll ID
