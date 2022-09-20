@@ -13,14 +13,21 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
  * 
  * @notice Defines Mint and Burn functions
  */
-interface IERC721Roll is IERC721, IERC721URIStorage {
+interface IERC721RollTicket is IERC721, IERC721URIStorage {
 
     /**
-     * @dev Mints token
+     * @dev Mint Roll ownership token by it's ID
      * 
-     * Available for caller with proper role set
+     * Requirements:
+     * 
+     * - the caller must have the `BURNER_ROLE`.
+     * 
+     * @param to - 
+     * @param uri - 
+     * 
+     * @return minted token ID, same as tokenId
      */
-    function safeMint(address to, uint256 tokenId, string memory uri) external;
+    function safeMint(address to, string memory uri) external returns (uint);
 
     /**
      * @dev Burns token

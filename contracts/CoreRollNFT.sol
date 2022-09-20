@@ -7,7 +7,8 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
-import "./IERC721Roll.sol";
+import "./IERC721RollToken.sol";
+import "./IERC721RollTicket.sol";
 import "./TicketsContract.sol";
 import "./IddleAssets.sol";
 import "./IRoll.sol"; // IRoll.Roll IRoll.Status
@@ -135,10 +136,21 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      */
     event RollFinsihed(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
-    constructor() {
-        owner = msg.sender;
-        RollOwnershipToken = address(new RollOwnershipToken());
-        // implementationTickectsContract = address(new TicketsContract());
+    /**
+     * @dev Set the owner 
+     * 
+     * @param baseTokenURI - to set base token URI for Roll ownership tokens
+     */
+    constructor(
+        string memory baseTokenURI
+    ) {
+        /**
+         * @dev Deploy Roll ownership Token contract and save it's address
+         * 
+         * @param baseTokenURI - Roll ownership token Base URI
+         * @param _msgSender - address to grant MANAGER_ROLE
+         */
+        RollOwnershipToken = address(new RollOwnershipToken(baseTokenURI,_msgSender()));
     }
 
     /**
@@ -413,8 +425,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * That implements interface {IERC721Roll - safeMint, burn}
      */
-    function getRollTokenContract() public pure returns(IERC721Roll){
-        return IERC721Roll(RollOwnershipToken);
+    function getRollTokenContract() public pure returns(IERC721RollToken){
+        return IERC721RollToken(RollOwnershipToken);
     }
 
     /// 
@@ -423,8 +435,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * That implements interface {IERC721Roll - safeMint, burn}
      */
-    function getRollTicketsContract(uint _rollId) public pure return(IERC721Roll){
-        return IERC721Roll(ticketsAddr[_rollId]);
+    function getRollTicketsContract(uint _rollId) public pure return(IERC721RollTicket){
+        return IERC721RollTicket(ticketsAddr[_rollId]);
     }
 
     /**

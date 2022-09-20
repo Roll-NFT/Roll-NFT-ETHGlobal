@@ -8,10 +8,14 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
 /**
- * @title NFT contract representing Collection of Roll ownerships
+ * @title NFT contract representing collection of Roll ownerships
  * @author Loizage
  * 
  * @dev Implements ERC721 contract with URIStorage, AccessControlEnumerable
+ * 
+ * Contract is {ERC721URIStorage} - to set individual URIs with Roll metadata
+ * 
+ * Contract is {ERC721Enumerable} - to get all token ID of the address
  * 
  * Contract is pausable - that stops ERC721 transfers. Mint and Burn functions are not affected by Pause trigger
  * See {ERC721Pausable - _beforeTokenTransfer}
@@ -22,6 +26,8 @@ import "@openzeppelin/contracts/utils/Context.sol";
 contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable, ERC721Enumerable, ERC721URIStorage {
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
+    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     string private _baseTokenURI;
     
@@ -33,42 +39,46 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
      * See {ERC721-tokenURI}.
      */
     constructor(
-        string memory baseTokenURI,
-        address manager
+        string memory _baseTokenURI,
+        address _manager
     ) ERC721("Roll ownership Token collection", "ROLT") {
 
         /**
          * @dev set base Token URI
          */
-        _setBaseURI(baseTokenURI);
+        _setBaseURI(_baseTokenURI);
         
         /**
-         * @dev grant deployer a `DEFAULT_ADMIN_ROLE` and `MANAGER_ROLE`
+         * @dev grant contract deployer a `DEFAULT_ADMIN_ROLE`, `MANAGER_ROLE`, `MINTER_ROLE` and `BURNER_ROLE`
+         * 
+         * Roll core contract is a _msgSender()
          */
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MANAGER_ROLE, _msgSender());
+        _setupRole(MINTER_ROLE, _msgSender());
+        _setupRole(BURNER_ROLE, _msgSender());
 
         /**
-         * @dev grant manager address a `MANAGER_ROLE`
+         * @dev grant to _manager address a `MANAGER_ROLE`
          */
-        _setupRole(MANAGER_ROLE, _msgSender());
+        _setupRole(MANAGER_ROLE, _manager);
         
     }
 
-    function safeMint(address to, uint256 tokenId, string memory uri)
-        external
-        onlyOwner
-    {
+    /**
+     * @dev See {IERC721RollToken-safeMint}
+     */
+    function safeMint(address to, uint256 tokenId, string memory uri) external {
+        require(hasRole(MINTER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have minter role to mint");
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
 
     /**
-     * @dev burn function available for `BURNER` role
-     * 
-     * @param tokenId - ID of the token to burn
+     * @dev See {IERC721RollToken-burn}.
      */
-    function burn(uint256 tokenId) external onlyOwner {
+    function burn(uint256 tokenId) external virtual {
+        require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
         _burn(tokenId);
     }
 
@@ -110,6 +120,13 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
     }
 
     /**
+     * @dev Return Base URI
+     */
+    function baseURI() public view returns (string memory) {
+        _baseURI()
+    }
+
+    /**
      * @dev Set _baseTokenURI
      * 
      * Requirements:
@@ -130,6 +147,14 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
         _baseTokenURI = baseTokenURI;
     }
 
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override(ERC721, ERC721Enumerable, ERC721Pausable) {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
+
     // The following functions are overrides required by Solidity.
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
@@ -143,6 +168,19 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
         returns (string memory)
     {
         return super.tokenURI(tokenId);
+    }
+
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(AccessControlEnumerable, ERC721, ERC721Enumerable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 
 }
