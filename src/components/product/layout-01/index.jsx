@@ -57,14 +57,14 @@ const Product = ({
                     )}
                 </div>
                 <div className="product-share-wrapper">
-                    <div className="profile-share">
-                        <div>
-                            {collection}
-                            <Anchor path={`/roll/${slug}`}>
-                                <span className="product-name">{title}</span>
-                            </Anchor>
-                        </div>
+                    {/* <div className="profile-share"> */}
+                    <div>
+                        {collection}
+                        <Anchor path={`/roll/${slug}`}>
+                            <span className="product-name">{title}</span>
+                        </Anchor>
                     </div>
+                    {/* </div> */}
                     {!disableShareDropdown && (
                         <ShareDropdown
                             shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/roll/${slug}`}

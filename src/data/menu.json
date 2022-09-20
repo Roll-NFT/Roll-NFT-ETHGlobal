@@ -2,16 +2,25 @@
     {
         "id": 1,
         "text": "Home",
-        "path": "/"
+        "path": "/",
+        "prod": true
     },
     {
         "id": 2,
         "text": "Explore",
-        "path": "/explore"
+        "path": "/explore",
+        "prod": true
     },
     {
         "id": 3,
         "text": "Create Raffle",
-        "path": "/roll/create"
+        "path": "/roll/create",
+        "prod": true
+    },
+    {
+        "id": 4,
+        "text": "NFT Faucet",
+        "path": "/faucet",
+        "prod": false
     }
 ]

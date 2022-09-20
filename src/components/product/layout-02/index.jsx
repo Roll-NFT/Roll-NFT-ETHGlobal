@@ -37,19 +37,19 @@ const Product = ({ overlay, collection, title, slug, image, id }) => {
                 )}
             </div>
             <div className="product-share-wrapper">
-                <div className="profile-share">
-                    <div>
-                        {collection}
-                        <Anchor
-                            path={slug}
-                            onClick={(e) => {
-                                handleClick(e);
-                            }}
-                        >
-                            <span className="product-name">{title}</span>
-                        </Anchor>
-                    </div>
+                {/* <div className="profile-share"> */}
+                <div>
+                    {collection}
+                    <Anchor
+                        path={slug}
+                        onClick={(e) => {
+                            handleClick(e);
+                        }}
+                    >
+                        <span className="product-name">{title}</span>
+                    </Anchor>
                 </div>
+                {/* </div> */}
             </div>
         </div>
     );

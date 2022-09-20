@@ -43,20 +43,9 @@ const Home = () => {
     }
 
     async function getHero() {
-        // if (!hero.length) {
-        await axios
-            .post(
-                "/api/rolls/hero",
-                {
-                    filter: { startDate: new Date() },
-                    sort: "-ticketsSold",
-                },
-                {
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                }
-            )
+        await axios(`/api/rolls/hero`, {
+            params: { startDate: new Date(), sort: "-ticketsSold" },
+        })
             .then((response) => {
                 console.log("response.data.data is: ", response.data.data);
                 dispatch(heroUpdate(response.data.data));
@@ -64,7 +53,6 @@ const Home = () => {
             .catch((errorResponse) => {
                 console.log(errorResponse);
             });
-        // }
     }
 
     useEffect(() => {

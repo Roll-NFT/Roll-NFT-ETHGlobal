@@ -91,8 +91,8 @@ const HeroArea = ({ data: { headings, texts, buttons, items, products } }) => (
 
 HeroArea.propTypes = {
     data: PropTypes.shape({
-        headings: HeadingType,
-        texts: TextType,
+        headings: PropTypes.arrayOf(HeadingType),
+        texts: PropTypes.arrayOf(TextType),
         buttons: PropTypes.arrayOf(ButtonType),
         items: PropTypes.arrayOf(ItemType),
         products: PropTypes.arrayOf(RollType),

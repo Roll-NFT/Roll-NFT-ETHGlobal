@@ -17,7 +17,7 @@ const ExploreProductArea = ({ className, space, data }) => {
     }, [data.products]);
 
     const loadMoreHandler = () => {
-        const currentProducts = data.products.slice(0, products.length + 4);
+        const currentProducts = data.products.slice(0, products.length + 5);
         setProducts(currentProducts);
         setHasMore(currentProducts.length < data.products.length);
     };
