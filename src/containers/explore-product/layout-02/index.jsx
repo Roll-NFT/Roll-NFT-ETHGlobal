@@ -40,6 +40,7 @@ const ExploreProductArea = ({ className, space, data }) => {
 
     useEffect(() => {
         setProducts(data?.products);
+        console.log(data?.products);
     }, [data?.products]);
 
     useEffect(() => {
@@ -77,12 +78,13 @@ const ExploreProductArea = ({ className, space, data }) => {
                     <motion.div layout className="isotope-list item-5">
                         {products?.slice(0, 10)?.map((prod) => (
                             <motion.div
-                                key={prod.id}
+                                key={prod.raffleId}
                                 className={clsx("grid-item")}
                                 layout
                             >
                                 <Product
                                     placeBid={!!data.placeBid}
+                                    collection={prod.nftCollection}
                                     title={prod.title}
                                     slug={prod.raffleId}
                                     price={{

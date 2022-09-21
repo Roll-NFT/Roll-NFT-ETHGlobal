@@ -4,7 +4,7 @@ import clsx from "clsx";
 import SectionTitle from "@components/section-title/layout-02";
 import Product from "@components/product/layout-02";
 import Button from "@ui/button";
-import { SectionTitleType, RollType } from "@utils/types";
+import { SectionTitleType, BalanceType } from "@utils/types";
 
 const ExploreProductArea = ({ className, space, data }) => {
     const [products, setProducts] = useState([]);
@@ -44,8 +44,11 @@ const ExploreProductArea = ({ className, space, data }) => {
 
                 {products.length > 0 && (
                     <div className="row g-5">
-                        {products.map((prod, i) => (
-                            <div className="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
+                        {products.map((prod) => (
+                            <div
+                                className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
+                                key={prod.id}
+                            >
                                 <Product
                                     overlay
                                     id={prod.id}
@@ -86,7 +89,7 @@ ExploreProductArea.propTypes = {
     space: PropTypes.oneOf([1, 2]),
     data: PropTypes.shape({
         section_title: SectionTitleType,
-        products: PropTypes.arrayOf(RollType),
+        products: PropTypes.arrayOf(BalanceType),
         placeBid: PropTypes.bool,
     }),
 };

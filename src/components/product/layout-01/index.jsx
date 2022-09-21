@@ -56,12 +56,12 @@ const Product = ({
                         </Button>
                     )}
                 </div>
-                <div className="product-share-wrapper">
+                <div className="product-share-wrapper mb-3">
                     {/* <div className="profile-share"> */}
                     <div>
                         {collection}
                         <Anchor path={`/roll/${slug}`}>
-                            <span className="product-name">{title}</span>
+                            <span className="product-name mt-0">{title}</span>
                         </Anchor>
                     </div>
                     {/* </div> */}
@@ -72,7 +72,7 @@ const Product = ({
                     )}
                 </div>
 
-                <div className="latest-bid mt-2">
+                <div className="latest-bid mt-0">
                     <b>Tickets sold:</b> {ticketsSold}/{ticketSupply}
                 </div>
                 <div className="latest-bid mt-0">

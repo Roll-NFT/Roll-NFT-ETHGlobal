@@ -19,13 +19,10 @@ const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
     const { slug } = router.query;
 
     async function findRaffle(id) {
-        console.log("slug is: ", id);
         await axios(`/api/rolls/${id}`)
             .then((response) => {
                 console.log(`Raffle found!`);
-                // setRoll(response.data.data);
                 dispatch(rollUpdate(response.data.data));
-                console.log(response.data.data);
             })
             .catch((errorResponse) => {
                 console.log("Raffle not found!");
@@ -48,11 +45,7 @@ const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
                     pageTitle="Roll Details"
                     currentPage="Roll Details"
                 />
-                {roll ? (
-                    <ProductDetailsArea roll={roll} />
-                ) : (
-                    <ProductDetailsArea />
-                )}
+                {roll && <ProductDetailsArea roll={roll} />}
                 {recentViewRolls && (
                     <ProductArea
                         data={{

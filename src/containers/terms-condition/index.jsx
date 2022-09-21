@@ -39,11 +39,11 @@ const TermsAndConditionsArea = ({ className, space }) => (
                         </p>
                         <p className="mb-2">
                             - Roll NFT will take a 5% commission fee from the
-                            ticket sales.
+                            ticket sales revenue.
                         </p>
                         <p className="mb-2">
-                            - Raffles CANNOT be edited or cancelled once a
-                            ticket is sold.
+                            - Raffles CANNOT be edited or cancelled as soon as a
+                            single ticket is sold.
                         </p>
                         <p className="mb-2">
                             - Raffle tickets will not be refunded for the
@@ -51,7 +51,7 @@ const TermsAndConditionsArea = ({ className, space }) => (
                         </p>
                         <p className="mb-2">
                             - A single participant can buy at most 20% of total
-                            number of tickets available
+                            number of tickets available.
                         </p>
                         <p className="mb-2">
                             - NFT Roll does not take responsibility for

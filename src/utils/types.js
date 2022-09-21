@@ -56,15 +56,31 @@ export const ItemType = PropTypes.shape({
     image: ImageType,
 });
 
+export const BalanceType = PropTypes.shape({
+    id: PropTypes.number,
+    collection: PropTypes.string,
+    contract_address: PropTypes.string,
+    network: PropTypes.number,
+    token_id: PropTypes.string,
+    token_balance: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    attributes: PropTypes.arrayOf(PropTypes.shape({})),
+    supports_erc: PropTypes.arrayOf(PropTypes.string),
+});
+
 export const RollTicketType = PropTypes.shape({
     quantity: PropTypes.number,
     userId: PropTypes.string,
     userAddress: PropTypes.string,
     total: PropTypes.number,
     fee: PropTypes.number,
+    createdAt: PropTypes.date,
 });
 
 export const RollType = PropTypes.shape({
+    _id: PropTypes.string,
     raffleId: PropTypes.string,
     userId: PropTypes.string,
     userAddress: PropTypes.string,
@@ -76,14 +92,14 @@ export const RollType = PropTypes.shape({
     nftTokenId: PropTypes.string,
     description: PropTypes.string,
     title: PropTypes.string,
-    endDate: PropTypes.string,
+    endDate: PropTypes.date,
     ticketPrice: PropTypes.number,
     ticketCurrency: PropTypes.string,
     ticketSupply: PropTypes.number,
     likeCount: PropTypes.number,
+    categories: PropTypes.arrayOf(PropTypes.string),
     attributes: PropTypes.arrayOf(PropTypes.shape({})),
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
-    tickets: PropTypes.arrayOf(PropTypes.objectOf(RollTicketType)),
+    tickets: PropTypes.arrayOf(RollTicketType),
     ticketsSold: PropTypes.number,
     ticketsTotal: PropTypes.number,
 });

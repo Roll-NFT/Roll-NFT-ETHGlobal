@@ -46,7 +46,6 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                                 <b>NFT Floor price:</b> 0
                             </span>
                         </div>
-
                         <div className="rn-bid-details">
                             <PlaceBet
                                 title={roll.title}
@@ -57,7 +56,6 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                                 endDate={roll.endDate}
                                 host={roll.userAddress}
                             />
-                            <br />
                             <BidTab
                                 bids={roll.tickets}
                                 properties={roll.attributes}
@@ -77,31 +75,32 @@ ProductDetailsArea.propTypes = {
     roll: PropTypes.objectOf(RollType),
 };
 
-ProductDetailsArea.defaultProps = {
-    space: 1,
-    roll: {
-        raffleId: "1",
-        userId: "1",
-        userAddress: "",
-        network: "",
-        nftId: "1",
-        nftContractAddress: "",
-        nftCollection: "Roll Collection",
-        nftImage: "/images/portfolio/lg/portfolio-01.jpg",
-        nftTokenId: "",
-        description: "Roll Description",
-        title: "Roll Title",
-        endDate: String(Date.now()),
-        ticketPrice: 0,
-        ticketCurrency: "",
-        ticketSupply: 0,
-        likeCount: 0,
-        properties: [],
-        tags: [],
-        tickets: [],
-        ticketsSold: 0,
-        ticketsTotal: 0,
-    },
-};
+// ProductDetailsArea.defaultProps = {
+//     space: 1,
+//     roll: {
+//         _id: "1",
+//         raffleId: "1",
+//         userId: "1",
+//         userAddress: "",
+//         network: "",
+//         nftId: "1",
+//         nftContractAddress: "",
+//         nftCollection: "Roll Collection",
+//         nftImage: "/images/portfolio/lg/portfolio-01.jpg",
+//         nftTokenId: "",
+//         description: "Roll Description",
+//         title: "Roll Title",
+//         endDate: String(Date.now()),
+//         ticketPrice: 0,
+//         ticketCurrency: "",
+//         ticketSupply: 0,
+//         likeCount: 0,
+//         properties: [],
+//         tags: [],
+//         tickets: [],
+//         ticketsSold: 0,
+//         ticketsTotal: 0,
+//     },
+// };
 
 export default ProductDetailsArea;

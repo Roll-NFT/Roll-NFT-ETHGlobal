@@ -37,7 +37,7 @@ const HeroArea = ({ data: { headings, texts, buttons, items, products } }) => (
                                     {...btn}
                                     key={id}
                                     className={
-                                        i !== buttons.length - 1 && "mr--30"
+                                        i !== buttons.length - 1 ? "mr--30" : ""
                                     }
                                 >
                                     {content}
@@ -61,8 +61,12 @@ const HeroArea = ({ data: { headings, texts, buttons, items, products } }) => (
                 <div className="col-lg-6 order-lg-2 order-md-1 order-sm-1 order-1">
                     <div className="row g-5">
                         {products?.map((prod) => (
-                            <div className="col-lg-6 col-md-6" key={prod.id}>
+                            <div
+                                className="col-lg-6 col-md-6"
+                                key={prod.raffleId}
+                            >
                                 <Product
+                                    collection={prod.nftCollection}
                                     title={prod.title}
                                     slug={prod.raffleId}
                                     price={{

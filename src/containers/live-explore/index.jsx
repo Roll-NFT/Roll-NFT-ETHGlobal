@@ -69,11 +69,12 @@ const LiveExploreArea = ({ data, className, space }) => (
                         >
                             {data.products.map((prod) => (
                                 <SliderItem
-                                    key={prod.id}
+                                    key={prod.raffleId}
                                     className="single-slide-product"
                                 >
                                     <Product
                                         placeBid={!!data.placeBid}
+                                        collection={prod.nftCollection}
                                         title={prod.title}
                                         slug={prod.raffleId}
                                         latestBid={1}
