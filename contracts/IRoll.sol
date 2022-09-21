@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 /// @custom:security-contact loizage@icloud.com
 interface IRoll {
@@ -44,6 +45,11 @@ interface IRoll {
         IERC20 participationToken;
         uint participationPrice;
         Status status;
+        IERC721 prizeCollection;
+        uint prizeTokenId;
+        bool prizeAvailable;
+        uint winnerTokenId;
+        bool revenueClaimed;
     }
 
 }

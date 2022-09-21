@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./IERC721RollToken.sol";
 import "./IERC721RollTicket.sol";
 import "./TicketsContract.sol";
@@ -15,6 +16,7 @@ import "./IRoll.sol"; // IRoll.Roll IRoll.Status
 import "./IPrize.sol"; // IPrize.Prize
 import "./IRollAssets.sol"; // IRollAssets.RollAssets
 import "./RollOwnershipToken.sol";
+import "./TreasuryRollNFT.sol";
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
@@ -22,7 +24,8 @@ import "./RollOwnershipToken.sol";
 /// @custom:security-contact loizage@icloud.com
 contract CoreRollNFT is Pausable, Ownable, Context {
     using Counters for Counters.Counter;
-    using Strings for uint256;
+    using SafeMath for uint256;
+    // using Strings for uint256;
 
     /**
      * @dev declare Roll tickets contract implementation to be cloned
@@ -38,7 +41,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      *  @notice percentage fee that applied when Roll owner claim Revenue
      */
-    uint256 public protocolFee;
+    uint256 public revenuePercentageFee;
     
     /// @dev Wirefram - Ticket's NFT collection contract 
     // IERC721 internal immutable contractTicketsTemplate;
@@ -48,6 +51,11 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * To implement logic for assets in future
      */
     address internal immutable contractIddleAssets;
+
+    /**
+     * @dev Contract that will hold and operate with treasury assets
+     */
+    address internal immutable contractTreasury;
     
     /**
      * @dev Roll ownership Token collection (ROLT) - ERC721 contract
@@ -61,14 +69,14 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @notice Roll ownership Token collection (ROLT) address
      */
-    address public immutable RollOwnershipToken;
+    address internal immutable rollOwnershipToken;
 
     /**
      * @dev Mapping rollId to tixContract
      * 
      * @notice To get anddress of NFT smart contract of Tickets for provided Roll ID
      */
-    mapping (uint => IERC721) ticketsAddr;
+    mapping (uint => address) ticketsAddr;
     
     /**
      * @dev Mapping rollId to Roll data
@@ -102,8 +110,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /// @dev announce about refunded tickets from unsuccessful Roll
     event TicketsRefunded(uint indexed rollType, uint indexed rollID, address rollHost, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
 
-    // 
-    event FeeSet(uint256 newFee);
+    /// @dev announce about updated Revenue fee
+    event RevenueFeeUpdated(uint256 revenuePercentageFee);
 
     /**
      * @dev anounce about closed Roll (unsucceed)
@@ -118,8 +126,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param prizeID - Prize token ID
      */
     event RollClosed(uint rollType, uint indexed rollID, address indexed prizeAddress, uint prizeID);
-    /// address indexed ticketsContract, address indexed owner
-    /// 
+    // address indexed ticketsContract, address indexed owner
     
     /**
      * @dev announce about successfuly finished Roll
@@ -142,15 +149,27 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param baseTokenURI - to set base token URI for Roll ownership tokens
      */
     constructor(
-        string memory baseTokenURI
+        string memory _baseTokenURI,
+        uint256 _revenueFee
     ) {
         /**
          * @dev Deploy Roll ownership Token contract and save it's address
          * 
-         * @param baseTokenURI - Roll ownership token Base URI
+         * @param _baseTokenURI - Roll ownership token Base URI
          * @param _msgSender - address to grant MANAGER_ROLE
          */
-        RollOwnershipToken = address(new RollOwnershipToken(baseTokenURI,_msgSender()));
+        rollOwnershipToken = address(new RollOwnershipToken(_baseTokenURI,_msgSender()));
+        
+        /**
+         * @dev Deploy Treasury contract and save it's address
+         * 
+         * @param _msgSender - address to grant MANAGER_ROLE
+         */
+        contractTreasury = address(new TreasuryRollNFT(_msgSender()));
+
+        /// @dev set initial Revenue fee
+        /// TODO use internal function instead
+        revenuePercentageFee = _revenueFee;
     }
 
     /**
@@ -306,6 +325,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev check that provided ticket is a winning ticket
 
         /// @dev check that caller is a owner of winning ticket
+        require(_msgSender() == roll.prizeCollection.ownerOf(roll.winnerTokenId), "CoreRollNFT: Should be an owner of winning token to claim Roll Prize");
 
         /// @dev burn winning ticket
 
@@ -320,29 +340,48 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /// @dev function to claim revenue from successfull Roll
     function claimRevenue(uint256 _rollType, uint256 _rollID) external {
-        
-        /// @dev get roll details
-
-        /// @dev check that sales are closed
-
-        /// @dev check that roll is successful
-        
-        /// @dev check that revenue is available to claim
 
         /// @dev check that caller is a owner of the Roll
+        require(_msgSender() == rollOwnershipToken.ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
+
+        /// @dev get roll details
+        var roll = rolls[_rollID];
+
+        /// @dev check that Roll status if finished
+        require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be Finished to claim Revenue");
+
+        /**
+         * @dev check that revenue is available to claim
+         * TODO How do we define that revenue is avalilable?
+         * It could be inside of the Roll
+         * It could be inside of the Assets
+         */
+        require(!roll.revenueClaimed, "CoreRollNFT: Revenue available to claim only once");
+
+        /// @dev set revenue status to claimed
+        roll.revenueAvailable = false;
 
         /// @dev burn Roll ownership token
         getRollTokenContract().burn(_rollID);
         
-        /// @dev calculate revenue to claim
+        /**
+         * @dev calculate revenue to claim
+         * 
+         * Participants amount * Participation price
+         * Participants amount could be know by getting Ticket's contract totalSupply
+         */
+        uint256 revenue = getRollTicketsContract(_rollID).totalSupply() * roll.participationPrice;
+        
         /// @dev (participantsAmount * _participationCost)
         /// @dev include protocol fee
+        /// @dev calculate Revenue fee
+        uint256 fee = ()
+        // revenuePercentageFee
         
-        /// @dev set revenue status to claimed
-
         /// @dev send revenue to caller
 
         /// @dev transfer fees to treasury
+        contractTreasury
 
         /// @dev announce about Roll's claimed revenue - where who what
         emit RevenueClaimed(_rollType, _rollID, rollHost, rollOwner, tokenAddress, amount);
@@ -412,13 +451,21 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /// @dev function to define a winner
 
-    /// @dev set fee
-    function setFee(uint256 _newFee) external {
-        if(owner != msg.sender){ 
-            revert();
-        }
-        feePercent = _newFee;
-        emit FeeSet(_newFee);
+    /**
+     * @dev set Revenue fee represented in %
+     * 
+     * 1 = 0.01%
+     * 10 = 0.1%
+     * 100 = 1%
+     * 1000 = 10%
+     * 10000 = 100%
+     * 
+     * @notice Set percentage Revenue fee. 10% = 1000
+     * @param _fee - new percentage Revenue fee value
+     */
+    function setPercentageRevenueFee(uint256 _fee) external onlyOwner {
+        revenuePercentageFee = _fee;
+        emit RevenueFeeUpdated(revenuePercentageFee);
     }
 
     /**
@@ -427,7 +474,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * That implements interface {IERC721Roll - safeMint, burn}
      */
     function getRollTokenContract() public pure returns(IERC721RollToken){
-        return IERC721RollToken(RollOwnershipToken);
+        return IERC721RollToken(rollOwnershipToken);
     }
 
     /// 
