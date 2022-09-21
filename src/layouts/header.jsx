@@ -45,16 +45,16 @@ const Header = ({ className }) => {
         }
     }, [user, chain]);
 
-    useEffect(() => {
-        if (userApp) {
-            if (
-                userApp.chainId !== process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX &&
-                userApp.chainId !== process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX_ALT
-            ) {
-                Router.push("/error");
-            }
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (userApp) {
+    //         if (
+    //             userApp.chainId !== process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX &&
+    //             userApp.chainId !== process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX_ALT
+    //         ) {
+    //             Router.push("/error");
+    //         }
+    //     }
+    // }, []);
 
     return (
         <>
