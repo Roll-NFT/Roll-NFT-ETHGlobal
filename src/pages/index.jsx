@@ -61,7 +61,7 @@ const Home = () => {
 
     return (
         <Wrapper>
-            <SEO pageTitle="Roll NFT" />
+            <SEO pageTitle="Home" />
             <Header />
             <main id="main-content">
                 <HeroArea
