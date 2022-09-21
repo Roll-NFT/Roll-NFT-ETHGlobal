@@ -47,7 +47,6 @@ const Home = () => {
             params: { startDate: new Date(), sort: "-ticketsSold" },
         })
             .then((response) => {
-                console.log("response.data.data is: ", response.data.data);
                 dispatch(heroUpdate(response.data.data));
             })
             .catch((errorResponse) => {
@@ -98,41 +97,6 @@ const Home = () => {
         </Wrapper>
     );
 };
-
-// export async function getServerSideProps() {
-// export const getServerSideProps = storeWrapper.getServerSideProps(
-//     (store) =>
-//         async ({ params }) => {
-//             await axios
-//                 .post(
-//                     `${process.env.NEXT_PUBLIC_APP_URL}/api/rolls/hero`,
-//                     {
-//                         filter: { startDate: new Date() },
-//                         sort: "-ticketsSold",
-//                     },
-//                     {
-//                         headers: {
-//                             "content-type": "application/json",
-//                         },
-//                     }
-//                 )
-//                 .then((response) => {
-//                     console.log(response.data.data);
-//                     return {
-//                         props: {
-//                             hero: response.data.data,
-//                             className: "template-color-1 nft-body-connect",
-//                         },
-//                     };
-//                 })
-//                 .catch((errorResponse) => {
-//                     console.log(errorResponse);
-//                 });
-//             return {
-//                 props: { className: "template-color-1 nft-body-connect" },
-//             };
-//         }
-// );
 
 export async function getStaticProps() {
     return {

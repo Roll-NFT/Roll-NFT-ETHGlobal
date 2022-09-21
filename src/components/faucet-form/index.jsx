@@ -117,6 +117,9 @@ const FaucetForm = () => {
     return (
         <div className="form-wrapper-one registration-area">
             <h3 className="mb--30">NFT Faucet</h3>
+            <p>
+                Supported network: {process.env.NEXT_PUBLIC_APP_CHAIN_ID_NAME}
+            </p>
             <Button type="submit" size="medium" onClick={onClick}>
                 Mint NFT
             </Button>

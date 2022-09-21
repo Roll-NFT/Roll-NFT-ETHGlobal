@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { useMoralis } from "react-moralis";
+import { useMoralis, useChain } from "react-moralis";
 import Logo from "@components/logo";
 import MainMenu from "@components/menu/main-menu";
 import MobileMenu from "@components/menu/mobile-menu";
@@ -11,9 +11,10 @@ import ColorSwitcher from "@components/color-switcher";
 import BurgerButton from "@ui/burger-button";
 import Button from "@ui/button";
 import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { userUpdate } from "@store/actions/users";
+import Router from "next/router";
 import headerData from "../data/header.json";
 import menuData from "../data/menu.json";
 
@@ -22,15 +23,38 @@ const Header = ({ className }) => {
     const { offcanvas, offcanvasHandler } = useOffcanvas();
     const { search, searchHandler } = useFlyoutSearch();
     const { authenticate, isAuthenticated, user } = useMoralis();
+    const userApp = useSelector((state) => state.user);
+    const { chain } = useChain();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (user) {
+        if (user && chain) {
+            const { chainId } = chain;
             dispatch(
-                userUpdate({ id: user.id, address: user.get("ethAddress") })
+                userUpdate({
+                    id: user.id,
+                    address: user.get("ethAddress"),
+                    chain: chain.name,
+                    chainId,
+                    blockExplorerUrl: chain.blockExplorerUrl,
+                    faucets: chain.faucets,
+                    networkId: chain.networkId,
+                    currency: chain.nativeCurrency,
+                })
             );
         }
-    }, [user]);
+    }, [user, chain]);
+
+    useEffect(() => {
+        if (userApp) {
+            if (
+                userApp.chainId !== process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX &&
+                userApp.chainId !== process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX_ALT
+            ) {
+                Router.push("/error");
+            }
+        }
+    }, []);
 
     return (
         <>

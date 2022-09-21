@@ -15,6 +15,7 @@ export default async (req, res) => {
             raffleId: v4(),
             userId: user.id,
             userAddress: user.address,
+            network: "80001",
             nftId: nft.id,
             nftContractAddress: nft.contractAddress,
             nftCollection: nft.collection,

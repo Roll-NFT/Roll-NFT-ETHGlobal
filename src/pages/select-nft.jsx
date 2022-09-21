@@ -14,7 +14,7 @@ export async function getStaticProps() {
     return { props: { className: "template-color-1" } };
 }
 
-const prepareData = (obj) =>
+const prepareData = (obj, network) =>
     obj.items
         .filter(
             (item) =>
@@ -25,6 +25,7 @@ const prepareData = (obj) =>
                 id: (i + 1) * 100 + j,
                 collection: collection.contract_name,
                 contract_address: collection.contract_address,
+                network,
                 token_id: nft.token_id,
                 token_balance: nft.token_balance,
                 title: nft.external_data.name,
@@ -41,16 +42,16 @@ const MyNFTs = () => {
     const balances = useSelector((state) => state.balances);
     const dispatch = useDispatch();
 
-    const getBalances = async (address) => {
+    const getBalances = async (address, network) => {
         console.log(
             `Fetching balances from ${address} through Covalent API... `
         );
         const covalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY;
         const covalentEndpoint = process.env.NEXT_PUBLIC_COVALENT_ENDPOINT;
-        const covalentUrl = `${covalentEndpoint}/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${covalentKey}`;
+        const covalentUrl = `${covalentEndpoint}/${network}/address/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${covalentKey}`;
         await axios(covalentUrl)
             .then((response) => {
-                const _balances = prepareData(response.data.data);
+                const _balances = prepareData(response.data.data, network);
                 dispatch(balancesUpdate(_balances));
             })
             .catch((errorResponse) => {
@@ -60,8 +61,8 @@ const MyNFTs = () => {
     };
 
     useEffect(() => {
-        if (user.address) {
-            getBalances(user.address);
+        if (user) {
+            getBalances(user.address, user.networkId);
         }
     }, [user]);
 

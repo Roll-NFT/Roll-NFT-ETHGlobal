@@ -41,6 +41,9 @@ const raffleSchema = new mongoose.Schema(
         userAddress: {
             type: String,
         },
+        network: {
+            type: String,
+        },
         nftId: {
             type: String,
         },
