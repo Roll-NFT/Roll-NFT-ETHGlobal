@@ -30,5 +30,8 @@
     "clones-with-immutable-args": "^1.0.0",
     "ethers": "^5.7.1",
     "hardhat": "^2.11.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3"
   }
 }
