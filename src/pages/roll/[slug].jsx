@@ -21,11 +21,9 @@ const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
     async function findRaffle(id) {
         await axios(`/api/rolls/${id}`)
             .then((response) => {
-                console.log(`Raffle found!`);
                 dispatch(rollUpdate(response.data.data));
             })
             .catch((errorResponse) => {
-                console.log("Raffle not found!");
                 console.log(errorResponse);
             });
     }

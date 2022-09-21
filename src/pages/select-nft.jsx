@@ -43,9 +43,6 @@ const MyNFTs = () => {
     const dispatch = useDispatch();
 
     const getBalances = async (address, network) => {
-        console.log(
-            `Fetching balances from ${address} through Covalent API... `
-        );
         const covalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY;
         const covalentEndpoint = process.env.NEXT_PUBLIC_COVALENT_ENDPOINT;
         const covalentUrl = `${covalentEndpoint}/${network}/address/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${covalentKey}`;
@@ -56,8 +53,8 @@ const MyNFTs = () => {
             })
             .catch((errorResponse) => {
                 console.log("Error fetching data: ", errorResponse);
-            })
-            .finally(() => console.log("Done fetching data"));
+            });
+        // .finally(() => console.log("Done fetching data"));
     };
 
     useEffect(() => {

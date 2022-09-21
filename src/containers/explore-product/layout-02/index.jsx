@@ -40,7 +40,6 @@ const ExploreProductArea = ({ className, space, data }) => {
 
     useEffect(() => {
         setProducts(data?.products);
-        console.log(data?.products);
     }, [data?.products]);
 
     useEffect(() => {

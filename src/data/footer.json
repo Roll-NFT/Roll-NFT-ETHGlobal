@@ -67,16 +67,6 @@
                 "path": "/roll/create"
             },
             {
-                "id": 4,
-                "text": "About Us",
-                "path": "/about"
-            },
-            {
-                "id": 5,
-                "text": "Support/FAQ",
-                "path": "/support"
-            },
-            {
                 "id": 6,
                 "text": "Contact Us",
                 "path": "/contact"

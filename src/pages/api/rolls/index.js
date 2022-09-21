@@ -9,8 +9,6 @@ export default async (req, res) => {
     if (req.method === "POST") {
         const { user, nft, form } = req.body;
 
-        console.log(`Saving Raffle to the MondoDB... `);
-
         const newRaffle = new Raffles({
             raffleId: v4(),
             userId: user.id,
@@ -38,7 +36,6 @@ export default async (req, res) => {
 
         try {
             await newRaffle.save();
-            console.log("Raffle saved successfully");
             res.status(200).json({ raffleId: newRaffle.raffleId });
         } catch (error) {
             res.status(400).json({ error });

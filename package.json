@@ -1,5 +1,5 @@
 {
-    "name": "nuron-nextjs",
+    "name": "rollnft-nextjs",
     "private": true,
     "scripts": {
         "dev": "next dev",

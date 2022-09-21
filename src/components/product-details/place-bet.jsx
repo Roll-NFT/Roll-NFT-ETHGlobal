@@ -61,11 +61,10 @@ const PlaceBet = ({
                 handleBidModal();
                 dispatch(rollUpdate(response.data.data));
                 toast(`Tickets acquired successfully!`);
-                console.log(`Tickets acquired successfully!`);
             })
             .catch((errorResponse) => {
                 toast("Error updating Raffle, please try again later!");
-                console.log("Error saving Raffle: ", errorResponse);
+                console.log(errorResponse);
             });
     };
 

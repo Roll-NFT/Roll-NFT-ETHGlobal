@@ -42,14 +42,11 @@ const CreateNewArea = ({ className, space, nft }) => {
             )
             .then((response) => {
                 toast(`Raffle saved successfully!`);
-                console.log(
-                    `Raffle '${response.data.raffleId}' saved successfully!`
-                );
                 Router.push(`/roll/${response.data.raffleId}`);
             })
             .catch((errorResponse) => {
                 toast("Error saving Raffle, please try again later!");
-                console.log("Error saving Raffle: ", errorResponse);
+                console.log(errorResponse);
             });
     };
 

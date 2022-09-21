@@ -30,7 +30,6 @@ const FaucetForm = () => {
         if (txn) {
             setTokenId(txn.toNumber());
         }
-        console.log("currentTokenId is: ", txn);
     };
 
     const mintNFT = async () => {
@@ -45,7 +44,6 @@ const FaucetForm = () => {
                         msg: "Please wait. NFT is minting...",
                     },
                 });
-                console.log("Mintando NFT...");
                 const mintTxn = await contract.mintFlagNFT(
                     country.code,
                     country.name,
@@ -53,7 +51,6 @@ const FaucetForm = () => {
                     country.city
                 );
                 await mintTxn.wait();
-                console.log("mintTxn:", mintTxn);
                 toast(`NFT minted successfully!`);
             } catch (error) {
                 toast(`NFT mint failed!`);
@@ -70,7 +67,6 @@ const FaucetForm = () => {
     };
 
     const onClick = () => {
-        console.log("onClick");
         if (isAuthenticated) {
             mintNFT();
         } else {
@@ -89,9 +85,6 @@ const FaucetForm = () => {
     useEffect(() => {
         const onNFTMinted = async (sender, _tokenId, code) => {
             setTokenId(_tokenId.toNumber());
-            console.log(
-                `NFT Minted - sender: ${sender} tokenId: ${_tokenId.toNumber()} code: ${code}`
-            );
             setMintingState({
                 minting: false,
                 status: {

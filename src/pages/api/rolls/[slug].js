@@ -21,7 +21,6 @@ export default async (req, res) => {
     }
 
     const filter = { raffleId: slug };
-    console.log(`Searching for Raffle with id '${slug}' in the MondoDB... `);
     try {
         data = await Raffles.findOne(filter);
     } catch (error) {
@@ -30,7 +29,6 @@ export default async (req, res) => {
     }
 
     if (!data) {
-        console.log("Raffle not found!");
         res.status(400).json({
             error: { message: "Raffle not found!" },
         });
@@ -38,16 +36,11 @@ export default async (req, res) => {
 
     // GET /api/rolls
     if (req.method === "GET") {
-        console.log("Raffle found!");
         res.status(200).json({ data });
     }
 
     // PUT /api/rolls
     if (req.method === "PUT") {
-        console.log(`data is: `);
-        console.log(data);
-        console.log(`req.body is: `);
-        console.log(req.body);
         const { ticket } = req.body;
         const { tickets } = data;
         const newTickets = [...tickets, ticket];
@@ -64,9 +57,7 @@ export default async (req, res) => {
             ticketsSold,
             ticketsTotal,
         };
-        console.log(`Updating Raffle with id '${slug}'... `);
         await Raffles.findOneAndUpdate({ raffleId: slug }, update);
-        console.log("Raffle updated!");
         data = await Raffles.findOne(filter);
         res.status(200).json({ data });
     }
