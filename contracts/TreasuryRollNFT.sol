@@ -16,5 +16,5 @@ contract TreasuryRollNFT {
     /**
      * @dev mapping with erc20 token addresses and current treasury balances
      */
-    mapping(address -> uint256) balances;
+    mapping(address => uint256) balances;
 }

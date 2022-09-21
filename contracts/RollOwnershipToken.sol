@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
-import "./IERC721RollToken.sol";
+import "./interfaces/IERC721RollToken.sol";
 
 /**
  * @title NFT contract representing collection of Roll ownerships
@@ -124,7 +124,7 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
      * @dev Return Base URI
      */
     function baseURI() public view returns (string memory) {
-        _baseURI()
+        _baseURI();
     }
 
     /**

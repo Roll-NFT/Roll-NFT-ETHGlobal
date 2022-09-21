@@ -8,13 +8,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./IERC721RollToken.sol";
-import "./IERC721RollTicket.sol";
-import "./TicketsContract.sol";
-import "./IddleAssets.sol";
-import "./IRoll.sol"; // IRoll.Roll IRoll.Status
-import "./IPrize.sol"; // IPrize.Prize
-import "./IRollAssets.sol"; // IRollAssets.RollAssets
+import "./interfaces/IERC721RollToken.sol";
+import "./interfaces/IERC721RollTicket.sol";
+import "./interfaces/IddleAssets.sol";
+import "./interfaces/IRoll.sol"; // IRoll.Roll IRoll.Status
+import "./interfaces/IPrize.sol"; // IPrize.Prize
+import "./interfaces/IRollAssets.sol"; // IRollAssets.RollAssets
+import "./RollParticipationToken.sol";
 import "./RollOwnershipToken.sol";
 import "./TreasuryRollNFT.sol";
 
@@ -204,13 +204,13 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     ) external returns(TicketsContract ticketsContract){
 
         /// @dev check that _prizeAddress is set and is not 0
-        require(_prizeAddress != address(0), 'Missing Prize collection address')
+        require(_prizeAddress != address(0), 'Missing Prize collection address');
 
         /// @dev check that _prizeAddress is set and is not 0
-        require(_participationToken != address(0), 'Missing participation token address')
+        require(_participationToken != address(0), 'Missing participation token address');
 
         /// @dev check that _rollTime is provided and is in future
-        require(_rollTime > 0 && _rollTime > block.timestamp, 'End time should be in feature')
+        require(_rollTime > 0 && _rollTime > block.timestamp, 'End time should be in feature');
 
         /// @dev define host
         address host = _msgSender();

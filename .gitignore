@@ -1,6 +1,6 @@
 node_modules
+package-lock.json
 
-node_modules
 .env
 coverage
 coverage.json
@@ -10,28 +10,3 @@ typechain-types
 #Hardhat files
 cache
 artifacts
-
-
-node_modules
-.env
-coverage
-coverage.json
-typechain
-typechain-types
-
-#Hardhat files
-cache
-artifacts
-
-
-node_modules
-.env
-coverage
-coverage.json
-typechain
-typechain-types
-
-#Hardhat files
-cache
-artifacts
-
