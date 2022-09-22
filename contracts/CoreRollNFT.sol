@@ -465,8 +465,6 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     }
 
-    /// @dev function to define a winner
-
     /**
      * @dev set Revenue fee represented in %
      * 
@@ -506,6 +504,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /**
      * @dev get Roll NFT treasury contract address
+     * 
+     * TODO MENTION INTERFACE
      */
     function getTreasuryContract() internal pure returns(address) {
         return contractTreasury;
@@ -513,6 +513,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /**
      * @dev 
+     * 
+     * TODO FINISH FUNCTION
      */
     function cloneTicketsContract(uint _rollId, string memory _rollURI) internal {
         
@@ -525,12 +527,16 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev Function that creates Roll metadata and forms URI
      * 
+     * TODO UPDATE DESCRIPTION
+     * 
      * @param rollId
      * @param rollType
      * @param host
      * @param _rollTime
      * @param _minParticipants
      * @param _maxParticipants
+     * @param _participationToken
+     * @param _participationPrice
      * @param _prizeAddress 
      * @param _prizeId 
      * @param _ticketsContract - Roll tickets collection address
@@ -538,19 +544,22 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @return - URI address to Roll metadata
      */
     function makeRollURI(
-        uint _rollId,
-        uint _rollType,
+        uint256 _rollId,
+        uint256 _rollType,
         address _host,
         uint64 _rollTime,
-        uint _minParticipants,
-        uint _maxParticipants,
+        uint256 _minParticipants,
+        uint256 _maxParticipants,
+        IERC20 _participationToken,
+        uint256 participationPrice
         IERC721 _prizeAddress,
-        uint _prizeId,
-        IERC721 _ticketsContract
+        uint256 _prizeId,
+        IERC721RollTicket _ticketsContract
     ) internal returns(string memory rollURI) {
         
+        /// TODO FINISH FUNCTION IMPLEMENTATION
+        
         /// @dev create Tableland table with Roll metadata
-        /// TODO
 
         /// @dev Do we want to add Tickets collection address to metadata after creating one?
 
@@ -561,7 +570,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev function that return Roll URI according to provided Roll ID
      * 
-     * TODO
+     * TODO UPDATE DESCRIPTION
      */
     function getRollURI(uint256 _rollId) public view pure returns(string memory rollURI) {
         
@@ -594,6 +603,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @param _participantsAmount - Amount of participants
      * @param _participationPrice - Participation price
+     * 
+     * @notice Calculate total revenue according to Participants amount and Participation price
      */
     function calculateRevenue(uint256 _participantsAmount, uint256 _participationPrice) public view returns(uint256) {
         
@@ -602,6 +613,10 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /**
      * TODO IERC721Receiver-onERC721Received
+     */
+
+    /**
+     * TODO Function to select a winner
      */
 
 }
