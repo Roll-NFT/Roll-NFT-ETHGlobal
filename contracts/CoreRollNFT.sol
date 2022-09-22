@@ -431,36 +431,37 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev refund tickets for Closed Roll
      * 
-     * TODO make refund function to be single ticket
-     * TODO implememnt multi call pattern on backend for banch refund
+     * Return true on successful operation
+     * 
+     * TODO UPDATE DESCRIPTION
+     * 
+     * TODO implememnt Multi Call pattern on backend for banch refund
      */
-    function refundTicket(uint256 _rollType, uint256 _rollID, uint256 _ticketId) external {
+    function refundParticipation(uint256 _rollType, uint256 _rollID, uint256 _ticketId) public returns(bool) {
         
-        /// @dev get Roll details
+        /// @dev get Roll parameters structure
+        var roll = rolls[_rollID];
 
-        /// @dev check that sales are closed
+        /// @dev check that Roll status is "RollClosed"
+        require(roll.status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to refund Participation price");
 
-        /// @dev check that Roll is unsuccessful
-        
-        /// @dev Potentially:
-        /// @dev get list of Ticket's IDs belonging to caller
-        /// @dev otherwise that provided Ticket's IDs are belonging to caller
+        /// @dev check that caller is a owner of the _ticketId
+        require(_msgSender() == getRollTicketsContract(_rollID).ownerOf(_ticketId), "CoreRollNFT: Caller should be the _ticketId owner to refund Participation price");
 
-        /// @dev burn Participation tokens (Tickets)
-        /// TODO check if cuntion name is correct
+        /// @dev burn Participation tokens
         getRollTicketsContract(_rollID).burn(_ticketId);
         
-        /// @dev get winning token ID
-        // uint winnerId = prizes[rollId].winnerId;
-
-
-        /// @dev calculate amount to refund
-        /// @dev (ticketsAmount * _participationCost)
-        
-        /// @dev send refund to caller
+        /**
+         * @dev send Participation amount to caller
+         * 
+         * roll.participationToken - IERC20
+         */
+        roll.participationToken.transfer(_msgSender(), roll.participationPrice);
 
         /// @dev announce about refunded tickets from unsuccessful Roll
         emit TicketsRefunded(_rollType, _rollID, rollHost, msg.sender, tokenAddress, refundAmount, ticketsAmount);
+
+        return true;
 
     }
 
