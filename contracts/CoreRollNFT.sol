@@ -194,13 +194,13 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     ) external returns(TicketsContract ticketsContract){
 
         /// @dev check that _prizeAddress is set and is not 0
-        require(_prizeAddress != address(0), 'Missing Prize collection address')
+        require(_prizeAddress != address(0), 'Missing Prize collection address');
 
         /// @dev check that _prizeAddress is set and is not 0
-        require(_participationToken != address(0), 'Missing participation token address')
+        require(_participationToken != address(0), 'Missing participation token address');
 
         /// @dev check that _rollTime is provided and is in future
-        require(_rollTime > 0 && _rollTime > block.timestamp, 'End time should be in feature')
+        require(_rollTime > 0 && _rollTime > block.timestamp, 'End time should be in feature');
 
         /// @dev define host
         address host = _msgSender();
@@ -227,7 +227,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
             }
 
         } else {
-            require(_maxParticipants > _minParticipants)
+            require(_maxParticipants > _minParticipants, "CoreRollNFT: Maximum participants should be less than Minimum participant to create Roll");
 
             if (_minParticipants == 0) {
                 rollType = 3;
