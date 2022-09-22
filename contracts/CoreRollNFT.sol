@@ -512,16 +512,20 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     }
 
     /**
-     * @dev 
+     * @dev deploy Roll participation token contract for the _rollId
      * 
-     * TODO FINISH FUNCTION
+     * @param _rollId - Roll ID
+     * @param _rollURI - Roll metadata URI
+     * 
+     * @return address of newly deployed tickets contract
      */
-    function cloneTicketsContract(uint _rollId, string memory _rollURI) internal {
+    function cloneTicketsContract(uint256 _rollId, string memory _rollURI) internal returns(address) {
         
-        /// @dev initialize Roll's Tickets NFT contract
-        string(abi.encodePacked("Roll #",rollId," tickets collection")),
-        /// TODO form base URI with Roll's metadata and provide it instead of next perameters
-        
+        /// TODO IMPLEMENT CLONING PATTERN
+
+        /// @dev deploy ERC721 Roll participation token contract
+        return address(new RollParticipationToken(_rollId, _rollURI);
+
     }
 
     /**

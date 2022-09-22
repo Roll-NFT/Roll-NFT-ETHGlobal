@@ -55,7 +55,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
      * See {ERC721-tokenURI}.
      */
     constructor(
-        uint _rollID,
+        uint256 _rollID,
         string memory baseTokenURI
     ) ERC721(string(abi.encodePacked("Roll participation token collection #",_rollID)), "RPT") {
         
