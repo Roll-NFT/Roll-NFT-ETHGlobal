@@ -42,6 +42,8 @@ const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
                 <Breadcrumb
                     pageTitle="Roll Details"
                     currentPage="Roll Details"
+                    rootTitle="Explore"
+                    rootPath="/explore"
                 />
                 {roll && <ProductDetailsArea roll={roll} />}
                 {recentViewRolls && (

@@ -15,10 +15,10 @@ const Support = () => (
         <SEO pageTitle="Support" />
         <Header />
         <main id="main-content">
-            <Breadcrumb
+            {/* <Breadcrumb
                 pageTitle="Support Center"
                 currentPage="Support Center"
-            />
+            /> */}
             <ServiceArea />
             <SupportArea />
         </main>

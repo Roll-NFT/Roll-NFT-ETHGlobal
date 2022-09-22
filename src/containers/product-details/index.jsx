@@ -18,7 +18,7 @@ const ProductDetailsArea = ({ space, className, roll }) => (
         )}
     >
         <div className="container">
-            <div className="row g-5">
+            <div className="row g-5 mt-2">
                 <div className="col-lg-6 col-md-12 col-sm-12">
                     <Sticky>
                         <GalleryTab

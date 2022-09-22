@@ -14,10 +14,10 @@ const TermsAndConditions = () => (
         <SEO pageTitle="Terms & Condition" />
         <Header />
         <main id="main-content">
-            <Breadcrumb
+            {/* <Breadcrumb
                 pageTitle="Terms & Condition"
                 currentPage="Terms & Condition"
-            />
+            /> */}
             <TermsAndConditionsArea />
         </main>
         <Footer />
