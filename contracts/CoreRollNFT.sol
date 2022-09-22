@@ -299,32 +299,48 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     
     }
 
-    /// @dev function to claim prize from successfull Roll
-    function claimPrize(uint256 _rollType, uint256 _rollID, uint256 _ticketID) external {
+    /**
+     * @dev function to claim prize from successfull Roll
+     * 
+     * TODO UPDATE DESCRIPTION
+     * 
+     * @return "true" on successful function call
+     */
+    function claimPrize(uint256 _rollType, uint256 _rollID, uint256 _ticketID) external returns(bool) {
         
-        /// @dev get roll details
+        /// @dev get Roll parameters structure
+        var roll = rolls[_rollID];
 
-        /// @dev check that sales are closed
+        /// @dev check that Roll status is "RollFinished"
+        require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be RollFinished to claim Prize");
 
-        /// @dev check that roll is successful
+        /// @dev check that Prize asset is available to withdraw
+        require(!roll.prizeClaimed, "CoreRollNFT: Prize available to claim only once");
 
-        /// @dev check that prize is available to claim
-
-        /// @dev get winner ticket ID
+        /// @dev check that caller is a owner of the _ticketId
+        require(_msgSender() == getRollTicketsContract(_rollID).ownerOf(_ticketId), "CoreRollNFT: Caller should be the _ticketId owner to claim Prize");
 
         /// @dev check that provided ticket is a winning ticket
+        require(_ticketID == roll.winnerTokenId, "CoreRollNFT: _ticketID should be equal Roll winner token ID to claim Prize")
 
-        /// @dev check that caller is a owner of winning ticket
-        require(_msgSender() == roll.prizeCollection.ownerOf(roll.winnerTokenId), "CoreRollNFT: Should be an owner of winning token to claim Roll Prize");
+        /// @dev burn winner token
+        getRollTicketsContract(_rollID).burn(_ticketId);
 
-        /// @dev burn winning ticket
-
-        /// @dev send prize token to caller
-
-        /// @dev change prize / roll status - prize claimed
+        /**
+         * @dev send Prize asset to caller
+         * 
+         * roll.prizeCollection - IERC721
+         */
+        roll.prizeCollection.safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
+        
+        /// @dev set Prize status to "Claimed"
+        roll.prizeClaimed = true;
 
         /// @dev anounce about claimed prize - where who what
+        /// TODO REWORK EVENT
         event PrizeClaimed(_rollType, _rollID, ticketsContract, winningTicketID, msg.sender, prizeAddress, prizeID);
+
+        return true;
         
     }
 
@@ -333,7 +349,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * TODO UPDATE DOC
      * 
-     * Return true on successful operation
+     * @return "true" on successful function call
      */
     function claimRevenue(uint256 _rollType, uint256 _rollID) public returns (bool) {
 
@@ -391,7 +407,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * TODO UPDATE DOC
      * 
-     * Return true on successful operation
+     * @return "true" on successful function call
      */
     function withdrawPrize(uint256 _rollType, uint256 _rollID) public returns(bool) {
         
@@ -404,7 +420,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev check that Roll status is "RollClosed"
         require(roll.status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to withdraw Prize asset");
 
-        /// @dev check that Prize assets are available to withdraw
+        /// @dev check that Prize asset is available to withdraw
         require(!roll.prizeClaimed, "CoreRollNFT: Prize available to withdraw only once");
 
         /// @dev burn Roll ownership token
@@ -431,7 +447,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev refund tickets for Closed Roll
      * 
-     * Return true on successful operation
+     * @return "true" on successful function call
      * 
      * TODO UPDATE DESCRIPTION
      * 
@@ -474,8 +490,9 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 1000 = 10%
      * 10000 = 100%
      * 
-     * @notice Set percentage Revenue fee. 10% = 1000
      * @param _fee - new percentage Revenue fee value
+     * 
+     * @notice Set percentage Revenue fee. 10% = 1000
      */
     function setPercentageRevenueFee(uint256 _fee) public onlyOwner {
         uint256 oldValue = revenuePercentageFee;
@@ -503,15 +520,6 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     }
 
     /**
-     * @dev get Roll NFT treasury contract address
-     * 
-     * TODO MENTION INTERFACE
-     */
-    function getTreasuryContract() internal pure returns(address) {
-        return contractTreasury;
-    }
-
-    /**
      * @dev deploy Roll participation token contract for the _rollId
      * 
      * @param _rollId - Roll ID
@@ -528,6 +536,43 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     }
 
+    /**
+     * @dev return Fee amount that will be applied to Revenue amount
+     * 
+     * revenue * revenuePercentageFee / 10000
+     * 
+     * @param revenue - collected revenue amount
+     * 
+     * @notice Calculates fee that will be applied to provided Revenue amount
+     * 
+     * @return Fee amount applied on Revenue
+     */
+    function calculateRevenueFee(uint256 revenue) public view returns(uint256) {
+        
+        return (revenue.mul(revenuePercentageFee)).div(10000);
+
+    }
+
+    /**
+     * @dev return Revenue amount collected from Roll participants
+     * 
+     * Participants amount * Participation price
+     * Participants amount could be know by getting Ticket's contract totalSupply
+     * 
+     * @param _participantsAmount - Amount of participants
+     * @param _participationPrice - Participation price
+     * 
+     * @notice Calculate total revenue according to Participants amount and Participation price
+     * 
+     * @return Pure revenue without fees being applied
+     */
+    function calculateRevenue(uint256 _participantsAmount, uint256 _participationPrice) public view returns(uint256) {
+        
+        return _participantsAmount.mul(roll.participationPrice);
+    }
+
+    /// TODO
+    
     /**
      * @dev Function that creates Roll metadata and forms URI
      * 
@@ -583,36 +628,14 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
 
     }
-
+    
     /**
-     * @dev return Fee amount that will be applied to Revenue amount
+     * @dev get Roll NFT treasury contract address
      * 
-     * revenue * revenuePercentageFee / 10000
-     * 
-     * @notice Calculates fee that will be applied to provided Revenue amount
-     * 
-     * @param revenue - collected revenue amount
+     * TODO MENTION INTERFACE
      */
-    function calculateRevenueFee(uint256 revenue) public view returns(uint256) {
-        
-        return (revenue.mul(revenuePercentageFee)).div(10000);
-
-    }
-
-    /**
-     * @dev return Revenue amount collected from Roll participants
-     * 
-     * Participants amount * Participation price
-     * Participants amount could be know by getting Ticket's contract totalSupply
-     * 
-     * @param _participantsAmount - Amount of participants
-     * @param _participationPrice - Participation price
-     * 
-     * @notice Calculate total revenue according to Participants amount and Participation price
-     */
-    function calculateRevenue(uint256 _participantsAmount, uint256 _participationPrice) public view returns(uint256) {
-        
-        return _participantsAmount.mul(roll.participationPrice);
+    function getTreasuryContract() internal pure returns(address) {
+        return contractTreasury;
     }
 
     /**
