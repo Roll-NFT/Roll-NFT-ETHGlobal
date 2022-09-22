@@ -49,7 +49,7 @@ interface IRoll {
         uint prizeTokenId;
         bool prizeAvailable;
         uint winnerTokenId;
-        bool revenueClaimed;
+        bool revenueClaimed; // set False - on revenue claim. set True when setting Roll status to RollFinished
     }
 
 }

@@ -342,9 +342,9 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     function claimRevenue(uint256 _rollType, uint256 _rollID) external {
 
         /// @dev check that caller is a owner of the Roll
-        require(_msgSender() == rollOwnershipToken.ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
+        require(_msgSender() == getRollTokenContract().ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
 
-        /// @dev get roll details
+        /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
 
         /// @dev check that Roll status if finished
@@ -359,7 +359,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         require(!roll.revenueClaimed, "CoreRollNFT: Revenue available to claim only once");
 
         /// @dev set revenue status to claimed
-        roll.revenueAvailable = false;
+        roll.revenueClaimed = True;
 
         /// @dev burn Roll ownership token
         getRollTokenContract().burn(_rollID);
