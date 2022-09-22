@@ -276,33 +276,54 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     }
 
-    /// @dev function to participate in a Roll
-    function participate(uint256 _rollType, uint256 _rollID, uint256 _ticketsAmount, address paymentToken,uint256 _tokenAmoun) external {
+    /**
+     * @dev function to participate in a Roll
+     * 
+     * TODO UPDATE DOC
+     * 
+     * @return "true" on successful function call
+     * 
+     * TODO IMPLEMENT MULTI CALL BACK END PATTERN
+     */
+    function participate(uint256 _rollType, uint256 _rollID, address paymentToken,uint256 _tokenAmoun) public returns(bool) {
         
-        /// @dev check that sales are open
-        
+        /// @dev get Roll parameters structure
+        var roll = rolls[_rollID];
+
+        /// @dev check that Roll status is "SalesOpen"
+        require(roll.status == IRoll.Status.SalesOpen, "CoreRollNFT: Roll status should be SalesOpen to participate");
+
+        /// @dev get Tickets contract interface
+        IERC721RollTicket ticketsContract = getRollTicketsContract(_rollID);
+
         /// @dev check that _ticketsAmount would not overflow maxParticipants
+        if (roll.rollType == uint256(3) && roll.rollType == uint256(4)) {
+            
+            /// @dev get totalSupply of Participantion token collection - amount of participants
+            require(ticketsContract.totalSupply() < roll.maxParticipants, "CoreRollNFT: RPT totalSupply() should be less then maximum participants amount");
+            
+        }
         
         /// @dev send payment to core contract
+        roll.participationToken.transferFrom(_msgSender(), address(this), roll.participationPrice);
 
-        /// @dev send payment to Iddle assets contract
-
-        /// @dev mint participation tokens
+        /// @dev TODO approve and send payment to Iddle assets contract
         
-        /// @dev get Tickets contract address
-        address ticketsContract;
-
+        /// @dev mint participation tokens
+        ticketsContract.safeMint(_ticketId);
+        
         /// @dev emit event about minted tickets
-        /// ??? add minted token IDs
-        /// ??? emit event for every minted token
-        emit TicketsMinted(_rollType, _rollID, ticketsContract, msg.sender, _amount);
+        /// TODO REWORK EVENT
+        emit TicketsMinted(_rollType, _rollID, address(ticketsContract), _msgSender(), _amount);
+
+        return true;
     
     }
 
     /**
      * @dev function to claim prize from successfull Roll
      * 
-     * TODO UPDATE DESCRIPTION
+     * TODO UPDATE DOC
      * 
      * @return "true" on successful function call
      */
