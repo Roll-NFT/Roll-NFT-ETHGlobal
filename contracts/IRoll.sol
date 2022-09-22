@@ -47,9 +47,9 @@ interface IRoll {
         Status status;
         IERC721 prizeCollection;
         uint prizeTokenId;
-        bool prizeAvailable;
-        uint winnerTokenId;
-        bool revenueClaimed; // set False - on revenue claim. set True when setting Roll status to RollFinished
+        bool prizeClaimed; // set True - on Prize withdrawal and when winner claims the Prize. Default value is "False"
+        uint winnerTokenId; // set when winner selected. Defaul value is 0
+        bool revenueClaimed; // set True - on revenue claim. Default value is "False"
     }
 
 }

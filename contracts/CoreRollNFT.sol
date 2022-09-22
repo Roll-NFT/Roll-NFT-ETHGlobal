@@ -328,8 +328,14 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         
     }
 
-    /// @dev function to claim revenue from successfull Roll
-    function claimRevenue(uint256 _rollType, uint256 _rollID) external {
+    /**
+     * @dev function to claim revenue from successfull Roll
+     * 
+     * TODO UPDATE DOC
+     * 
+     * Return true on successful operation
+     */
+    function claimRevenue(uint256 _rollType, uint256 _rollID) public returns (bool) {
 
         /// @dev check that caller is a owner of the Roll
         require(_msgSender() == getRollTokenContract().ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
@@ -337,19 +343,19 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
 
-        /// @dev check that Roll status if finished
-        require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be Finished to claim Revenue");
+        /// @dev check that Roll status is "RollFinished"
+        require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be RollFinished to claim Revenue");
 
         /// @dev check that revenue is available to claim
         require(!roll.revenueClaimed, "CoreRollNFT: Revenue available to claim only once");
 
         /// @dev set revenue status to claimed
-        roll.revenueClaimed = True;
+        roll.revenueClaimed = true;
 
         /// @dev burn Roll ownership token
         getRollTokenContract().burn(_rollID);
 
-        /// @dev calculate revenue to claim
+        /// @dev calculate Revenue to claim
         uint256 revenue = calculateRevenue(getRollTicketsContract(_rollID).totalSupply(), roll.participationPrice);
         
         /// @dev calculate Revenue fee
@@ -358,39 +364,67 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev calculate total amount to be claimed
         uint256 total = revenue.sub(fee);
 
-        /// @dev send revenue to caller
+        /**
+         * @dev send revenue to caller
+         * 
+         * roll.participationToken is IERC20
+         */
         roll.participationToken.transfer(_msgSender(), fee);
         
-        /// @dev transfer fees to treasury
+        /**
+         * @dev transfer fees to treasury
+         * 
+         * roll.participationToken is IERC20
+         */
         roll.participationToken.transfer(getTreasuryContract(), fee);
 
         /// @dev announce about Roll's claimed revenue - where who what
+        /// TODO REWORK EVENT
         emit RevenueClaimed(_rollType, _rollID, rollHost, rollOwner, tokenAddress, amount);
+
+        return true;
 
     }
 
-    /// @dev function to withdraw prize from unsuccessful Roll
-    function withdrawPrize(uint256 _rollType, uint256 _rollID) external {
+    /**
+     * @dev function to withdraw prize from Closed (unsuccessful) Roll
+     * 
+     * TODO UPDATE DOC
+     * 
+     * Return true on successful operation
+     */
+    function withdrawPrize(uint256 _rollType, uint256 _rollID) public returns(bool) {
         
-        /// @dev get Roll details
+        /// @dev get Roll parameters structure
+        var roll = rolls[_rollID];
 
         /// @dev check that caller is a owner of the Roll
-        
-        /// @dev check that sales are closed
+        require(_msgSender() == getRollTokenContract().ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to withdraw Prize asset");
 
-        /// @dev check that Roll is unsuccessful
-        
-        /// @dev check that owner's assets are available to withdraw
+        /// @dev check that Roll status is "RollClosed"
+        require(roll.status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to withdraw Prize asset");
+
+        /// @dev check that Prize assets are available to withdraw
+        require(!roll.prizeClaimed, "CoreRollNFT: Prize available to withdraw only once");
 
         /// @dev burn Roll ownership token
         getRollTokenContract().burn(_rollID);
         
-        /// @dev send prize token to caller
+        /**
+         * @dev send Prize asset to caller
+         * 
+         * roll.prizeCollection - IERC721
+         */
+        roll.prizeCollection.safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
         
-        /// @dev set owner's assets status to unavailable to withdraw / claim
+        /// @dev set Prize status to "Claimed"
+        roll.prizeClaimed = true;
 
         /// @dev announce about withdrawn prize from unsuccessful Roll - where who what
+        /// TODO REWORK EVENT
         emit PrizeWithdrawn(_rollType, _rollID, rollHost, rollOwner, prizeAddress, prizeID);
+
+        return true;
 
     }
 
@@ -564,5 +598,9 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         
         return _participantsAmount.mul(roll.participationPrice);
     }
+
+    /**
+     * TODO IERC721Receiver-onERC721Received
+     */
 
 }
