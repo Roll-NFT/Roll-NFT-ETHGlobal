@@ -10,12 +10,9 @@ import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./IERC721RollToken.sol";
 import "./IERC721RollTicket.sol";
-import "./TicketsContract.sol";
-import "./IddleAssets.sol";
-import "./IRoll.sol"; // IRoll.Roll IRoll.Status
-import "./IPrize.sol"; // IPrize.Prize
-import "./IRollAssets.sol"; // IRollAssets.RollAssets
+import "./RollParticipationToken.sol";
 import "./RollOwnershipToken.sol";
+import "./IRoll.sol";
 import "./TreasuryRollNFT.sol";
 
 // Uncomment this line to use console.log
@@ -25,7 +22,7 @@ import "./TreasuryRollNFT.sol";
 contract CoreRollNFT is Pausable, Ownable, Context {
     using Counters for Counters.Counter;
     using SafeMath for uint256;
-    // using Strings for uint256;
+    using Strings for uint256;
 
     /**
      * @dev declare Roll tickets contract implementation to be cloned
@@ -50,12 +47,12 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @dev Contract that will hold assets
      * To implement logic for assets in future
      */
-    address internal immutable contractIddleAssets;
+    address public immutable contractIddleAssets;
 
     /**
      * @dev Contract that will hold and operate with treasury assets
      */
-    address internal immutable contractTreasury;
+    address public immutable contractTreasury;
     
     /**
      * @dev Roll ownership Token collection (ROLT) - ERC721 contract
@@ -69,7 +66,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @notice Roll ownership Token collection (ROLT) address
      */
-    address internal immutable rollOwnershipToken;
+    address public immutable rollOwnershipToken;
 
     /**
      * @dev Mapping rollId to tixContract
@@ -81,16 +78,9 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev Mapping rollId to Roll data
      * 
-     * @notice To get Roll data for provided Roll ID
+     * @notice Store Roll data for provided Roll ID
      */
     mapping (uint => IRoll.Roll) rolls;
-    
-    /**
-     * @dev Mapping rollId to Prize data
-     * 
-     * @notice To get Prize data for provided Roll ID
-     */
-    mapping (uint => IPrize.Prize) prizes;
     
     /// @dev announce about successful Roll creation
     event RollCreated(uint256 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
@@ -111,8 +101,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     event TicketsRefunded(uint indexed rollType, uint indexed rollID, address rollHost, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
 
     /// @dev announce about updated Revenue fee
-    event RevenueFeeUpdated(uint256 revenuePercentageFee);
-
+    event RevenueFeeUpdated(uint256 newFee, uint256 oldFee);
+    
     /**
      * @dev anounce about closed Roll (unsucceed)
      * 
@@ -350,12 +340,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev check that Roll status if finished
         require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be Finished to claim Revenue");
 
-        /**
-         * @dev check that revenue is available to claim
-         * TODO How do we define that revenue is avalilable?
-         * It could be inside of the Roll
-         * It could be inside of the Assets
-         */
+        /// @dev check that revenue is available to claim
         require(!roll.revenueClaimed, "CoreRollNFT: Revenue available to claim only once");
 
         /// @dev set revenue status to claimed
@@ -363,25 +348,21 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
         /// @dev burn Roll ownership token
         getRollTokenContract().burn(_rollID);
-        
-        /**
-         * @dev calculate revenue to claim
-         * 
-         * Participants amount * Participation price
-         * Participants amount could be know by getting Ticket's contract totalSupply
-         */
-        uint256 revenue = getRollTicketsContract(_rollID).totalSupply() * roll.participationPrice;
-        
-        /// @dev (participantsAmount * _participationCost)
-        /// @dev include protocol fee
-        /// @dev calculate Revenue fee
-        uint256 fee = ()
-        // revenuePercentageFee
-        
-        /// @dev send revenue to caller
 
+        /// @dev calculate revenue to claim
+        uint256 revenue = calculateRevenue(getRollTicketsContract(_rollID).totalSupply(), roll.participationPrice);
+        
+        /// @dev calculate Revenue fee
+        uint256 fee = calculateRevenueFee(revenue);
+
+        /// @dev calculate total amount to be claimed
+        uint256 total = revenue.sub(fee);
+
+        /// @dev send revenue to caller
+        roll.participationToken.transfer(_msgSender(), fee);
+        
         /// @dev transfer fees to treasury
-        contractTreasury
+        roll.participationToken.transfer(getTreasuryContract(), fee);
 
         /// @dev announce about Roll's claimed revenue - where who what
         emit RevenueClaimed(_rollType, _rollID, rollHost, rollOwner, tokenAddress, amount);
@@ -463,9 +444,10 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @notice Set percentage Revenue fee. 10% = 1000
      * @param _fee - new percentage Revenue fee value
      */
-    function setPercentageRevenueFee(uint256 _fee) external onlyOwner {
+    function setPercentageRevenueFee(uint256 _fee) public onlyOwner {
+        uint256 oldValue = revenuePercentageFee;
         revenuePercentageFee = _fee;
-        emit RevenueFeeUpdated(revenuePercentageFee);
+        emit RevenueFeeUpdated(_fee, oldValue);
     }
 
     /**
@@ -473,7 +455,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * That implements interface {IERC721Roll - safeMint, burn}
      */
-    function getRollTokenContract() public pure returns(IERC721RollToken){
+    function getRollTokenContract() internal pure returns(IERC721RollToken){
         return IERC721RollToken(rollOwnershipToken);
     }
 
@@ -483,8 +465,15 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * That implements interface {IERC721Roll - safeMint, burn}
      */
-    function getRollTicketsContract(uint _rollId) public pure return(IERC721RollTicket){
+    function getRollTicketsContract(uint _rollId) internal pure returns(IERC721RollTicket){
         return IERC721RollTicket(ticketsAddr[_rollId]);
+    }
+
+    /**
+     * @dev get Roll NFT treasury contract address
+     */
+    function getTreasuryContract() internal pure returns(address) {
+        return contractTreasury;
     }
 
     /**
@@ -536,13 +525,44 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
     /**
      * @dev function that return Roll URI according to provided Roll ID
+     * 
+     * TODO
      */
-    function getRollURI(uint _rollId) public view pure return(string memory rollURI) {
+    function getRollURI(uint256 _rollId) public view pure returns(string memory rollURI) {
         
         /// @dev get tickets contract address
         tickets
 
 
     }
+
+    /**
+     * @dev return Fee amount that will be applied to Revenue amount
+     * 
+     * revenue * revenuePercentageFee / 10000
+     * 
+     * @notice Calculates fee that will be applied to provided Revenue amount
+     * 
+     * @param revenue - collected revenue amount
+     */
+    function calculateRevenueFee(uint256 revenue) public view returns(uint256) {
         
+        return (revenue.mul(revenuePercentageFee)).div(10000);
+
+    }
+
+    /**
+     * @dev return Revenue amount collected from Roll participants
+     * 
+     * Participants amount * Participation price
+     * Participants amount could be know by getting Ticket's contract totalSupply
+     * 
+     * @param _participantsAmount - Amount of participants
+     * @param _participationPrice - Participation price
+     */
+    function calculateRevenue(uint256 _participantsAmount, uint256 _participationPrice) public view returns(uint256) {
+        
+        return _participantsAmount.mul(roll.participationPrice);
+    }
+
 }
