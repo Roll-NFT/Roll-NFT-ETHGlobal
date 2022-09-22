@@ -135,7 +135,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
      * @dev Return Base URI
      */
     function baseURI() public view returns (string memory) {
-        _baseURI()
+        _baseURI();
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)

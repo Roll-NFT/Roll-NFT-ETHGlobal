@@ -41,7 +41,7 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
      */
     constructor(
         string memory baseTokenURI,
-        address _manager
+        address manager,
     ) ERC721("Roll ownership Token collection", "ROLT") {
 
         /**
@@ -62,7 +62,7 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
         /**
          * @dev grant to _manager address a `MANAGER_ROLE`
          */
-        _setupRole(MANAGER_ROLE, _manager);
+        _setupRole(MANAGER_ROLE, manager);
         
     }
 

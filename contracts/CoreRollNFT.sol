@@ -141,7 +141,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
      * @param host - Roll host address
      */
-    event RollFinsihed(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+    event RollFinished(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
     /**
      * @dev Set the owner 
@@ -206,7 +206,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev check that _prizeAddress is set and is not 0
         require(_prizeAddress != address(0), 'Missing Prize collection address');
 
-        /// @dev check that _prizeAddress is set and is not 0
+        /// @dev check that _participationToken is set and is not 0
         require(_participationToken != address(0), 'Missing participation token address');
 
         /// @dev check that _rollTime is provided and is in future
@@ -237,7 +237,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
             }
 
         } else {
-            require(_maxParticipants > _minParticipants)
+            require(_maxParticipants > _minParticipants);
 
             if (_minParticipants == 0) {
                 rollType = 3;
