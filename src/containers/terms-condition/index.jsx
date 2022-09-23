@@ -16,7 +16,7 @@ const TermsAndConditionsArea = ({ className, space }) => (
                     <div className="condition-wrapper">
                         <h2>Terms & Conditions for the Rafles</h2>
                         <p className="mb-2">
-                            - When you create a raffle, the NFT prize you have
+                            - When you create a roll, the NFT prize you have
                             chosen will be transferred from your wallet into our
                             escrow.
                         </p>
@@ -27,15 +27,15 @@ const TermsAndConditionsArea = ({ className, space }) => (
                         </p>
                         <p className="mb-2">
                             - Your NFT will be returned if the minimum number of
-                            tickets has not been sold before the raffle
+                            tickets has not been sold before the roll
                             deadline.
                         </p>
                         <p className="mb-2">
-                            - The host can draw the raffle anytime after the
+                            - The host can draw the roll anytime after the
                             specified deadline.
                         </p>
                         <p className="mb-2">
-                            - The raffle should run for a minimum of 24 hours.
+                            - The roll should run for a minimum of 24 hours.
                         </p>
                         <p className="mb-2">
                             - Roll NFT will take a 5% commission fee from the
@@ -46,8 +46,8 @@ const TermsAndConditionsArea = ({ className, space }) => (
                             single ticket is sold.
                         </p>
                         <p className="mb-2">
-                            - Raffle tickets will not be refunded for the
-                            participants that did not win the raffle.
+                            - Roll tickets will not be refunded for the
+                            participants that did not win the roll.
                         </p>
                         <p className="mb-2">
                             - A single participant can buy at most 20% of total

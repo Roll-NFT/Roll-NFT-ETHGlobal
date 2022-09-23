@@ -21,7 +21,7 @@ const FaucetForm = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const faucetContract = new ethers.Contract(
-            process.env.NEXT_PUBLIC_SC_FAUCET,
+            process.env.NEXT_PUBLIC_NFT_FAUCET,
             nftFaucet.abi,
             signer
         );
@@ -91,7 +91,7 @@ const FaucetForm = () => {
                     error: false,
                     class: "text-success",
                     msg: `NFT minted! ${process.env.NEXT_PUBLIC_RARIBLE_URL}${
-                        process.env.NEXT_PUBLIC_SC_FAUCET
+                        process.env.NEXT_PUBLIC_NFT_FAUCET
                     }:${_tokenId.toNumber()}`,
                 },
             });

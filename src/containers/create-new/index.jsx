@@ -41,11 +41,11 @@ const CreateNewArea = ({ className, space, nft }) => {
                 }
             )
             .then((response) => {
-                toast(`Raffle saved successfully!`);
+                toast(`Roll saved successfully!`);
                 Router.push(`/roll/${response.data.raffleId}`);
             })
             .catch((errorResponse) => {
-                toast("Error saving Raffle, please try again later!");
+                toast("Error saving Roll, please try again later!");
                 console.log(errorResponse);
             });
     };
@@ -94,7 +94,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                             <div className="upload-area">
                                 <div className="upload-formate mb--30">
                                     <h6 className="title">
-                                        Choose NFT for Raffle
+                                        Choose NFT for Roll
                                     </h6>
                                     <p className="formate">
                                         Click the button below to select from
@@ -161,11 +161,11 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                 htmlFor="name"
                                                 className="form-label"
                                             >
-                                                Raffle Title*
+                                                Roll Title*
                                             </label>
                                             <input
                                                 id="raffleTitle"
-                                                placeholder="e.g. 'Super Awesome NFT Raffle'"
+                                                placeholder="e.g. 'Super Awesome NFT Roll'"
                                                 defaultValue={
                                                     nft ? nft.title : ""
                                                 }
@@ -218,7 +218,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                 htmlFor="endDate"
                                                 className="form-label"
                                             >
-                                                Raffle End Date*
+                                                Roll End Date*
                                             </label>
                                             <input
                                                 id="endDate"
@@ -243,7 +243,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                 htmlFor="price"
                                                 className="form-label"
                                             >
-                                                Ticket Price (ETH)*
+                                                Ticket Price (wETH)*
                                             </label>
                                             <input
                                                 id="price"
@@ -333,7 +333,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                                     <div className="d-grid d-md-flex justify-content-md-end">
                                         <div className="input-box ">
                                             <Button type="submit">
-                                                Create Raffle
+                                                Create Roll
                                             </Button>
                                         </div>
                                     </div>

@@ -30,7 +30,7 @@ export default async (req, res) => {
 
     if (!data) {
         res.status(400).json({
-            error: { message: "Raffle not found!" },
+            error: { message: "Roll not found!" },
         });
     }
 

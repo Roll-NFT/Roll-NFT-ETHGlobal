@@ -69,9 +69,9 @@ const MyNFTs = () => {
             <Header />
             <main id="main-content">
                 <Breadcrumb
-                    pageTitle="Select NFT for this Raffle"
+                    pageTitle="Select NFT for this Roll"
                     currentPage="Select NFT"
-                    rootTitle="Create New Raffle"
+                    rootTitle="Create New Roll"
                     rootPath="/roll/create"
                 />
                 {balances?.length ? (

@@ -20,10 +20,10 @@ const Home = () => {
 
     return (
         <Wrapper>
-            <SEO pageTitle="Create New Raffle" />
+            <SEO pageTitle="Create New Roll" />
             <Header />
             <main id="main-content">
-                <Breadcrumb pageTitle="Create New Raffle" />
+                <Breadcrumb pageTitle="Create New Roll" />
                 <CreateNewArea nft={nft} />
             </main>
             <Footer />

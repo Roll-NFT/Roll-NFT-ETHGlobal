@@ -24,7 +24,7 @@
                 {
                     "id": 2,
                     "color": "primary-alta",
-                    "content": "Create Raffle",
+                    "content": "Create Roll",
                     "path": "/roll/create"
                 }
             ],

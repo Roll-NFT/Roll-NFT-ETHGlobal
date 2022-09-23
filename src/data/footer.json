@@ -63,7 +63,7 @@
             },
             {
                 "id": 3,
-                "text": "Create Raffle",
+                "text": "Create Roll",
                 "path": "/roll/create"
             },
             {

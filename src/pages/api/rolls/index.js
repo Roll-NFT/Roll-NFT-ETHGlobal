@@ -25,7 +25,7 @@ export default async (req, res) => {
             endDate: form.endDate,
             ticketSupply: form.supply,
             ticketPrice: form.price,
-            ticketCurrency: "ETH",
+            ticketCurrency: "wETH",
             categories: ["Art"],
             likeCount: 0,
             tickets: [],

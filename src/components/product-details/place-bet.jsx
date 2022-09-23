@@ -63,7 +63,7 @@ const PlaceBet = ({
                 toast(`Tickets acquired successfully!`);
             })
             .catch((errorResponse) => {
-                toast("Error updating Raffle, please try again later!");
+                toast("Error updating Roll, please try again later!");
                 console.log(errorResponse);
             });
     };
@@ -149,7 +149,7 @@ const PlaceBet = ({
                                 color={btnColor || "primary-alta"}
                                 // onClick={handleBidModal}
                             >
-                                Buy Raffle Tickets
+                                Buy Roll Tickets
                             </Button>
                         </div>
                     </div>
