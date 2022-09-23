@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -19,17 +19,13 @@ import "./TreasuryRollNFT.sol";
 // import "hardhat/console.sol";
 
 /// @custom:security-contact loizage@icloud.com
-contract CoreRollNFT is Pausable, Ownable, Context {
+contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
     using Counters for Counters.Counter;
     using SafeMath for uint256;
     using Strings for uint256;
 
-    /**
-     * @dev declare Roll tickets contract implementation to be cloned
-     * That contract will be cloned with immutable arguments pattern implementation
-     */
-    // TicketsContract public implementationTickectsContract;
-
+    bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
+    
     /// @dev Roll ID counter
     Counters.Counter private _rollIdCounter;
     
@@ -40,9 +36,6 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      */
     uint256 public revenuePercentageFee;
     
-    /// @dev Wirefram - Ticket's NFT collection contract 
-    // IERC721 internal immutable contractTicketsTemplate;
-    
     /**
      * @dev Contract that will hold assets
      * To implement logic for assets in future
@@ -50,7 +43,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     address public immutable contractIddleAssets;
 
     /**
-     * @dev Contract that will hold and operate with treasury assets
+     * @dev Contract that will hold and operate with treasury assets. Such as Revenue fee and unclaimed assets.
      */
     address public immutable contractTreasury;
     
@@ -69,36 +62,36 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     address public immutable rollOwnershipToken;
 
     /**
-     * @dev Mapping rollId to tixContract
+     * @dev Mapping rollId to RollParticipationToken contract address
      * 
-     * @notice To get anddress of NFT smart contract of Tickets for provided Roll ID
+     * @notice To get Participation token (tickets) contract anddress for provided Roll ID
      */
-    mapping (uint => address) ticketsAddr;
+    mapping (uint256 => address) ticketsAddr;
     
     /**
-     * @dev Mapping rollId to Roll data
+     * @dev Mapping rollId to Roll parameters structure
      * 
-     * @notice Store Roll data for provided Roll ID
+     * @notice To get Roll parameters for provided Roll ID
      */
-    mapping (uint => IRoll.Roll) rolls;
+    mapping (uint256 => IRoll.Roll) rolls;
     
     /// @dev announce about successful Roll creation
-    event RollCreated(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
+    event RollCreated(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint256 prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
     
     /// @dev announce about Roll's new participants / minted tickets
-    event TicketsMinted(uint8 indexed rollType, uint indexed rollID, address ticketsContract, address participant, uint amount);
+    event TicketsMinted(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address participant, uint256 amount);
 
     /// @dev announce about Roll's claimed prize
-    event PrizeClaimed(uint8 indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint prizeID);
+    event PrizeClaimed(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint256 prizeID);
     
     /// @dev announce about Roll's claimed revenue
-    event RevenueClaimed(uint8 indexed rollType, uint rollID, address indexed rollHost, address indexed rollOwner, address tokenAddress, uint amount);
+    event RevenueClaimed(uint8 indexed rollType, uint256 rollID, address indexed rollHost, address indexed rollOwner, address tokenAddress, uint256 amount);
     
     /// @dev announce about withdrawn prize from unsuccessful Roll
-    event PrizeWithdrawn(uint8 indexed rollType, uint indexed rollID, address rollHost, address rollOwner, address indexed prizeAddress, uint prizeID);
+    event PrizeWithdrawn(uint8 indexed rollType, uint256 indexed rollID, address rollHost, address rollOwner, address indexed prizeAddress, uint256 prizeID);
     
     /// @dev announce about refunded tickets from unsuccessful Roll
-    event TicketsRefunded(uint8 indexed rollType, uint indexed rollID, address rollHost, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
+    event TicketsRefunded(uint8 indexed rollType, uint256 indexed rollID, address rollHost, address participant, address tokenAddress, uint256 refundAmount, uint256 ticketsAmount);
 
     /// @dev announce about updated Revenue fee
     event RevenueFeeUpdated(uint256 newFee, uint256 oldFee);
@@ -106,7 +99,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev anounce about closed Roll (unsucceed)
      * 
-     * @notice Announced when Roll conditions are not met. There is no winner selected. Prize is available to withdraw by Roll owner. Tickets are available to refund to participants.
+     * @notice Announced when Roll conditions are not met. There is no winner selected. Prize is available to withdraw by Roll owner. Tickets are available to refund for participants.
      * 
      * @param rollType - Roll type, defines Roll executinion logic
      * @param rollID - Roll ID, unique number of every Roll and it's ownership token
@@ -115,7 +108,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param prizeAddress - Prize token collection address
      * @param prizeID - Prize token ID
      */
-    event RollClosed(uint8 rollType, uint indexed rollID, address indexed prizeAddress, uint prizeID);
+    event RollClosed(uint8 rollType, uint256 indexed rollID, address indexed prizeAddress, uint256 prizeID);
     // address indexed ticketsContract, address indexed owner
     
     /**
@@ -131,35 +124,47 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
      * @param host - Roll host address
      */
-    event RollFinished(uint8 rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+    event RollFinished(uint8 rollType, uint256 rollID, uint256 winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
     /**
-     * @dev Set the owner 
+     * @dev Set Roll NFT infrastracture.
+     * Set initial parameters.
+     * Grant roles
      * 
      * @param baseTokenURI - to set base token URI for Roll ownership tokens
+     * @param _revenueFee - percentage Revenue fee applaied to on "claimRevenue()"
      */
     constructor(
         string memory _baseTokenURI,
         uint256 _revenueFee
     ) {
+        
+        address sender = _msgSender();
+        
         /**
          * @dev Deploy Roll ownership Token contract and save it's address
          * 
          * @param _baseTokenURI - Roll ownership token Base URI
          * @param _msgSender - address to grant MANAGER_ROLE
          */
-        rollOwnershipToken = address(new RollOwnershipToken(_baseTokenURI,_msgSender()));
+        rollOwnershipToken = address(new RollOwnershipToken(_baseTokenURI, sender));
         
         /**
          * @dev Deploy Treasury contract and save it's address
          * 
-         * @param _msgSender - address to grant MANAGER_ROLE
+         * @param sender - address to grant MANAGER_ROLE
          */
-        contractTreasury = address(new TreasuryRollNFT(_msgSender()));
+        contractTreasury = address(new TreasuryRollNFT(sender));
 
         /// @dev set initial Revenue fee
         /// TODO use internal function instead
         revenuePercentageFee = _revenueFee;
+
+        /**
+         * @dev grant to deployer address a `MANAGER_ROLE`
+         */
+        _setupRole(DEFAULT_ADMIN_ROLE, sender);
+        _setupRole(MANAGER_ROLE, sender);
     }
 
     /**
@@ -168,7 +173,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @notice Trigger pause. The contract must not be paused.
      */
-    function pause() public onlyOwner {
+    function pause() public onlyRole(MANAGER_ROLE) {
         _pause();
     }
 
@@ -178,7 +183,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @notice Lift pause. The contract must be paused.
      */
-    function unpause() public onlyOwner {
+    function unpause() public onlyRole(MANAGER_ROLE) {
         _unpause();
     }
 
@@ -205,7 +210,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         address _participationToken,
         address _prizeAddress,
         uint _prizeId
-    ) public returns(uint256){
+    ) public whenNotPaused returns(uint256){
 
         /// @dev check that _prizeAddress is set and is not 0
         require(_prizeAddress != address(0), 'CoreRollNFT: Prize collection address should be different from "0" to create Roll');
@@ -278,6 +283,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev emit event about hosted Roll
         emit RollCreated(rollType, rollId, TicketsContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
 
+        return rollId;
+
     }
 
     /**
@@ -289,7 +296,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * TODO IMPLEMENT MULTI CALL BACK END PATTERN
      */
-    function participate(uint256 _rollID, address paymentToken,uint256 _tokenAmoun) public returns(bool) {
+    function participate(uint256 _rollID, address paymentToken,uint256 _tokenAmoun) public whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -331,7 +338,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @return "true" on successful function call
      */
-    function claimPrize(uint256 _rollID, uint256 _ticketID) external returns(bool) {
+    function claimPrize(uint256 _rollID, uint256 _ticketID) external whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -374,7 +381,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @return "true" on successful function call
      */
-    function claimRevenue(uint256 _rollID) public returns (bool) {
+    function claimRevenue(uint256 _rollID) public whenNotPaused returns(bool) {
 
         /// @dev check that caller is a owner of the Roll
         require(_msgSender() == getRollTokenContract().ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
@@ -428,7 +435,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @return "true" on successful function call
      */
-    function withdrawPrize(uint256 _rollID) public returns(bool) {
+    function withdrawPrize(uint256 _rollID) public whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -470,7 +477,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * TODO implememnt Multi Call pattern on backend for banch refund
      */
-    function refundParticipation(uint256 _rollID, uint256 _ticketId) public returns(bool) {
+    function refundParticipation(uint256 _rollID, uint256 _ticketId) public whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -499,17 +506,17 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     /**
      * @dev set Revenue fee represented in %
      * 
+     * @param _fee - new percentage Revenue fee value
+     * 
+     * @notice Set Revenue fee in percentage.
+     * 
      * 1 = 0.01%
      * 10 = 0.1%
      * 100 = 1%
      * 1000 = 10%
      * 10000 = 100%
-     * 
-     * @param _fee - new percentage Revenue fee value
-     * 
-     * @notice Set percentage Revenue fee. 10% = 1000
      */
-    function setPercentageRevenueFee(uint256 _fee) public onlyOwner {
+    function setPercentageRevenueFee(uint256 _fee) public onlyRole(MANAGER_ROLE) {
         uint256 oldValue = revenuePercentageFee;
         revenuePercentageFee = _fee;
         emit RevenueFeeUpdated(_fee, oldValue);
@@ -735,6 +742,8 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * TODO MENTION INTERFACE
      */
     function getTreasuryContract() internal pure returns(address) {
+        /// TODO IMPLEMENT INTERFACE
+        /// TODO RETURN INTERFACE INSTEAD
         return contractTreasury;
     }
 
