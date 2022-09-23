@@ -50,9 +50,23 @@ contract TellorRNG is UsingTellor, Ownable {
    //TODO: Check if we can add extra data to _queryData in order to diferentiate two rolls that are being drawn at the same time
    //TODO: Check if is it possible for the oracle reporter to call a function in our contract whenever the RNG number is ready
    //      That way he would be playing both a reporter role and a "keeper" role.
+   // Tim suggestions: 
+   // * Choose a timestamp when no more decisions can be made by the 
+   // * Add a nounce on our end
+   // * Maybe create a new TellorRNGCustom Struct  (https://github.com/tellor-io/dataSpecs)
+   // * Create issue and/or open a PR with the spec
+   // * Events:
+   //  event NewReport(
+   //      bytes32 indexed _queryId,
+   //      uint256 _time,
+   //      bytes _value,
+   //      uint256 _nonce,
+   //      bytes indexed _queryData,
+   //      address indexed _reporter
+   //  );
 
   function requestRandomNumber(uint256 _timestamp) public onlyAuthorized {
-    bytes memory _queryData = abi.encode("TellorRNG", abi.encode(_timestamp));
+    bytes memory _queryData = abi.encode("TellorRNG", abi.encode(_timestamp)); //TellorRNGCustom with a new argument to help us to identify the raffle
     bytes32 _queryId = keccak256(_queryData);
     tellorToken.approve(address(autopay), tipAmount);
     autopay.tip(_queryId, tipAmount, _queryData);
