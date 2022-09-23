@@ -32,7 +32,7 @@ const CreateNewArea = ({ className, space, nft }) => {
     const saveRaffle = async (form) => {
         await axios
             .post(
-                "/api/rolls",
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`,
                 { user, nft, form },
                 {
                     headers: {

@@ -19,7 +19,7 @@ const ProductDetails = ({ recentViewRolls, relatedRolls }) => {
     const { slug } = router.query;
 
     async function findRaffle(id) {
-        await axios(`/api/rolls/${id}`)
+        await axios(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls/${id}`)
             .then((response) => {
                 dispatch(rollUpdate(response.data.data));
             })

@@ -15,7 +15,9 @@ const Home02 = () => {
     const [products, setProducts] = useState([]);
 
     async function getRaffles() {
-        await axios(`/api/rolls`, { params: { startDate: new Date() } })
+        await axios(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`, {
+            params: { startDate: new Date() },
+        })
             .then((response) => {
                 setProducts(response.data.data);
             })

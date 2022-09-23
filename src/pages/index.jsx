@@ -31,7 +31,7 @@ const Home = () => {
         const soonish = 5;
         const startDate = new Date();
         const endDate = addDays(startDate, soonish);
-        await axios(`/api/rolls`, {
+        await axios(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`, {
             params: { startDate, endDate },
         })
             .then((response) => {
@@ -43,7 +43,7 @@ const Home = () => {
     }
 
     async function getHero() {
-        await axios(`/api/rolls/hero`, {
+        await axios(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls/hero`, {
             params: { startDate: new Date(), sort: "-ticketsSold" },
         })
             .then((response) => {

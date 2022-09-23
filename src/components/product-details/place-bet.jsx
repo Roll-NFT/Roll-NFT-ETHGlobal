@@ -49,7 +49,7 @@ const PlaceBet = ({
     const buyTickets = async () => {
         await axios
             .put(
-                `/api/rolls/${slug}`,
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls/${slug}`,
                 { ticket },
                 {
                     headers: {

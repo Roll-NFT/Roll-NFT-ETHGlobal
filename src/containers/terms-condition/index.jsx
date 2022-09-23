@@ -27,8 +27,7 @@ const TermsAndConditionsArea = ({ className, space }) => (
                         </p>
                         <p className="mb-2">
                             - Your NFT will be returned if the minimum number of
-                            tickets has not been sold before the roll
-                            deadline.
+                            tickets has not been sold before the roll deadline.
                         </p>
                         <p className="mb-2">
                             - The host can draw the roll anytime after the
