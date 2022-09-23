@@ -1,8 +1,32 @@
+import Cors from "cors";
 import { v4 } from "uuid";
 import connectDB from "../../../lib/connectDB";
 import Raffles from "../../../lib/raffleSchema";
 
+// Initializing the cors middleware
+// You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
+const whitelistedDomains = process.env.WHITELISTED_DOMAINS.split(",");
+const cors = Cors({
+    origin: whitelistedDomains,
+});
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+        fn(req, res, (result) => {
+            if (result instanceof Error) {
+                return reject(result);
+            }
+            return resolve(result);
+        });
+    });
+}
+
 export default async (req, res) => {
+    // Run the middleware
+    await runMiddleware(req, res, cors);
+
     await connectDB();
 
     // POST /api/rolls/
