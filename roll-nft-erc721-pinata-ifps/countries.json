@@ -1,0 +1,2025 @@
+[{
+	"code": "ad",
+	"name": "Andorra",
+	"ipfsCID": "QmZF4zadSZZAdL1aptDiGZBmAeApghXyjeYKkA8JKbPAeS",
+	"ipfsSize": 185133,
+	"population": 77006,
+	"currency": "EUR",
+	"city": "Andorra la Vella"
+}, {
+	"code": "ae",
+	"name": "United Arab Emirates",
+	"ipfsCID": "QmPGhYDpXE8va6feRDBNcUu443hNLqAB9KQgz4htRteNSr",
+	"ipfsSize": 24349,
+	"population": 9630959,
+	"currency": "AED",
+	"city": "Abu Dhabi"
+}, {
+	"code": "af",
+	"name": "Afghanistan",
+	"ipfsCID": "QmU8nHjkW6riYz8Chj1zcwWJVymCbwhK7T3G3uEYVLhgVC",
+	"ipfsSize": 319936,
+	"population": 37172386,
+	"currency": "AFN",
+	"city": "Kabul"
+}, {
+	"code": "ag",
+	"name": "Antigua and Barbuda",
+	"ipfsCID": "QmehYzy2g2fxuSi1QFm1bB1xQ1KrZq1f8r1xB8sbamsau9",
+	"ipfsSize": 53244,
+	"population": 96286,
+	"currency": "XCD",
+	"city": "Saint John's"
+}, {
+	"code": "ai",
+	"name": "Anguilla",
+	"ipfsCID": "QmdHEojgHUfdqkeEb5YGYe4cjpCB4ftSu97B362UdUoEnp",
+	"ipfsSize": 53826,
+	"population": 15094,
+	"currency": "XCD",
+	"city": "The Valley"
+}, {
+	"code": "al",
+	"name": "Albania",
+	"ipfsCID": "QmZWmQnkwPzAwKxrabnmRaEV9wBGeFthE5F9RCD7me24pJ",
+	"ipfsSize": 107574,
+	"population": 2866376,
+	"currency": "ALL",
+	"city": "Tirana"
+}, {
+	"code": "am",
+	"name": "Armenia",
+	"ipfsCID": "QmYmy6H974bZztj1LkJiFovMwWANi4mKAejp1kW4NuzJfB",
+	"ipfsSize": 25987,
+	"population": 2951776,
+	"currency": "AMD",
+	"city": "Yerevan"
+}, {
+	"code": "ao",
+	"name": "Angola",
+	"ipfsCID": "QmbmfUJLXcGa2qnCjQsQCgELiZ2QcV2BHT4RM2xDnh2zbx",
+	"ipfsSize": 78595,
+	"population": 30809762,
+	"currency": "AOA",
+	"city": "Luanda"
+}, {
+	"code": "aq",
+	"name": "Antarctica",
+	"ipfsCID": "QmZidRBqexAhDXBmki338N8SiGMmAKie1ArkveAhg4ECR8",
+	"ipfsSize": 26711,
+	"population": 1106,
+	"currency": "XCD",
+	"city": null
+}, {
+	"code": "ar",
+	"name": "Argentina",
+	"ipfsCID": "QmSLWKrNLd7oan3txSdckFzwQKwFdfgYuT5BQRotvanmDa",
+	"ipfsSize": 101415,
+	"population": 44494502,
+	"currency": "ARS",
+	"city": "Buenos Aires"
+}, {
+	"code": "as",
+	"name": "American Samoa",
+	"ipfsCID": "QmeJzXDLK4Vyd3T4e4djh1UARvx6sobgjXVXUsa1Ee5Drk",
+	"ipfsSize": 45921,
+	"population": 55465,
+	"currency": "USD",
+	"city": "Fagatogo"
+}, {
+	"code": "at",
+	"name": "Austria",
+	"ipfsCID": "QmcE5PD2UmFHPZY3vzfvnfK7ndZD9Eteejhk8uyMefQF89",
+	"ipfsSize": 27022,
+	"population": 8840521,
+	"currency": "EUR",
+	"city": "Wien"
+}, {
+	"code": "au",
+	"name": "Australia",
+	"ipfsCID": "QmaqDgCTBNHzkQvcFvWt2A12GhxQhqzx4nZmnWehXu95Nn",
+	"ipfsSize": 52211,
+	"population": 24982688,
+	"currency": "AUD",
+	"city": "Canberra"
+}, {
+	"code": "aw",
+	"name": "Aruba",
+	"ipfsCID": "QmTpT4Xox5RQahVX4aV9k2DGqMaQUx26EbwbzpfusbZdZ3",
+	"ipfsSize": 30372,
+	"population": 105845,
+	"currency": "AWG",
+	"city": "Oranjestad"
+}, {
+	"code": "ax",
+	"name": "Åland Islands",
+	"ipfsCID": "QmZP9qphZWmndKtoGgUA9evvMYWeJUZR8VVzq9oCzwNSqS",
+	"ipfsSize": 38666,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "az",
+	"name": "Azerbaijan",
+	"ipfsCID": "QmSQsqjSTHRYgQj8TiThfkMZNxY7zP5ZxXLo5VeVKLooeP",
+	"ipfsSize": 46949,
+	"population": 9939800,
+	"currency": "AZN",
+	"city": "Baku"
+}, {
+	"code": "ba",
+	"name": "Bosnia and Herzegovina",
+	"ipfsCID": "QmXSCCUKpMsRrpwhwwDrj3HqsdsduHGX1ZbUuA9pTnSi72",
+	"ipfsSize": 64614,
+	"population": 3323929,
+	"currency": "BAM",
+	"city": "Sarajevo"
+}, {
+	"code": "bb",
+	"name": "Barbados",
+	"ipfsCID": "QmQtzHEHBZhpY9fpp1sgyc2tck4UtybiYSyo1F7n23xaxA",
+	"ipfsSize": 57383,
+	"population": 286641,
+	"currency": "BBD",
+	"city": "Bridgetown"
+}, {
+	"code": "bd",
+	"name": "Bangladesh",
+	"ipfsCID": "QmVSe5XjFbC1UrVU8ah1r9aNXDKQW8ohJbQmybgQ3oHyTJ",
+	"ipfsSize": 31469,
+	"population": 161356039,
+	"currency": "BDT",
+	"city": "Dhaka"
+}, {
+	"code": "be",
+	"name": "Belgium",
+	"ipfsCID": "QmTk3VwgBRDnj86QgjbUXU31sEGctpkzgBd472SSqFj3sa",
+	"ipfsSize": 26973,
+	"population": 11433256,
+	"currency": "EUR",
+	"city": "Bruxelles [Brussel]"
+}, {
+	"code": "bf",
+	"name": "Burkina Faso",
+	"ipfsCID": "QmR3UbRUL4SXodh4izXAE4B8RBD1uHM2U4LX7NBW8V6WeH",
+	"ipfsSize": 34478,
+	"population": 19751535,
+	"currency": "XOF",
+	"city": "Ouagadougou"
+}, {
+	"code": "bg",
+	"name": "Bulgaria",
+	"ipfsCID": "QmQ7PqExrhNRtyzdJEYJBLh1LrDvDXGpi7yTgv7Ef5EYCR",
+	"ipfsSize": 24902,
+	"population": 7025037,
+	"currency": "BGN",
+	"city": "Sofia"
+}, {
+	"code": "bh",
+	"name": "Bahrain",
+	"ipfsCID": "Qmepaoht8Qbmr3wYuaW1NiSw1H5uKVzig5NgW1anV3nino",
+	"ipfsSize": 32193,
+	"population": 1569439,
+	"currency": "BHD",
+	"city": "al-Manama"
+}, {
+	"code": "bi",
+	"name": "Burundi",
+	"ipfsCID": "QmQAtHynk5NrYeAVzEaRsk3vjaUpD2HQRghXP8bbL7UmJj",
+	"ipfsSize": 66607,
+	"population": 11175378,
+	"currency": "BIF",
+	"city": "Bujumbura"
+}, {
+	"code": "bj",
+	"name": "Benin",
+	"ipfsCID": "QmYpvbFX6V3Z2BuYh843emPgFSiw6WYZ7xfBv8Khi2YVC7",
+	"ipfsSize": 24690,
+	"population": 11485048,
+	"currency": "XOF",
+	"city": "Porto-Novo"
+}, {
+	"code": "bl",
+	"name": "Saint Barthélemy",
+	"ipfsCID": "QmRigD4PymJVPwhMbopJn3xVVti2nAEzcFj3JCieAJyPkF",
+	"ipfsSize": 148415,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "bm",
+	"name": "Bermuda",
+	"ipfsCID": "QmSjkeQuG1BaknktWWsH7Eb8PHQMsYE4WMXFk5Sz7tBc9H",
+	"ipfsSize": 70334,
+	"population": 63973,
+	"currency": "BMD",
+	"city": "Hamilton"
+}, {
+	"code": "bn",
+	"name": "Brunei",
+	"ipfsCID": "QmTdr59xrmQSyUPEJc144RgwgDEUyXP2YQd9XN3kFNkAAn",
+	"ipfsSize": 122340,
+	"population": 428962,
+	"currency": "BND",
+	"city": "Bandar Seri Begawan"
+}, {
+	"code": "bo",
+	"name": "Bolivia",
+	"ipfsCID": "QmP4Yyh9NPkRVvq9Lg5CJ6Vwzf1PsRb2CJcCCPqDe5PLz3",
+	"ipfsSize": 26099,
+	"population": 11353142,
+	"currency": "BOB",
+	"city": "La Paz"
+}, {
+	"code": "bq",
+	"name": "Caribbean Netherlands",
+	"ipfsCID": "QmXAPv6h6i2z6KqR6Kv71gi8hgMHxHsqyFZNFykUKBPKdt",
+	"ipfsSize": 43225,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "br",
+	"name": "Brazil",
+	"ipfsCID": "QmVHdNTN8NBZS1PFbenUFafbugRWYVpZqNZHxYrxqtjt2x",
+	"ipfsSize": 103685,
+	"population": 209469333,
+	"currency": "BRL",
+	"city": "Brasília"
+}, {
+	"code": "bs",
+	"name": "Bahamas",
+	"ipfsCID": "QmaU2SsYdwKAfj8DyZbf7qezFN2HjB3zKh5UDuxYLFk37s",
+	"ipfsSize": 34602,
+	"population": 385640,
+	"currency": "BSD",
+	"city": "Nassau"
+}, {
+	"code": "bt",
+	"name": "Bhutan",
+	"ipfsCID": "QmPYsppTru6prXGFTS6SwdXEAH7x6dUaBmaYsJ7G2okfT8",
+	"ipfsSize": 215716,
+	"population": 754394,
+	"currency": "BTN",
+	"city": "Thimphu"
+}, {
+	"code": "bv",
+	"name": "Bouvet Island",
+	"ipfsCID": "QmVdyibBvk36X5Z42bxL5ho5qpZZ32d13x7QbYXfMNWXxU",
+	"ipfsSize": 36073,
+	"population": 0,
+	"currency": "NOK",
+	"city": null
+}, {
+	"code": "bw",
+	"name": "Botswana",
+	"ipfsCID": "QmV8o1atdDxdc52zdmBqvWL44fGbr9ycBuKpjRMKh3eSqd",
+	"ipfsSize": 29214,
+	"population": 2254126,
+	"currency": "BWP",
+	"city": "Gaborone"
+}, {
+	"code": "by",
+	"name": "Belarus",
+	"ipfsCID": "QmQwWAGQo71ahnnuf8f9Pwo4tFYepXNFDoGBT5CaSS6eF7",
+	"ipfsSize": 21190,
+	"population": 9483499,
+	"currency": "BYR",
+	"city": "Minsk"
+}, {
+	"code": "bz",
+	"name": "Belize",
+	"ipfsCID": "QmNM3ec6g5N5JQezdWYPAmvJKz1VyWGn1xAUZVcASfWUtq",
+	"ipfsSize": 254127,
+	"population": 383071,
+	"currency": "BZD",
+	"city": "Belmopan"
+}, {
+	"code": "ca",
+	"name": "Canada",
+	"ipfsCID": "QmUGhbkyG3aEDjPy1sLtyzHUCE4QUFndeeRm9h6cus1XiH",
+	"ipfsSize": 56207,
+	"population": 37057765,
+	"currency": "CAD",
+	"city": "Ottawa"
+}, {
+	"code": "cc",
+	"name": "Cocos (Keeling) Islands",
+	"ipfsCID": "QmPvdVLJ812gB4FgxGYCqEDz2XfxDxYtBpzjtXrgUwwpdq",
+	"ipfsSize": 41056,
+	"population": 596,
+	"currency": "AUD",
+	"city": "West Island"
+}, {
+	"code": "cd",
+	"name": "DR Congo",
+	"ipfsCID": "QmQyS3Y14pAoxSyXkQi88mukBg4v1urjjQhFmGt4aZTBmv",
+	"ipfsSize": 57316,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "cf",
+	"name": "Central African Republic",
+	"ipfsCID": "QmSLKdfz7n9HG6TfzK7vRiMkW4nm5TPV9Z3GFN5qERgPkF",
+	"ipfsSize": 32710,
+	"population": 4666377,
+	"currency": "XAF",
+	"city": "Bangui"
+}, {
+	"code": "cg",
+	"name": "Republic of the Congo",
+	"ipfsCID": "QmNz9MjvwVEjcvLMvbepiGLPWTNx8ECz8Rs1DPNoTdiarf",
+	"ipfsSize": 32004,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "ch",
+	"name": "Switzerland",
+	"ipfsCID": "QmVD1E7i1HerfiKxVX8EQGgkwRDuG1GjSxctKG7x7uCGtm",
+	"ipfsSize": 28706,
+	"population": 8513227,
+	"currency": "CHF",
+	"city": "Bern"
+}, {
+	"code": "ci",
+	"name": "Côte d'Ivoire (Ivory Coast)",
+	"ipfsCID": "Qma9jPRRgEumeVfJaLj46Dga3LxtdG6G7NNkt8kX3yyx9J",
+	"ipfsSize": 26657,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "ck",
+	"name": "Cook Islands",
+	"ipfsCID": "QmPmk24rESWGfswQzeYTxNRPddZrfbgrPmpnPuki1Qqp4f",
+	"ipfsSize": 73202,
+	"population": 17379,
+	"currency": "NZD",
+	"city": "Avarua"
+}, {
+	"code": "cl",
+	"name": "Chile",
+	"ipfsCID": "Qmf5UoSY2daLDVmk6am7PtAYz1fyz5KorTwwmrqEmjSfHv",
+	"ipfsSize": 24054,
+	"population": 18729160,
+	"currency": "CLP",
+	"city": "Santiago de Chile"
+}, {
+	"code": "cm",
+	"name": "Cameroon",
+	"ipfsCID": "QmeLm5MuNVZ2WWGSs5ZK9vDuFugXwNCJnn7qKWDLxijF7V",
+	"ipfsSize": 36865,
+	"population": 25216237,
+	"currency": "XAF",
+	"city": "Yaound"
+}, {
+	"code": "cn",
+	"name": "China",
+	"ipfsCID": "QmQyMmfBfjYjhcr5i9ouHZauLQeiHEEnEYzd3NKXWwyPBi",
+	"ipfsSize": 29118,
+	"population": 1392730000,
+	"currency": "CNY",
+	"city": "Peking"
+}, {
+	"code": "co",
+	"name": "Colombia",
+	"ipfsCID": "QmcSHZJjie8csDyJVZF24s7Zw57XhdtphkARVxLbQpkRrd",
+	"ipfsSize": 25622,
+	"population": 49648685,
+	"currency": "COP",
+	"city": "Santaf"
+}, {
+	"code": "cr",
+	"name": "Costa Rica",
+	"ipfsCID": "QmWUbM1BSeAczc3HiAtQNkWDvZ5QkdRbGwhRaAxb39i8jC",
+	"ipfsSize": 54187,
+	"population": 4999441,
+	"currency": "CRC",
+	"city": "San José"
+}, {
+	"code": "cu",
+	"name": "Cuba",
+	"ipfsCID": "Qmf6KkLm25BnQrEQ34iXhV9xKUazWxmwnhLx3RpoDwTPP3",
+	"ipfsSize": 36588,
+	"population": 11338138,
+	"currency": "CUP",
+	"city": "La Habana"
+}, {
+	"code": "cv",
+	"name": "Cape Verde",
+	"ipfsCID": "QmVwM7RVq8tuUDYiy8Ev1uA1pVhMqCLXVegaaBSP4d18Ez",
+	"ipfsSize": 51003,
+	"population": 543767,
+	"currency": "CVE",
+	"city": "Praia"
+}, {
+	"code": "cw",
+	"name": "Curaçao",
+	"ipfsCID": "QmYVDhAHMBMkvcbymjHQZMfqtzxW9rMTayzBCWe62j2ji1",
+	"ipfsSize": 26191,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "cx",
+	"name": "Christmas Island",
+	"ipfsCID": "QmWDUjtd7Y6Wico2MYCnR8LjJkVsj8MjciDFQJeJ1iUNSn",
+	"ipfsSize": 47632,
+	"population": 1402,
+	"currency": "AUD",
+	"city": "Flying Fish Cove"
+}, {
+	"code": "cy",
+	"name": "Cyprus",
+	"ipfsCID": "QmS5bijDnXYSfWHJNMUEDQvRyBUmUPJt9VtyE7k6m2aKKe",
+	"ipfsSize": 67288,
+	"population": 1189265,
+	"currency": "EUR",
+	"city": "Nicosia"
+}, {
+	"code": "cz",
+	"name": "Czechia",
+	"ipfsCID": "QmeWANQrviG4Eziz85h6aRvP8YrTL7FcjHiFZpwWyuCEH9",
+	"ipfsSize": 28402,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "de",
+	"name": "Germany",
+	"ipfsCID": "QmWUwNTpyYDbZMJsgqPcM62jq4hRLCLaMFqXn1XnceSYLL",
+	"ipfsSize": 26366,
+	"population": 82905782,
+	"currency": "EUR",
+	"city": "Berlin"
+}, {
+	"code": "dj",
+	"name": "Djibouti",
+	"ipfsCID": "QmTmaF7U554yuXeQkqnBmsgPCUthV2qBZoTt8ncbrJDGDu",
+	"ipfsSize": 31147,
+	"population": 958920,
+	"currency": "DJF",
+	"city": "Djibouti"
+}, {
+	"code": "dk",
+	"name": "Denmark",
+	"ipfsCID": "QmX3sEYJzaErpz3V72fH2f3UZChbXauZe4HcApStwVy2fN",
+	"ipfsSize": 29648,
+	"population": 5793636,
+	"currency": "DKK",
+	"city": "Copenhagen"
+}, {
+	"code": "dm",
+	"name": "Dominica",
+	"ipfsCID": "QmNxRi63Qkpp2sqg5LZnuEqCcrzCi4PPhJf5AwxttCMqkB",
+	"ipfsSize": 83865,
+	"population": 71625,
+	"currency": "XCD",
+	"city": "Roseau"
+}, {
+	"code": "do",
+	"name": "Dominican Republic",
+	"ipfsCID": "QmV7LoPCfqF9bPtt72syAQxBw52eoiNtoPHDcvHPUsdPhr",
+	"ipfsSize": 78191,
+	"population": 10627165,
+	"currency": "DOP",
+	"city": "Santo Domingo de Guzm"
+}, {
+	"code": "dz",
+	"name": "Algeria",
+	"ipfsCID": "QmPcoSkRahqt8iXoPuYYkDqdaprLEgvoQcmzfqYP3AB9QB",
+	"ipfsSize": 52415,
+	"population": 42228429,
+	"currency": "DZD",
+	"city": "Alger"
+}, {
+	"code": "ec",
+	"name": "Ecuador",
+	"ipfsCID": "QmT35RrwGqRKjNpEdU6C4FBz3vQkbBzcwchuVt7tztThnr",
+	"ipfsSize": 170764,
+	"population": 17084357,
+	"currency": "ECS",
+	"city": "Quito"
+}, {
+	"code": "ee",
+	"name": "Estonia",
+	"ipfsCID": "QmSSNUV54ZkSEBimMEkd2pK86UABvkmynaVR2o1YoC3cUN",
+	"ipfsSize": 24355,
+	"population": 1321977,
+	"currency": "EUR",
+	"city": "Tallinn"
+}, {
+	"code": "eg",
+	"name": "Egypt",
+	"ipfsCID": "QmUuF2ZtrPnctWyd4JtVCFXH31T6RdHXBARp31kgab3aKp",
+	"ipfsSize": 88192,
+	"population": 98423595,
+	"currency": "EGP",
+	"city": "Cairo"
+}, {
+	"code": "eh",
+	"name": "Western Sahara",
+	"ipfsCID": "QmZXsSFyVtMTdaMR6bXAsPzcFtzQM29uYbmn8Hm4axS5rd",
+	"ipfsSize": 41894,
+	"population": 652271,
+	"currency": "MAD",
+	"city": "El-Aai"
+}, {
+	"code": "er",
+	"name": "Eritrea",
+	"ipfsCID": "QmWNEVu5w5iSZrCGbWpwAjV4PqZaqF8bDjvuoqhbNXEJhq",
+	"ipfsSize": 50272,
+	"population": 6213972,
+	"currency": "ERN",
+	"city": "Asmara"
+}, {
+	"code": "es",
+	"name": "Spain",
+	"ipfsCID": "QmR4RjfEbtGfRJEmBSd7e3rSobgC5ZC3zFPrGkMoGgezSZ",
+	"ipfsSize": 106533,
+	"population": 46796540,
+	"currency": "EUR",
+	"city": "Madrid"
+}, {
+	"code": "et",
+	"name": "Ethiopia",
+	"ipfsCID": "QmYiY12eu6oQRx5K3Rm6m4AGX1a4hRWnsEFset9Xpx6RTG",
+	"ipfsSize": 94511,
+	"population": 109224559,
+	"currency": "ETB",
+	"city": "Addis Abeba"
+}, {
+	"code": "fi",
+	"name": "Finland",
+	"ipfsCID": "Qmcxqwdq32kPZx9NehjKSHETJoJJGPhnMmdXoNF4xwjihq",
+	"ipfsSize": 25832,
+	"population": 5515525,
+	"currency": "EUR",
+	"city": "Helsinki [Helsingfors]"
+}, {
+	"code": "fj",
+	"name": "Fiji",
+	"ipfsCID": "Qmbksp9bPuanAXeczEtVYjxyMubxRNqRZkiDv7hgYGVEUU",
+	"ipfsSize": 72394,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "fk",
+	"name": "Falkland Islands",
+	"ipfsCID": "QmSPhxTxyg38Ahvpw12TkCJaRL39fGHEkT5tUH44UVpRRU",
+	"ipfsSize": 75719,
+	"population": 2840,
+	"currency": "FKP",
+	"city": "Stanley"
+}, {
+	"code": "fm",
+	"name": "Micronesia",
+	"ipfsCID": "QmXzsbe2MCHEG5RZY93mCwSE85yTj3swU1dnJgcRWc7tG4",
+	"ipfsSize": 39246,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "fo",
+	"name": "Faroe Islands",
+	"ipfsCID": "QmVVUpiaf7D6LqgbPUnYVRkwbL2K3rKnUHWzam2KWn4F6p",
+	"ipfsSize": 34488,
+	"population": 48497,
+	"currency": "DKK",
+	"city": "Tórshavn"
+}, {
+	"code": "fr",
+	"name": "France",
+	"ipfsCID": "QmbcLUwkTUHL4iHoZtLEQBu9WvkoD3obP5rdWXr6bj4XXp",
+	"ipfsSize": 26344,
+	"population": 66977107,
+	"currency": "EUR",
+	"city": "Paris"
+}, {
+	"code": "ga",
+	"name": "Gabon",
+	"ipfsCID": "QmeVJa6Dtf4hkT2QSP1ownh5hXXi7kJHDzgC3toV11PX59",
+	"ipfsSize": 26192,
+	"population": 2119275,
+	"currency": "XAF",
+	"city": "Libreville"
+}, {
+	"code": "gb",
+	"name": "United Kingdom",
+	"ipfsCID": "QmTy9VPcXZmhPW6GyaTEBkCMBnfwUcUup9PFZ1C9a8L7Wf",
+	"ipfsSize": 54675,
+	"population": 66460344,
+	"currency": "GBP",
+	"city": "London"
+}, {
+	"code": "gb-eng",
+	"name": "England",
+	"ipfsCID": "QmT3sx7K3B9aJMEqFyDKnYkybe4BZuGr3GiCCrH8k23AtP",
+	"ipfsSize": 30015,
+	"population": 55619400,
+	"currency": "GBP",
+	"city": "London"
+}, {
+	"code": "gb-nir",
+	"name": "Northern Ireland",
+	"ipfsCID": "QmTTkFv6yBsdojgg8Fk3mKmsmJb9qaJD4mLHjWT8vFCBGJ",
+	"ipfsSize": 101007,
+	"population": 1885400,
+	"currency": "GBP",
+	"city": "Belfast"
+}, {
+	"code": "gb-sct",
+	"name": "Scotland",
+	"ipfsCID": "QmXRV8sAtHiocEnnRWxufs3J3wp5G86CWhMPmdf23nepap",
+	"ipfsSize": 48142,
+	"population": 5424800,
+	"currency": "GBP",
+	"city": "Edinburgh"
+}, {
+	"code": "gb-wls",
+	"name": "Wales",
+	"ipfsCID": "QmcYVd34rAHHSCy1jveMBLtZqAuefAzzbyoMyh1QSzxifw",
+	"ipfsSize": 169828,
+	"population": 3139000,
+	"currency": "GBP",
+	"city": "Cardiff"
+}, {
+	"code": "gd",
+	"name": "Grenada",
+	"ipfsCID": "QmXrJviPPn9w5mCCPd424RptpeapGAMCKaUyw93c5Q5amE",
+	"ipfsSize": 49670,
+	"population": 111454,
+	"currency": "XCD",
+	"city": "Saint George's"
+}, {
+	"code": "ge",
+	"name": "Georgia",
+	"ipfsCID": "QmXru2GfRgwKz2pLT2cz2Ekub4co1Vz9WeerRuE3P3bBzT",
+	"ipfsSize": 30640,
+	"population": 3726549,
+	"currency": "GEL",
+	"city": "Tbilisi"
+}, {
+	"code": "gf",
+	"name": "French Guiana",
+	"ipfsCID": "QmZK9XN3F6JaADx76ZNZWuKEUwTbUr37uc4Q3qHYMko6DN",
+	"ipfsSize": 38424,
+	"population": 290691,
+	"currency": "EUR",
+	"city": "Cayenne"
+}, {
+	"code": "gg",
+	"name": "Guernsey",
+	"ipfsCID": "QmRyS6vUkvg8D2phVZDpfnNuA2XuQbXCCUjAqRzrtRyN8e",
+	"ipfsSize": 41041,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "gh",
+	"name": "Ghana",
+	"ipfsCID": "QmfTffM97rpEyDzh6kpXshFvYTr7Bpe9gwwpUFVUMHPKMS",
+	"ipfsSize": 43514,
+	"population": 29767108,
+	"currency": "GHS",
+	"city": "Accra"
+}, {
+	"code": "gi",
+	"name": "Gibraltar",
+	"ipfsCID": "QmepxDmsyQevGWHfvW5GeAYWHuVsadZPiks2uzyqNXmCbF",
+	"ipfsSize": 96728,
+	"population": 33718,
+	"currency": "GIP",
+	"city": "Gibraltar"
+}, {
+	"code": "gl",
+	"name": "Greenland",
+	"ipfsCID": "QmVJ31koEuG6WScaQG8MEM94tPb5ro3pS9XcNz2Gv1xppY",
+	"ipfsSize": 31507,
+	"population": 56025,
+	"currency": "DKK",
+	"city": "Nuuk"
+}, {
+	"code": "gm",
+	"name": "Gambia",
+	"ipfsCID": "QmXKg1TxCV6XjyrXZfvt3Bda4ijuXL3sXe3bKtetwHWrVo",
+	"ipfsSize": 32543,
+	"population": 2280102,
+	"currency": "GMD",
+	"city": "Banjul"
+}, {
+	"code": "gn",
+	"name": "Guinea",
+	"ipfsCID": "QmaB69dbv6kZradHBMpxZM881YuPmQin69EKuhH8Drxonp",
+	"ipfsSize": 27291,
+	"population": 12414318,
+	"currency": "GNF",
+	"city": "Conakry"
+}, {
+	"code": "gp",
+	"name": "Guadeloupe",
+	"ipfsCID": "QmTU6j7yvpd5YqT8DxB32XRpn1GR5EWPTZAtLo6UTWjTSY",
+	"ipfsSize": 85195,
+	"population": 395700,
+	"currency": "EUR",
+	"city": "Basse-Terre"
+}, {
+	"code": "gq",
+	"name": "Equatorial Guinea",
+	"ipfsCID": "QmReaeJT37gkmAZB4mAj9SksqBVdYoEXfxuV8nMKs2xzLB",
+	"ipfsSize": 69302,
+	"population": 1308974,
+	"currency": "XAF",
+	"city": "Malabo"
+}, {
+	"code": "gr",
+	"name": "Greece",
+	"ipfsCID": "QmURfDeMaQQ68ZBVJNqAe4nbt9psyMH2CzRcvF1s2yg1hq",
+	"ipfsSize": 39921,
+	"population": 10731726,
+	"currency": "EUR",
+	"city": "Athenai"
+}, {
+	"code": "gs",
+	"name": "South Georgia",
+	"ipfsCID": "QmdpURYf1BMoMBd7A3YsPAANrtwtZxYt6zXFrjc4iztxT2",
+	"ipfsSize": 79612,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "gt",
+	"name": "Guatemala",
+	"ipfsCID": "QmVGX8q6ivvDfGgRUNE4z9YLa22cMFhhBgLQmLSHu1yfqP",
+	"ipfsSize": 109866,
+	"population": 17247807,
+	"currency": "QTQ",
+	"city": "Ciudad de Guatemala"
+}, {
+	"code": "gu",
+	"name": "Guam",
+	"ipfsCID": "QmfNgEGdMpkh2WswtYP9FCXVyMY1SeLZZu1x2g6AAXCYvX",
+	"ipfsSize": 76131,
+	"population": 165768,
+	"currency": "USD",
+	"city": "Aga"
+}, {
+	"code": "gw",
+	"name": "Guinea-Bissau",
+	"ipfsCID": "QmRAf9K6BJU3DbcLziaFExSwAF7yHEg8o44Mc1piexiThG",
+	"ipfsSize": 26095,
+	"population": 1874309,
+	"currency": "CFA",
+	"city": "Bissau"
+}, {
+	"code": "gy",
+	"name": "Guyana",
+	"ipfsCID": "QmaMA6wKuRBk9avCbez38ktB7BSxzSZ6dzzHcSNuvJBWsp",
+	"ipfsSize": 60657,
+	"population": 779004,
+	"currency": "GYD",
+	"city": "Georgetown"
+}, {
+	"code": "hk",
+	"name": "Hong Kong",
+	"ipfsCID": "QmbmRzFwcnbin5GS8mwhEWGenra5cpHk135bh4gSNzrsC3",
+	"ipfsSize": 92690,
+	"population": 7451000,
+	"currency": "HKD",
+	"city": "Victoria"
+}, {
+	"code": "hm",
+	"name": "Heard Island and McDonald Islands",
+	"ipfsCID": "QmTk55VRDrKE3JkHZDMMKznPiJBgQbV6wGrEXea3bP6tju",
+	"ipfsSize": 54362,
+	"population": 0,
+	"currency": "AUD",
+	"city": null
+}, {
+	"code": "hn",
+	"name": "Honduras",
+	"ipfsCID": "QmbYrRLZwZiMkNg2XddNRdKRsA6fxkhzDyMK7o2oqA5oNW",
+	"ipfsSize": 45573,
+	"population": 9587522,
+	"currency": "HNL",
+	"city": "Tegucigalpa"
+}, {
+	"code": "hr",
+	"name": "Croatia",
+	"ipfsCID": "Qmak8zmdDSzsL2kJGDY2kGCLhgHAdc8Ljw8tj8mdCxUK5d",
+	"ipfsSize": 101857,
+	"population": 4087843,
+	"currency": "HRK",
+	"city": "Zagreb"
+}, {
+	"code": "ht",
+	"name": "Haiti",
+	"ipfsCID": "QmVD7YENNTnrAxSBkK8UYnyJ565srrij7ccdnJ41G7WLAD",
+	"ipfsSize": 93529,
+	"population": 11123176,
+	"currency": "HTG",
+	"city": "Port-au-Prince"
+}, {
+	"code": "hu",
+	"name": "Hungary",
+	"ipfsCID": "QmNNjZozSAMEpjmvacww1Zsn3k6i7Bx7NEtRSr2vtT5pqN",
+	"ipfsSize": 24693,
+	"population": 9775564,
+	"currency": "HUF",
+	"city": "Budapest"
+}, {
+	"code": "id",
+	"name": "Indonesia",
+	"ipfsCID": "QmY31aqwPohcztxoceR3L7T6LvbrnPoAom3WtE99SsXZ2f",
+	"ipfsSize": 22563,
+	"population": 267663435,
+	"currency": "IDR",
+	"city": "Jakarta"
+}, {
+	"code": "ie",
+	"name": "Ireland",
+	"ipfsCID": "QmSXCNTt9Gt95m1bYiPgi5k9DMnDqHVvKPSsaymrmks7sH",
+	"ipfsSize": 26468,
+	"population": 4867309,
+	"currency": "EUR",
+	"city": "Dublin"
+}, {
+	"code": "il",
+	"name": "Israel",
+	"ipfsCID": "QmeJ1yY2gL7iGNbbSy8T6yjaJThAqsFehaGBwyVV6aiR5Z",
+	"ipfsSize": 64206,
+	"population": 8882800,
+	"currency": "ILS",
+	"city": "Jerusalem"
+}, {
+	"code": "im",
+	"name": "Isle of Man",
+	"ipfsCID": "QmdiCyfkz9Vpki3AQFm8XR1DrfyWF5qYseFy29idtzj6ZB",
+	"ipfsSize": 98487,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "in",
+	"name": "India",
+	"ipfsCID": "QmdvcpyKiyyz1R9EaSZ3tijcteGeFHTbaR4UfFxCZPFojX",
+	"ipfsSize": 87242,
+	"population": 1352617328,
+	"currency": "INR",
+	"city": "New Delhi"
+}, {
+	"code": "io",
+	"name": "British Indian Ocean Territory",
+	"ipfsCID": "QmYf1xYFtKwY7F8koiLMu2gJYLQApMZBQEk8z8QqP4S9m7",
+	"ipfsSize": 116328,
+	"population": 0,
+	"currency": "USD",
+	"city": null
+}, {
+	"code": "iq",
+	"name": "Iraq",
+	"ipfsCID": "QmQ5aykxDv4PMn8YqTtqqSPMW12vEx4JphL1aM4R5mdaUn",
+	"ipfsSize": 52436,
+	"population": 38433600,
+	"currency": "IQD",
+	"city": "Baghdad"
+}, {
+	"code": "ir",
+	"name": "Iran",
+	"ipfsCID": "QmTuBJUpKci2mEp1HGFT29fH45tGLUbnFeQ9kz7FrYPEkg",
+	"ipfsSize": 97497,
+	"population": 81800269,
+	"currency": "IRR",
+	"city": "Tehran"
+}, {
+	"code": "is",
+	"name": "Iceland",
+	"ipfsCID": "QmZ8rX6dWh2jkpXPT7nu3nzvXUZjo9STCLHypU4EL6eVsL",
+	"ipfsSize": 37040,
+	"population": 352721,
+	"currency": "ISK",
+	"city": "Reykjavík"
+}, {
+	"code": "it",
+	"name": "Italy",
+	"ipfsCID": "QmXTqsTQAaPB7mCd9sY9MpPwxQGhaE8S7xeCU6H7CmbYaF",
+	"ipfsSize": 26405,
+	"population": 60421760,
+	"currency": "EUR",
+	"city": "Roma"
+}, {
+	"code": "je",
+	"name": "Jersey",
+	"ipfsCID": "QmbT5szVL9EBwXrLtEA6JzJ6ySqc5CqEfRzbJqExfHvzJh",
+	"ipfsSize": 92624,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "jm",
+	"name": "Jamaica",
+	"ipfsCID": "QmPqE7AoJjmZE6z19oz7uMozEBWU6Z3TNWhXwTCULHMCxG",
+	"ipfsSize": 50371,
+	"population": 2934855,
+	"currency": "JMD",
+	"city": "Kingston"
+}, {
+	"code": "jo",
+	"name": "Jordan",
+	"ipfsCID": "QmT8sq2dtFe2rXuXDC3FMXastGeiy7bs7vZHiYkPMRhz3e",
+	"ipfsSize": 33821,
+	"population": 9956011,
+	"currency": "JOD",
+	"city": "Amman"
+}, {
+	"code": "jp",
+	"name": "Japan",
+	"ipfsCID": "QmRthau8fMSGECg2LeohAAGiV5v2F2BwpkF2PMoz7h8CT4",
+	"ipfsSize": 38412,
+	"population": 126529100,
+	"currency": "JPY",
+	"city": "Tokyo"
+}, {
+	"code": "ke",
+	"name": "Kenya",
+	"ipfsCID": "QmRaM6K3tCrnaHHYqviPvNAbjS8Rhi1JUzfPdPiA2iHoRC",
+	"ipfsSize": 77221,
+	"population": 51393010,
+	"currency": "KES",
+	"city": "Nairobi"
+}, {
+	"code": "kg",
+	"name": "Kyrgyzstan",
+	"ipfsCID": "QmS8STJPNVYKBrTW8sM1Q2kwh8NxtmHLaeAizGs91LiZnx",
+	"ipfsSize": 186228,
+	"population": 6322800,
+	"currency": "KGS",
+	"city": "Bishkek"
+}, {
+	"code": "kh",
+	"name": "Cambodia",
+	"ipfsCID": "QmYviYRtZLhdkkEbstHiwSfSiMEFTx12dEeQoCpKMeXgeS",
+	"ipfsSize": 151876,
+	"population": 16249798,
+	"currency": "KHR",
+	"city": "Phnom Penh"
+}, {
+	"code": "ki",
+	"name": "Kiribati",
+	"ipfsCID": "QmVW5McsmrmU5HHJUMcoEsbk1tnX7yZypB8fG6MEexx5Ep",
+	"ipfsSize": 108172,
+	"population": 115847,
+	"currency": "AUD",
+	"city": "Bairiki"
+}, {
+	"code": "km",
+	"name": "Comoros",
+	"ipfsCID": "QmSxLvKcpuzgisJtD6ZmmNHzhzrU6MKxBfWvwF3aho26FP",
+	"ipfsSize": 35402,
+	"population": 832322,
+	"currency": "KMF",
+	"city": "Moroni"
+}, {
+	"code": "kn",
+	"name": "Saint Kitts and Nevis",
+	"ipfsCID": "QmNWp2mVWNqjLRfNKXCaZfcQ8YsjdFW2zNmUXkzDWCeVRQ",
+	"ipfsSize": 55783,
+	"population": 52441,
+	"currency": "XCD",
+	"city": "Basseterre"
+}, {
+	"code": "kp",
+	"name": "North Korea",
+	"ipfsCID": "QmfJSvinLqPuh3csGWwhNqBitqpLY9uMariSzuExLpEQSH",
+	"ipfsSize": 51916,
+	"population": 25549819,
+	"currency": "KPW",
+	"city": "Pyongyang"
+}, {
+	"code": "kr",
+	"name": "South Korea",
+	"ipfsCID": "QmVbb46sy8jgoi1JzgnH6Q8rTQa2eStafVakY8DRizn6x8",
+	"ipfsSize": 47678,
+	"population": 51606633,
+	"currency": "KRW",
+	"city": "Seoul"
+}, {
+	"code": "kw",
+	"name": "Kuwait",
+	"ipfsCID": "QmR51PeDMhYjg5D5tByYHemFFscrQ9FKyGED3ubDjuBdpj",
+	"ipfsSize": 26241,
+	"population": 4137309,
+	"currency": "KWD",
+	"city": "Kuwait"
+}, {
+	"code": "ky",
+	"name": "Cayman Islands",
+	"ipfsCID": "QmXx3z7tzpn6zPbDsaKvQVBT9HQwFRiGaCSphdVqWxPZqU",
+	"ipfsSize": 72241,
+	"population": 64174,
+	"currency": "KYD",
+	"city": "George Town"
+}, {
+	"code": "kz",
+	"name": "Kazakhstan",
+	"ipfsCID": "QmNxQxK8FW2iaYkiFVGSnpQQM4Nn9cNsUA1ReTq1rt75iW",
+	"ipfsSize": 106626,
+	"population": 18272430,
+	"currency": "KZT",
+	"city": "Astana"
+}, {
+	"code": "la",
+	"name": "Laos",
+	"ipfsCID": "Qmb6nVHdRgpFd6j6cGQns7d8ou6sN4BMmCRsRB75Cv2xvC",
+	"ipfsSize": 40728,
+	"population": 7061507,
+	"currency": "LAK",
+	"city": "Vientiane"
+}, {
+	"code": "lb",
+	"name": "Lebanon",
+	"ipfsCID": "QmPgwjdAB4PtFrxP5Z76YD5rf9xUpQWBw39vfFesANJA98",
+	"ipfsSize": 76133,
+	"population": 6848925,
+	"currency": "LBP",
+	"city": "Beirut"
+}, {
+	"code": "lc",
+	"name": "Saint Lucia",
+	"ipfsCID": "QmXbsJRvEDzMS7c3ciWruqKAwsofD8PKDDA56qXHntr846",
+	"ipfsSize": 57625,
+	"population": 181889,
+	"currency": "XCD",
+	"city": "Castries"
+}, {
+	"code": "li",
+	"name": "Liechtenstein",
+	"ipfsCID": "QmZyXXdebSMYzJhPQx6zCuLju9sBZnEBbGtqDWeRGZScUp",
+	"ipfsSize": 27858,
+	"population": 37910,
+	"currency": "CHF",
+	"city": "Vaduz"
+}, {
+	"code": "lk",
+	"name": "Sri Lanka",
+	"ipfsCID": "QmfPq5AhGnf4HDUNMVu8KRsmgBbHd8kMuHzjFaAF5uBhej",
+	"ipfsSize": 119628,
+	"population": 21670000,
+	"currency": "LKR",
+	"city": "Colombo, Sri Jayawardenepura Kotte"
+}, {
+	"code": "lr",
+	"name": "Liberia",
+	"ipfsCID": "QmSfVL8ZLEwxTjqwGf2PRH62Vgs3fk2UzhctPse31ji7pJ",
+	"ipfsSize": 46378,
+	"population": 4818977,
+	"currency": "LRD",
+	"city": "Monrovia"
+}, {
+	"code": "ls",
+	"name": "Lesotho",
+	"ipfsCID": "QmbtzAXoaFa6po4N4zTfGNdXcXBLs7r2Xtt4j3u4d1SXev",
+	"ipfsSize": 52904,
+	"population": 2108132,
+	"currency": "LSL",
+	"city": "Maseru"
+}, {
+	"code": "lt",
+	"name": "Lithuania",
+	"ipfsCID": "QmeFDYuC53S1ZqySUc9oGuK2hfVveAHzPcts9btNpveznn",
+	"ipfsSize": 25293,
+	"population": 2801543,
+	"currency": "LTL",
+	"city": "Vilnius"
+}, {
+	"code": "lu",
+	"name": "Luxembourg",
+	"ipfsCID": "QmWPqL1KP9RFJxe9EyRhpj8MRnUXzjrdkQptNm5PeQP1Qm",
+	"ipfsSize": 26557,
+	"population": 607950,
+	"currency": "EUR",
+	"city": "Luxembourg [Luxemburg/L"
+}, {
+	"code": "lv",
+	"name": "Latvia",
+	"ipfsCID": "QmT34D15VbtxjeULogTyeqPZhtuY4CaLW6PaHmU3JFRnX8",
+	"ipfsSize": 24749,
+	"population": 1927174,
+	"currency": "LVL",
+	"city": "Riga"
+}, {
+	"code": "ly",
+	"name": "Libya",
+	"ipfsCID": "QmUAZM1Td8QScfZCnGLzbndioDyJ3Z49Z59PoNHF9845k5",
+	"ipfsSize": 38752,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "ma",
+	"name": "Morocco",
+	"ipfsCID": "QmNhNzXCUUxFC79fHHs5jpXuHFfFYLLYKCVivvEoqRUjLL",
+	"ipfsSize": 31147,
+	"population": 36029138,
+	"currency": "MAD",
+	"city": "Rabat"
+}, {
+	"code": "mc",
+	"name": "Monaco",
+	"ipfsCID": "QmSPUECrShvEJPrnvKNk7PYNaYJJQQNzp7cyvuHaPvpuR7",
+	"ipfsSize": 22778,
+	"population": 38682,
+	"currency": "EUR",
+	"city": "Monaco-Ville"
+}, {
+	"code": "md",
+	"name": "Moldova",
+	"ipfsCID": "QmYYdkpAEi4NwfRaMe6PWbrC8HEY8w3VpVqQgvVbLWFZNB",
+	"ipfsSize": 139975,
+	"population": 2706049,
+	"currency": "MDL",
+	"city": "Chisinau"
+}, {
+	"code": "me",
+	"name": "Montenegro",
+	"ipfsCID": "QmXMrub79pVjT8BzUp5o6JJLuavxBnPo4fqU5ULha6PWgk",
+	"ipfsSize": 154080,
+	"population": 631219,
+	"currency": "unknown",
+	"city": "Podgorica"
+}, {
+	"code": "mf",
+	"name": "Saint Martin",
+	"ipfsCID": "QmbcLUwkTUHL4iHoZtLEQBu9WvkoD3obP5rdWXr6bj4XXp",
+	"ipfsSize": 26344,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "mg",
+	"name": "Madagascar",
+	"ipfsCID": "QmUuBdUXPbY5tKAvVbiMRDrLeeUCoiZnMXwBUWSticUJys",
+	"ipfsSize": 25355,
+	"population": 26262368,
+	"currency": "MGF",
+	"city": "Antananarivo"
+}, {
+	"code": "mh",
+	"name": "Marshall Islands",
+	"ipfsCID": "QmWsPRnRYGDwjFD1EyzpaR6VhjMnUARiqy5UFbs9pLo1ek",
+	"ipfsSize": 42638,
+	"population": 58413,
+	"currency": "USD",
+	"city": "Dalap-Uliga-Darrit"
+}, {
+	"code": "mk",
+	"name": "North Macedonia",
+	"ipfsCID": "QmTevGSZVfX6kmrPt2GdFf4hU9h8o58DEy5ygm5hZnBpc3",
+	"ipfsSize": 70596,
+	"population": 2084367,
+	"currency": "MKD",
+	"city": "Skopje"
+}, {
+	"code": "ml",
+	"name": "Mali",
+	"ipfsCID": "QmQNf2QLyPuXCN1fQJhdQhdMaKcLjdF7qqF4UBSMVc3VPq",
+	"ipfsSize": 27157,
+	"population": 19077690,
+	"currency": "XOF",
+	"city": "Bamako"
+}, {
+	"code": "mm",
+	"name": "Myanmar",
+	"ipfsCID": "QmWo3ZdRTZPbHGXYRhC6ZqkWdKjr4saKihb4TQrWmZUdNP",
+	"ipfsSize": 47386,
+	"population": 53708395,
+	"currency": "MMR",
+	"city": "Rangoon (Yangon)"
+}, {
+	"code": "mn",
+	"name": "Mongolia",
+	"ipfsCID": "QmRheG249rrPNaUMSvKiSJgKUf9CF3GeiLUyTjdKwWXpNz",
+	"ipfsSize": 25522,
+	"population": 3170208,
+	"currency": "MNT",
+	"city": "Ulan Bator"
+}, {
+	"code": "mo",
+	"name": "Macau",
+	"ipfsCID": "QmRh2eK7Rdg619mJoxXBwroMix2jxqcwMrMok3XMzoJStE",
+	"ipfsSize": 95308,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "mp",
+	"name": "Northern Mariana Islands",
+	"ipfsCID": "QmZ1y1rydQhHMSpVb5GGuzHb3cpjgt4q6aXmJmLoDTQ1N9",
+	"ipfsSize": 212917,
+	"population": 56882,
+	"currency": "USD",
+	"city": "Garapan"
+}, {
+	"code": "mq",
+	"name": "Martinique",
+	"ipfsCID": "QmXTiQiFDMnS9s8LvdEGENGkygRm3CbHCnmNiLddH8wSrc",
+	"ipfsSize": 35562,
+	"population": 376480,
+	"currency": "EUR",
+	"city": "Fort-de-France"
+}, {
+	"code": "mr",
+	"name": "Mauritania",
+	"ipfsCID": "QmcL92tMMUBP66MH4WqNkoB7pjLmLYUYeK8vxm2jCtpRB4",
+	"ipfsSize": 48505,
+	"population": 4403319,
+	"currency": "MRO",
+	"city": "Nouakchott"
+}, {
+	"code": "ms",
+	"name": "Montserrat",
+	"ipfsCID": "Qmc3gHVXehVwrW21eimyhmo8BuSfFAdf3RpTwELpFpg6ng",
+	"ipfsSize": 55043,
+	"population": 5900,
+	"currency": "XCD",
+	"city": "Plymouth"
+}, {
+	"code": "mt",
+	"name": "Malta",
+	"ipfsCID": "QmXCXMJw3pc3JigogoFWPC146756suhiizEuagvEurz23W",
+	"ipfsSize": 22627,
+	"population": 484630,
+	"currency": "EUR",
+	"city": "Valletta"
+}, {
+	"code": "mu",
+	"name": "Mauritius",
+	"ipfsCID": "QmdLVAFBN8r1wwN1vtGWNSHemeFpKAPrZFBCHBLZnr3fXy",
+	"ipfsSize": 30040,
+	"population": 1265303,
+	"currency": "MUR",
+	"city": "Port-Louis"
+}, {
+	"code": "mv",
+	"name": "Maldives",
+	"ipfsCID": "QmWXWZgJHiUGMghkNTkhDc8mftVYGRxTPZDxxNHw5kMjvK",
+	"ipfsSize": 35688,
+	"population": 515696,
+	"currency": "MVR",
+	"city": "Male"
+}, {
+	"code": "mw",
+	"name": "Malawi",
+	"ipfsCID": "QmWdTKiEjsVwpc6hVysv4eatHnNxvX42e4cW94N98cySkB",
+	"ipfsSize": 41434,
+	"population": 18143315,
+	"currency": "MWK",
+	"city": "Lilongwe"
+}, {
+	"code": "mx",
+	"name": "Mexico",
+	"ipfsCID": "QmZBNxHSGVUyqFRUPgXXwM6beQrw3UMHqKLa1KBMx9yHJw",
+	"ipfsSize": 133818,
+	"population": 126190788,
+	"currency": "MXN",
+	"city": "Ciudad de M"
+}, {
+	"code": "my",
+	"name": "Malaysia",
+	"ipfsCID": "QmfY4ZCnovuRkdTJqgVRYzgiGyPh1a8FroVhg5dgPwxUDz",
+	"ipfsSize": 70555,
+	"population": 31528585,
+	"currency": "MYR",
+	"city": "Kuala Lumpur"
+}, {
+	"code": "mz",
+	"name": "Mozambique",
+	"ipfsCID": "QmPy7YMsn2fdrwKbrijsrD59uqSFGsZBGyiwCXfUdVQT6P",
+	"ipfsSize": 33874,
+	"population": 29495962,
+	"currency": "MZN",
+	"city": "Maputo"
+}, {
+	"code": "na",
+	"name": "Namibia",
+	"ipfsCID": "QmRiD9kUWFaF9DFXK2Mwak6KtiXkvPHwVRYjoyMLZkwmqa",
+	"ipfsSize": 50091,
+	"population": 2448255,
+	"currency": "NAD",
+	"city": "Windhoek"
+}, {
+	"code": "nc",
+	"name": "New Caledonia",
+	"ipfsCID": "Qme1PXsKunaQpqv9aitvmFZSL111bPWem245b46nxxgHig",
+	"ipfsSize": 66966,
+	"population": 284060,
+	"currency": "XPF",
+	"city": "Noum"
+}, {
+	"code": "ne",
+	"name": "Niger",
+	"ipfsCID": "QmNeC68MNfMX8oBL4puhWGWtajDmgCguuFopRDxsCspTPD",
+	"ipfsSize": 41813,
+	"population": 22442948,
+	"currency": "XOF",
+	"city": "Niamey"
+}, {
+	"code": "nf",
+	"name": "Norfolk Island",
+	"ipfsCID": "QmSMMGhsn9oEXm16BZ1GSWXD11R3BxTjrPGEMCTkovEYPy",
+	"ipfsSize": 115633,
+	"population": 2169,
+	"currency": "AUD",
+	"city": "Kingston"
+}, {
+	"code": "ng",
+	"name": "Nigeria",
+	"ipfsCID": "Qmbw9R7e7zUVsGrVddM2dHSpSKjRNRzzbWJ3inuzJFbSpV",
+	"ipfsSize": 25901,
+	"population": 195874740,
+	"currency": "NGN",
+	"city": "Abuja"
+}, {
+	"code": "ni",
+	"name": "Nicaragua",
+	"ipfsCID": "QmXjcC8NRa5UPK87BwTZc7Y2yGU6Nq6JNv15W5BLg2avuW",
+	"ipfsSize": 77941,
+	"population": 6465513,
+	"currency": "NIO",
+	"city": "Managua"
+}, {
+	"code": "nl",
+	"name": "Netherlands",
+	"ipfsCID": "QmYBeQ51eYqdn3LnH8xRL3LPUZEbr3dAZPtEL716V4pANV",
+	"ipfsSize": 25970,
+	"population": 17231624,
+	"currency": "EUR",
+	"city": "Amsterdam"
+}, {
+	"code": "no",
+	"name": "Norway",
+	"ipfsCID": "QmVdyibBvk36X5Z42bxL5ho5qpZZ32d13x7QbYXfMNWXxU",
+	"ipfsSize": 36073,
+	"population": 5311916,
+	"currency": "NOK",
+	"city": "Oslo"
+}, {
+	"code": "np",
+	"name": "Nepal",
+	"ipfsCID": "Qmdu9DGUcToeVwBCeYCrPGZdHko4p888L9B4ELhfNgoFyB",
+	"ipfsSize": 48954,
+	"population": 28087871,
+	"currency": "NPR",
+	"city": "Kathmandu"
+}, {
+	"code": "nr",
+	"name": "Nauru",
+	"ipfsCID": "QmQCP3ZQHhvs5UoMU9XWZBsAM6rZ6ooRmvFC9ZjWGLnuJ6",
+	"ipfsSize": 29222,
+	"population": 12704,
+	"currency": "AUD",
+	"city": "Yaren"
+}, {
+	"code": "nu",
+	"name": "Niue",
+	"ipfsCID": "Qme9CjDpAsLFFKkF5N5tGZAgmBoFoMnacjDud82R2DZkJr",
+	"ipfsSize": 50250,
+	"population": 1624,
+	"currency": "NZD",
+	"city": "Alofi"
+}, {
+	"code": "nz",
+	"name": "New Zealand",
+	"ipfsCID": "QmZ7kuQk16uozMLfWFy3C3A4uyA8tFs4rg4LSz76esWfS5",
+	"ipfsSize": 52601,
+	"population": 4841000,
+	"currency": "NZD",
+	"city": "Wellington"
+}, {
+	"code": "om",
+	"name": "Oman",
+	"ipfsCID": "QmXGQUEpWeeoiAMRQsUjDgh3L3ijyaFHY8pjciNrBurtXp",
+	"ipfsSize": 24581,
+	"population": 4829483,
+	"currency": "OMR",
+	"city": "Masqat"
+}, {
+	"code": "pa",
+	"name": "Panama",
+	"ipfsCID": "Qmab9XdY5rNrHnruPgEkrmao12EL1ujzbQeUhKZiqEhVKi",
+	"ipfsSize": 26876,
+	"population": 4176873,
+	"currency": "PAB",
+	"city": "Ciudad de Panamá"
+}, {
+	"code": "pe",
+	"name": "Peru",
+	"ipfsCID": "QmQTHwNCXvkhAjfx2CwtBtPwY1JP1LhLH2huLobjt24Tq8",
+	"ipfsSize": 27477,
+	"population": 31989256,
+	"currency": "PEN",
+	"city": "Lima"
+}, {
+	"code": "pf",
+	"name": "French Polynesia",
+	"ipfsCID": "QmcurvvCbDMiU1ykKStZohDRasZuzFsgTUYG2dVpBGWN6W",
+	"ipfsSize": 121720,
+	"population": 277679,
+	"currency": "XPF",
+	"city": "Papeete"
+}, {
+	"code": "pg",
+	"name": "Papua New Guinea",
+	"ipfsCID": "QmccaZdWRwscETAHL1eMuYDyzaGk8q2b6e68ij13qwBPxH",
+	"ipfsSize": 47958,
+	"population": 8606316,
+	"currency": "PGK",
+	"city": "Port Moresby"
+}, {
+	"code": "ph",
+	"name": "Philippines",
+	"ipfsCID": "QmQupSNqrX46d8A4YpBWe9SUs7cmovnhNYHj7NhmxgMPdq",
+	"ipfsSize": 31049,
+	"population": 106651922,
+	"currency": "PHP",
+	"city": "Manila"
+}, {
+	"code": "pk",
+	"name": "Pakistan",
+	"ipfsCID": "QmPvvLkmCTmR39LE3ZV18jaxxsstQn1JYteZHnJr3Vwpk3",
+	"ipfsSize": 37411,
+	"population": 212215030,
+	"currency": "PKR",
+	"city": "Islamabad"
+}, {
+	"code": "pl",
+	"name": "Poland",
+	"ipfsCID": "QmSTxhfjDayCMo2fXY4QE5ezB3E1R1ZE8Kq6LSzXomRgHF",
+	"ipfsSize": 22377,
+	"population": 37974750,
+	"currency": "PLN",
+	"city": "Warszawa"
+}, {
+	"code": "pm",
+	"name": "Saint Pierre and Miquelon",
+	"ipfsCID": "QmPhVHB5vMpPWDQv4svGJpoCoi1LZXFZHasj78usD3edLc",
+	"ipfsSize": 201580,
+	"population": 5888,
+	"currency": "EUR",
+	"city": "Saint-Pierre"
+}, {
+	"code": "pn",
+	"name": "Pitcairn Islands",
+	"ipfsCID": "QmfZ4LRaT8MYibNxkXSmUpX9Ufo5vcBdb9ZGpGpwjMkuKr",
+	"ipfsSize": 79324,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "pr",
+	"name": "Puerto Rico",
+	"ipfsCID": "QmbNWWJdwjsQ1LDz7GzjdLWEjcs2FzTZwHK4LNXb4sWbQ2",
+	"ipfsSize": 35864,
+	"population": 3195153,
+	"currency": "USD",
+	"city": "San Juan"
+}, {
+	"code": "ps",
+	"name": "Palestine",
+	"ipfsCID": "QmQBrRj2uHN4qVmPztqAxFTKQWNjADzGN5vuW9PDikVjq8",
+	"ipfsSize": 26734,
+	"population": 4569087,
+	"currency": null,
+	"city": "Gaza"
+}, {
+	"code": "pt",
+	"name": "Portugal",
+	"ipfsCID": "QmNbHzf6ZqVwknzZL6zq8cNTGvsKiLWZFaSkr7r3122wuk",
+	"ipfsSize": 171407,
+	"population": 10283822,
+	"currency": "EUR",
+	"city": "Lisboa"
+}, {
+	"code": "pw",
+	"name": "Palau",
+	"ipfsCID": "Qmaimva9nXx8i7LYauvgZcK6dpvaCznM7o6PwJnr92NzCW",
+	"ipfsSize": 38355,
+	"population": 17907,
+	"currency": "USD",
+	"city": "Koror"
+}, {
+	"code": "py",
+	"name": "Paraguay",
+	"ipfsCID": "QmWWoinSpuFAhfGBL7oSCYkCs9w8vWm4rZYuFU1aVn5vYM",
+	"ipfsSize": 78622,
+	"population": 6956071,
+	"currency": "PYG",
+	"city": "Asunción"
+}, {
+	"code": "qa",
+	"name": "Qatar",
+	"ipfsCID": "QmXJPuetkptR64s4DACgUrdUhp96HjcjNGEEYkQYyMwusG",
+	"ipfsSize": 35105,
+	"population": 2781677,
+	"currency": "QAR",
+	"city": "Doha"
+}, {
+	"code": "re",
+	"name": "Réunion",
+	"ipfsCID": "QmdmoUugC9wYT7CMCnwd1YmiezEdKEg9H8cUrYqvxqhf5v",
+	"ipfsSize": 58930,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "ro",
+	"name": "Romania",
+	"ipfsCID": "QmbZteSkgWJMBjNrjQH5YtGF31oeYiDRSVX1bhWUwqgmj2",
+	"ipfsSize": 27099,
+	"population": 19466145,
+	"currency": "RON",
+	"city": "Bucuresti"
+}, {
+	"code": "rs",
+	"name": "Serbia",
+	"ipfsCID": "QmSoQgrwgMb6589EVKcXajr559kXgEGKXvz2UjmcNt6cL2",
+	"ipfsSize": 162458,
+	"population": 6963764,
+	"currency": "RSD",
+	"city": "Belgrade"
+}, {
+	"code": "ru",
+	"name": "Russia",
+	"ipfsCID": "QmceFQwnBj6HHxDn4TwJByTXAcNwB6knyBqHX6DjRbTeb4",
+	"ipfsSize": 25268,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "rw",
+	"name": "Rwanda",
+	"ipfsCID": "QmPgtc62b3UoNwXSf9ttmcQRzj1wf6pcibhzeFxZy5HK1v",
+	"ipfsSize": 26264,
+	"population": 12301939,
+	"currency": "RWF",
+	"city": "Kigali"
+}, {
+	"code": "sa",
+	"name": "Saudi Arabia",
+	"ipfsCID": "QmTGXuFob4Aek5DLf2ZusE5vXUGubfLqE8WAy5rHPD2MGX",
+	"ipfsSize": 116430,
+	"population": 33699947,
+	"currency": "SAR",
+	"city": "Riyadh"
+}, {
+	"code": "sb",
+	"name": "Solomon Islands",
+	"ipfsCID": "QmU3BfgRUudxW1iZso4Ju5DaXfk3kH2ZQEscfgHd5WGFMu",
+	"ipfsSize": 40159,
+	"population": 652858,
+	"currency": "SBD",
+	"city": "Honiara"
+}, {
+	"code": "sc",
+	"name": "Seychelles",
+	"ipfsCID": "QmP4m1rHuFGGXk4sqNPyGQS1MucVRiCgVMs3F81YHboYdZ",
+	"ipfsSize": 39589,
+	"population": 96762,
+	"currency": "SCR",
+	"city": "Victoria"
+}, {
+	"code": "sd",
+	"name": "Sudan",
+	"ipfsCID": "Qmbs8iVN4o8S1FtvHnchmZx2Byq7uFo3XiNqo7fKJnzCUe",
+	"ipfsSize": 27162,
+	"population": 41801533,
+	"currency": "SDG",
+	"city": "Khartum"
+}, {
+	"code": "se",
+	"name": "Sweden",
+	"ipfsCID": "Qmf9Kb7prxaTGDrvsvgi7s9dxCqy3EdxxTsBdizVkB8wom",
+	"ipfsSize": 29235,
+	"population": 10175214,
+	"currency": "SEK",
+	"city": "Stockholm"
+}, {
+	"code": "sg",
+	"name": "Singapore",
+	"ipfsCID": "QmSoPSgaPKAYwmyNgND1AsavAgSV5irzUkE4NQsntKUHaH",
+	"ipfsSize": 27824,
+	"population": 5638676,
+	"currency": "SGD",
+	"city": "Singapore"
+}, {
+	"code": "sh",
+	"name": "Saint Helena, Ascension and Tristan da Cunha",
+	"ipfsCID": "QmYyBNzA5aZNETrUiYrB9Guq3QU7HHa8HqVHZJ5SnQZjBZ",
+	"ipfsSize": 52235,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "si",
+	"name": "Slovenia",
+	"ipfsCID": "QmegRyRWFsCs9K9nngKSvuHCtgn62F7JWymziQPNx3yQBj",
+	"ipfsSize": 28750,
+	"population": 2073894,
+	"currency": "EUR",
+	"city": "Ljubljana"
+}, {
+	"code": "sj",
+	"name": "Svalbard and Jan Mayen",
+	"ipfsCID": "QmVdyibBvk36X5Z42bxL5ho5qpZZ32d13x7QbYXfMNWXxU",
+	"ipfsSize": 36073,
+	"population": 2572,
+	"currency": "NOK",
+	"city": "Longyearbyen"
+}, {
+	"code": "sk",
+	"name": "Slovakia",
+	"ipfsCID": "QmWNrxJWx6XW41mE7McZL5482rez8eBfAYr6NW676eK6Vs",
+	"ipfsSize": 45418,
+	"population": 5446771,
+	"currency": "EUR",
+	"city": "Bratislava"
+}, {
+	"code": "sl",
+	"name": "Sierra Leone",
+	"ipfsCID": "QmVosB2dNrM1eWvMTUt4ttkhiNasitYhqTtgySiXVYwJYM",
+	"ipfsSize": 26695,
+	"population": 7650154,
+	"currency": "SLL",
+	"city": "Freetown"
+}, {
+	"code": "sm",
+	"name": "San Marino",
+	"ipfsCID": "QmRXCd4T9iWx8ek9xYLKep5ivRQJy1YN4sZmo9cGPxBNWM",
+	"ipfsSize": 320383,
+	"population": 33785,
+	"currency": "EUR",
+	"city": "San Marino"
+}, {
+	"code": "sn",
+	"name": "Senegal",
+	"ipfsCID": "QmRaX6Z9cYrK8hyePgxa19JSR7iwccvQktvvxAS5EF2SsF",
+	"ipfsSize": 41870,
+	"population": 15854360,
+	"currency": "XOF",
+	"city": "Dakar"
+}, {
+	"code": "so",
+	"name": "Somalia",
+	"ipfsCID": "QmamDcSYvzeyJZdVjWoFNAYyqADTCCTyhnwFppbLLVyMTc",
+	"ipfsSize": 38350,
+	"population": 15008154,
+	"currency": "SOS",
+	"city": "Mogadishu"
+}, {
+	"code": "sr",
+	"name": "Suriname",
+	"ipfsCID": "QmP6ESwe49ZsUuQ7ugCebruE5R5uAmSCYD4U2w3uVZ2FHw",
+	"ipfsSize": 42612,
+	"population": 575991,
+	"currency": "SRD",
+	"city": "Paramaribo"
+}, {
+	"code": "ss",
+	"name": "South Sudan",
+	"ipfsCID": "QmQezYp2wrWJ6wWdrxGiULYiHMTAu1h7xxWGFmm4eZcbwA",
+	"ipfsSize": 35691,
+	"population": 10975920,
+	"currency": "SSP",
+	"city": "Juba"
+}, {
+	"code": "st",
+	"name": "São Tomé and Príncipe",
+	"ipfsCID": "QmS3pPHDaJt2cceL6VtvDgu4JfKyG7Pho83pfH4VCqEpCJ",
+	"ipfsSize": 38509,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "sv",
+	"name": "El Salvador",
+	"ipfsCID": "QmSx6nME34pPJ1FJVruYojmNMBWFv9UnGW5dbUTmc8vyTJ",
+	"ipfsSize": 107406,
+	"population": 6420744,
+	"currency": "SVC",
+	"city": "San Salvador"
+}, {
+	"code": "sx",
+	"name": "Sint Maarten",
+	"ipfsCID": "QmTjZGt8jsJLaqkLpaayELHaHEodPYRL8q7R7dawQvUbMX",
+	"ipfsSize": 28597,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "sy",
+	"name": "Syria",
+	"ipfsCID": "QmV2BBx9cjgANgMzN3jpWa7rauH5gzx8ELcuoXH5NofFUa",
+	"ipfsSize": 41016,
+	"population": 16906283,
+	"currency": "SYP",
+	"city": "Damascus"
+}, {
+	"code": "sz",
+	"name": "Eswatini (Swaziland)",
+	"ipfsCID": "QmdS3rGmF51EdurfwwugbtRpMnWQoRdXi8pNbuiiU1udFp",
+	"ipfsSize": 73924,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "tc",
+	"name": "Turks and Caicos Islands",
+	"ipfsCID": "QmbZRXj66nqwkzPMesq6C9yp7jU4npeERRonMUTmUTzzM7",
+	"ipfsSize": 53978,
+	"population": 37665,
+	"currency": "USD",
+	"city": "Cockburn Town"
+}, {
+	"code": "td",
+	"name": "Chad",
+	"ipfsCID": "QmYij9ZPoHhHzJDEo3exVM6Qaw4RfxvFYk9Y3YtLid7ZTQ",
+	"ipfsSize": 27290,
+	"population": 15477751,
+	"currency": "XAF",
+	"city": "N'Djam"
+}, {
+	"code": "tf",
+	"name": "French Southern and Antarctic Lands",
+	"ipfsCID": "QmSFNqHMZopettR6iHne6i6w1c4Y6FnWDp443UFT2v11z6",
+	"ipfsSize": 40488,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "tg",
+	"name": "Togo",
+	"ipfsCID": "QmX21QVGqUHv9XfpWy5PshE2fjAWTWruxPtCSkzwtQM4zw",
+	"ipfsSize": 35603,
+	"population": 7889094,
+	"currency": "XOF",
+	"city": "Lomé"
+}, {
+	"code": "th",
+	"name": "Thailand",
+	"ipfsCID": "QmS7zQimp7vmqMCM6DrwPhCErhi7ihdzjfEpUjgF7GsvpT",
+	"ipfsSize": 23808,
+	"population": 69428524,
+	"currency": "THB",
+	"city": "Bangkok"
+}, {
+	"code": "tj",
+	"name": "Tajikistan",
+	"ipfsCID": "QmVhsZ592VR2W4PvjdDzZdXTDf4ABVaMryH9A4EsWEcxKB",
+	"ipfsSize": 60608,
+	"population": 9100837,
+	"currency": "TJS",
+	"city": "Dushanbe"
+}, {
+	"code": "tk",
+	"name": "Tokelau",
+	"ipfsCID": "QmfVkWpemJDRLxyZKx2uz6dcsQK1n9BxmhBrkUXZCSwwZj",
+	"ipfsSize": 37868,
+	"population": 1411,
+	"currency": "NZD",
+	"city": "Fakaofo"
+}, {
+	"code": "tl",
+	"name": "Timor-Leste",
+	"ipfsCID": "QmNSA1wCF4DCDMEDh7x49AhMQbLdzAPWKgsEUyZ5TbkehJ",
+	"ipfsSize": 29560,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "tm",
+	"name": "Turkmenistan",
+	"ipfsCID": "QmNQxP3dXQD5omJadY3h9oQfk7M6LD7h6kq2GrfihfxXVb",
+	"ipfsSize": 27560,
+	"population": 5850908,
+	"currency": "TMT",
+	"city": "Ashgabat"
+}, {
+	"code": "tn",
+	"name": "Tunisia",
+	"ipfsCID": "QmPyQDbjpog5w9AUc9ncjJzLqJWrB2oN2yUXKXopJWbDXs",
+	"ipfsSize": 72335,
+	"population": 11565204,
+	"currency": "TND",
+	"city": "Tunis"
+}, {
+	"code": "to",
+	"name": "Tonga",
+	"ipfsCID": "QmbsvCjkoQWQ75CfsSpz5WHmFNGegF3zgRYoVXp7zbCtLX",
+	"ipfsSize": 22031,
+	"population": 103197,
+	"currency": "TOP",
+	"city": "Nuku'alofa"
+}, {
+	"code": "tr",
+	"name": "Turkey",
+	"ipfsCID": "QmNZpMiwm8e52qxz7zg3Ks24u2KiEKMQ7BjMeiKnJ39jCk",
+	"ipfsSize": 46117,
+	"population": 82319724,
+	"currency": "TRY",
+	"city": "Ankara"
+}, {
+	"code": "tt",
+	"name": "Trinidad and Tobago",
+	"ipfsCID": "QmU5E9zv6bvEAsHp7Eo6qbiZebKUjriyyruDUc7guAgQ6b",
+	"ipfsSize": 53267,
+	"population": 1389858,
+	"currency": "TTD",
+	"city": "Port-of-Spain"
+}, {
+	"code": "tv",
+	"name": "Tuvalu",
+	"ipfsCID": "QmQrKdYY68tCCVuyYiaVs9W9UY2XDgRBWWqjRtLUuTCndW",
+	"ipfsSize": 60675,
+	"population": 11508,
+	"currency": "AUD",
+	"city": "Funafuti"
+}, {
+	"code": "tw",
+	"name": "Taiwan",
+	"ipfsCID": "QmQxW6Hw8mpRp7WAUPXDWXnkFTPsSsyQhr5sZFCyKhe9aJ",
+	"ipfsSize": 29263,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "tz",
+	"name": "Tanzania",
+	"ipfsCID": "QmdpSH5XKpCYgRNoZXKqiJJ5dG3V9JQFGV84Z3LoTUjcJU",
+	"ipfsSize": 48160,
+	"population": 56318348,
+	"currency": "TZS",
+	"city": "Dodoma"
+}, {
+	"code": "ua",
+	"name": "Ukraine",
+	"ipfsCID": "QmczcsLNeoVyK54cXQT4woiAdW877TYxFd3kWaqzz7x7du",
+	"ipfsSize": 22245,
+	"population": 44622516,
+	"currency": "UAH",
+	"city": "Kyiv"
+}, {
+	"code": "ug",
+	"name": "Uganda",
+	"ipfsCID": "QmZkK4C2zQNvkCEsbK2WA2SHRcH9kAcfVsZD1sMA97Lp7w",
+	"ipfsSize": 61655,
+	"population": 42723139,
+	"currency": "UGX",
+	"city": "Kampala"
+}, {
+	"code": "um",
+	"name": "United States Minor Outlying Islands",
+	"ipfsCID": "QmZp787t8mp5cHxmaDSX2qgbBRXkS1whRanot65eyk2W1f",
+	"ipfsSize": 63866,
+	"population": 300,
+	"currency": "USD",
+	"city": null
+}, {
+	"code": "us",
+	"name": "United States",
+	"ipfsCID": "QmZp787t8mp5cHxmaDSX2qgbBRXkS1whRanot65eyk2W1f",
+	"ipfsSize": 63866,
+	"population": 326687501,
+	"currency": "USD",
+	"city": "Washington"
+}, {
+	"code": "uz",
+	"name": "Uzbekistan",
+	"ipfsCID": "QmbWmTKQvQngQSYWBe2ojq9BAg4NwgQPWYKtj19UoJqmzr",
+	"ipfsSize": 38753,
+	"population": 32955400,
+	"currency": "UZS",
+	"city": "Toskent"
+}, {
+	"code": "va",
+	"name": "Vatican City (Holy See)",
+	"ipfsCID": "QmQjfgcrD58vXWCtM2VvYoX2kcBtj4TDpHspodyJnVBDvz",
+	"ipfsSize": 99732,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "vc",
+	"name": "Saint Vincent and the Grenadines",
+	"ipfsCID": "QmVuoWxgWU6D1LNSy4vw69PnhE1qUQ7gP44q9fGyFoxUpu",
+	"ipfsSize": 50336,
+	"population": 110210,
+	"currency": "XCD",
+	"city": "Kingstown"
+}, {
+	"code": "ve",
+	"name": "Venezuela",
+	"ipfsCID": "QmYqJWmhAqGx3XJxyeadGHJYwV6Y8wytx5YLPXQbcxDSdm",
+	"ipfsSize": 51791,
+	"population": 28870195,
+	"currency": "VEF",
+	"city": "Caracas"
+}, {
+	"code": "vg",
+	"name": "British Virgin Islands",
+	"ipfsCID": "QmPHvpNxg5nHpjtCoEY996bbTzAMfmDX8fkn2U3JhjUnkF",
+	"ipfsSize": 83797,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "vi",
+	"name": "United States Virgin Islands",
+	"ipfsCID": "QmfH4zrij733fvfVesWehGjGsZqQfMCGF1eJTDPVpycChf",
+	"ipfsSize": 194446,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "vn",
+	"name": "Vietnam",
+	"ipfsCID": "Qmc6pAi1K8Js97KuFZd7jcTVeW5pvBF4cVqZGwGcfnxjbA",
+	"ipfsSize": 45801,
+	"population": 95540395,
+	"currency": "VND",
+	"city": "Hanoi"
+}, {
+	"code": "vu",
+	"name": "Vanuatu",
+	"ipfsCID": "QmbdGHoHCWmFMpT7iLBAwBaaHanKwEE49QyBdmN8YgK9Hy",
+	"ipfsSize": 49632,
+	"population": 292680,
+	"currency": "VUV",
+	"city": "Port-Vila"
+}, {
+	"code": "wf",
+	"name": "Wallis and Futuna",
+	"ipfsCID": "QmVSJk5YqBeKuyYmyGGrUXPZSrzr8UwPK9cgmr91UUxE4q",
+	"ipfsSize": 36880,
+	"population": 15289,
+	"currency": "XPF",
+	"city": "Mata-Utu"
+}, {
+	"code": "ws",
+	"name": "Samoa",
+	"ipfsCID": "QmQoURiZy6QNX6F4Zo2Lkin8WZ8ZyDChWKqe1v14CUhU1S",
+	"ipfsSize": 25888,
+	"population": 196130,
+	"currency": "WST",
+	"city": "Apia"
+}, {
+	"code": "xk",
+	"name": "Kosovo",
+	"ipfsCID": "QmTcXhFH8NawxT5H5pMaUswkqspudbVJNGhAcyf9Hyxp2w",
+	"ipfsSize": 54065,
+	"population": "unknown",
+	"currency": "unknown",
+	"city": "unknown"
+}, {
+	"code": "ye",
+	"name": "Yemen",
+	"ipfsCID": "QmeHgcAoy7sNoiULYQ5JJfYwnjdUCoVSKmuRjY6wAyoQ7t",
+	"ipfsSize": 25530,
+	"population": 28498687,
+	"currency": "YER",
+	"city": "Sanaa"
+}, {
+	"code": "yt",
+	"name": "Mayotte",
+	"ipfsCID": "Qma8zcco48n4GLTFyCG7h6TRAkRa4e7hc5uHXfk1GiPwJT",
+	"ipfsSize": 132048,
+	"population": 270372,
+	"currency": "EUR",
+	"city": "Mamoutzou"
+}, {
+	"code": "za",
+	"name": "South Africa",
+	"ipfsCID": "Qma8EfxbqYQvgF1zRYQreRgw2fbhe8dQRU8y5hHszeXmZd",
+	"ipfsSize": 43890,
+	"population": 57779622,
+	"currency": "ZAR",
+	"city": "Pretoria"
+}, {
+	"code": "zm",
+	"name": "Zambia",
+	"ipfsCID": "QmV1g1YBUCxBFAoLef7NDGrtuYzM3g6Uae3aRg8deC9ckK",
+	"ipfsSize": 21438,
+	"population": 17351822,
+	"currency": "ZMW",
+	"city": "Lusaka"
+}, {
+	"code": "zw",
+	"name": "Zimbabwe",
+	"ipfsCID": "Qmdbn8UMs6xA76Psh49NtC61uDMjtN4HJ6fyvZEVGTNwuK",
+	"ipfsSize": 43017,
+	"population": 14439018,
+	"currency": "ZWD",
+	"city": "Harare"
+}]

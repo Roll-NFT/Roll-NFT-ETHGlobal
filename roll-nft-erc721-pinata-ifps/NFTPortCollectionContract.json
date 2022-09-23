@@ -1,0 +1,25 @@
+Deploy an NFT collection contract
+POST https://api.nftport.xyz/v0/contracts/collections
+Response:
+{
+  "response": "OK",
+  "chain": "polygon",
+  "transaction_hash": "0x828e1bc255bf43c3514be37c8c8e7b1b50313410e6fc8c3745bbb7ef2c2b41b7",
+  "transaction_external_url": "https://polygonscan.com/tx/0x828e1bc255bf43c3514be37c8c8e7b1b50313410e6fc8c3745bbb7ef2c2b41b7",
+  "owner_address": "0x0B5429c8940bd0da105Dd8806518729F56B7b75d",
+  "name": "Squared Country Flags on Polygon",
+  "symbol": "FLAGS"
+}
+
+
+----
+
+Get contract address
+GET ttps://api.nftport.xyz/v0/contracts/0x828e1bc255bf43c3514be37c8c8e7b1b50313410e6fc8c3745bbb7ef2c2b41b7?chain=polygon
+Response:
+{
+  "response": "OK",
+  "chain": "polygon",
+  "contract_address": "0x49366d71740383bee403fA39E84010c7842F8592",
+  "transaction_hash": "0x828e1bc255bf43c3514be37c8c8e7b1b50313410e6fc8c3745bbb7ef2c2b41b7"
+}
