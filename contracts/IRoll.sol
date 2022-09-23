@@ -37,18 +37,18 @@ interface IRoll {
      * @param participationPrice - amount to be paid to mint one participation ticket
      */
     struct Roll {
-        uint rollType;
+        uint8 rollType;
         address host;
         uint64 rollTime;
-        uint minParticipants;
-        uint maxParticipants;
-        IERC20 participationToken;
-        uint participationPrice;
+        uint256 minParticipants;
+        uint256 maxParticipants;
+        address participationToken;
+        uint256 participationPrice;
         Status status;
-        IERC721 prizeCollection;
-        uint prizeTokenId;
+        address prizeCollection;
+        uint256 prizeTokenId;
         bool prizeClaimed; // set True - on Prize withdrawal and when winner claims the Prize. Default value is "False"
-        uint winnerTokenId; // set when winner selected. Defaul value is 0
+        uint256 winnerTokenId; // set when winner selected. Defaul value is 0
         bool revenueClaimed; // set True - on revenue claim. Default value is "False"
     }
 

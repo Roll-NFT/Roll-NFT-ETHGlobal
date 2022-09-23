@@ -83,22 +83,22 @@ contract CoreRollNFT is Pausable, Ownable, Context {
     mapping (uint => IRoll.Roll) rolls;
     
     /// @dev announce about successful Roll creation
-    event RollCreated(uint256 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
+    event RollCreated(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
     
     /// @dev announce about Roll's new participants / minted tickets
-    event TicketsMinted(uint indexed rollType, uint indexed rollID, address ticketsContract, address participant, uint amount);
+    event TicketsMinted(uint8 indexed rollType, uint indexed rollID, address ticketsContract, address participant, uint amount);
 
     /// @dev announce about Roll's claimed prize
-    event PrizeClaimed(uint indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint prizeID);
+    event PrizeClaimed(uint8 indexed rollType, uint indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint prizeID);
     
     /// @dev announce about Roll's claimed revenue
-    event RevenueClaimed(uint indexed rollType, uint rollID, address indexed rollHost, address indexed rollOwner, address tokenAddress, uint amount);
+    event RevenueClaimed(uint8 indexed rollType, uint rollID, address indexed rollHost, address indexed rollOwner, address tokenAddress, uint amount);
     
     /// @dev announce about withdrawn prize from unsuccessful Roll
-    event PrizeWithdrawn(uint indexed rollType, uint indexed rollID, address rollHost, address rollOwner, address indexed prizeAddress, uint prizeID);
+    event PrizeWithdrawn(uint8 indexed rollType, uint indexed rollID, address rollHost, address rollOwner, address indexed prizeAddress, uint prizeID);
     
     /// @dev announce about refunded tickets from unsuccessful Roll
-    event TicketsRefunded(uint indexed rollType, uint indexed rollID, address rollHost, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
+    event TicketsRefunded(uint8 indexed rollType, uint indexed rollID, address rollHost, address participant, address tokenAddress, uint refundAmount, uint ticketsAmount);
 
     /// @dev announce about updated Revenue fee
     event RevenueFeeUpdated(uint256 newFee, uint256 oldFee);
@@ -115,7 +115,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param prizeAddress - Prize token collection address
      * @param prizeID - Prize token ID
      */
-    event RollClosed(uint rollType, uint indexed rollID, address indexed prizeAddress, uint prizeID);
+    event RollClosed(uint8 rollType, uint indexed rollID, address indexed prizeAddress, uint prizeID);
     // address indexed ticketsContract, address indexed owner
     
     /**
@@ -131,7 +131,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
      * @param host - Roll host address
      */
-    event RollFinished(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+    event RollFinished(uint8 rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
     /**
      * @dev Set the owner 
@@ -182,61 +182,64 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         _unpause();
     }
 
-    /// @dev function to host (create) a new Roll 
+    /**
+     * @dev Creates new Roll available to participate in.
+     * 
+     * @param _rollTime - Block time stamp when Roll participation will be closed and winning selection process will be initialized
+     * @param _minParticipants - Minimum amount of participants (tickets) for the Roll to be played
+     * @param _maxParticipants - Maximum amount of participants (tickets) that Roll can fit in
+     * @param _participationPrice - Amount of "_participationToken" to be paid for 1 ticket to participate in the Roll
+     * @param _participationToken - Address of ERC20 token, that is used as currency for participation in the Roll
+     * @param _prizeAddress - Address of Prize NFT collection (ERC721)
+     * @param _prizeId - ID number of the token from "_prizeAddress" NFT collection, that is provded as the Prize of the Roll
+     * 
+     * @return Roll ID number, which is equal to RollOwnershipToken ID
+     * 
+     * @notice Function to create new Raffle with provided parameters
+     */
     function createRoll(
         uint64 _rollTime,
         uint _minParticipants,
         uint _maxParticipants,
         uint _participationPrice,
-        IERC20 _participationToken,
-        IERC721 _prizeAddress,
+        address _participationToken,
+        address _prizeAddress,
         uint _prizeId
-    ) external returns(TicketsContract ticketsContract){
+    ) public returns(uint256){
 
         /// @dev check that _prizeAddress is set and is not 0
-        require(_prizeAddress != address(0), 'Missing Prize collection address');
+        require(_prizeAddress != address(0), 'CoreRollNFT: Prize collection address should be different from "0" to create Roll');
 
-        /// @dev check that _prizeAddress is set and is not 0
-        require(_participationToken != address(0), 'Missing participation token address');
+        /// @dev check that _participationToken is set and is not 0
+        require(_participationToken != address(0), 'CoreRollNFT: Participation token address should be different from "0" to create Roll');
 
         /// @dev check that _rollTime is provided and is in future
-        require(_rollTime > 0 && _rollTime > block.timestamp, 'End time should be in feature');
+        /// TODO IMPLEMENT MINIMUM ROLL TIME - 1 HOUR / 1 DAY etc
+        require(_rollTime > 0 && _rollTime > block.timestamp, 'CoreRollNFT: Roll time should be in feature to create Roll');
 
         /// @dev define host
         address host = _msgSender();
         
-        /// @dev transfer NFT prize to CoreRollNFT contract
-        _prizeAddress.transferFrom(msg.sender, address(this), _prizeId);
+        /// @dev get ERC721 interface for Prize collection contract
+        IERC721 prizeContractInterface = IERC721(_prizeAddress);
 
-        /// @dev approve NFT prize token to IddleAssets contract
-        _prizeAddress.approve(contractIddleAssets, _prizeId);
+        /**
+         * @dev transfer NFT prize to CoreRollNFT contract
+         * 
+         */
+        prizeContractInterface.transferFrom(msg.sender, address(this), _prizeId);
 
-        /// @dev transfer NFT prize token to IddleAssets contract
-        _prizeAddress.transferFrom(address(this), contractIddleAssets, _prizeId);
-
-        /// @dev declare rollType variable
-        uint rollType;
-
-        /// @dev define Roll type / variation
-        if (_maxParticipants == 0) {
-            
-            if (_minParticipants == 0) {
-                rollType = 1;
-            } else {
-                rollTyoe = 2;
-            }
-
-        } else {
-            require(_maxParticipants > _minParticipants, "CoreRollNFT: Maximum participants should be less than Minimum participant to create Roll");
-
-            if (_minParticipants == 0) {
-                rollType = 3;
-            } else {
-                rollTyoe = 4;
-            }
-            
-        }
         
+        /// TODO Implement Iddle assets contract and it's logic
+        // /// @dev approve NFT prize token to IddleAssets contract
+        // prizeContractInterface.approve(contractIddleAssets, _prizeId);
+
+        // /// @dev transfer NFT prize token to IddleAssets contract
+        // prizeContractInterface.transferFrom(address(this), contractIddleAssets, _prizeId);
+
+        /// @dev define rollType variable
+        uint8 rollType = defineRollType(_minParticipants, _maxParticipants);
+
         /// @dev increment Roll ID counter
         /// To start first Roll with ID 1
         _rollIdCounter.increment();
@@ -244,16 +247,17 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         /// @dev get current Roll ID
         uint rollId = _rollIdCounter.current();
 
-        /**
-         * @dev define and store Prize structure to prizes mapping
-         * 
-         * @dev Structure that contain crucial Roll parameters and conditions, that are checked on Roll execution
-         * 
-         * @param collectionAddr NFT collection address of the Prize
-         * @param tokenId Prize token ID
-         * @param claimAvailable True when prize available to claim by winner or by owner when roll was closed.
-         */
-        prizes[rollId] = IPrize.Prize(_prizeAddress, _prizeId, false);
+        /// TODO IMPLEMENT ROLL ASSETS STRUCTURE AND INFRASTRUCTURE FOR IT
+        // /**
+        //  * @dev define and store Prize structure to prizes mapping
+        //  * 
+        //  * @dev Structure that contain crucial Roll parameters and conditions, that are checked on Roll execution
+        //  * 
+        //  * @param collectionAddr NFT collection address of the Prize
+        //  * @param tokenId Prize token ID
+        //  * @param claimAvailable True when prize available to claim by winner or by owner when roll was closed.
+        //  */
+        // prizes[rollId] = IPrize.Prize(_prizeAddress, _prizeId, false);
 
         /// @dev form Roll URI
         /// TODO
@@ -285,7 +289,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * TODO IMPLEMENT MULTI CALL BACK END PATTERN
      */
-    function participate(uint256 _rollType, uint256 _rollID, address paymentToken,uint256 _tokenAmoun) public returns(bool) {
+    function participate(uint256 _rollID, address paymentToken,uint256 _tokenAmoun) public returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -297,7 +301,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         IERC721RollTicket ticketsContract = getRollTicketsContract(_rollID);
 
         /// @dev check that _ticketsAmount would not overflow maxParticipants
-        if (roll.rollType == uint256(3) && roll.rollType == uint256(4)) {
+        if (roll.rollType == uint8(3) && roll.rollType == uint8(4)) {
             
             /// @dev get totalSupply of Participantion token collection - amount of participants
             require(ticketsContract.totalSupply() < roll.maxParticipants, "CoreRollNFT: RPT totalSupply() should be less then maximum participants amount");
@@ -305,7 +309,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         }
         
         /// @dev send payment to core contract
-        roll.participationToken.transferFrom(_msgSender(), address(this), roll.participationPrice);
+        IERC20(roll.participationToken).transferFrom(_msgSender(), address(this), roll.participationPrice);
 
         /// @dev TODO approve and send payment to Iddle assets contract
         
@@ -314,7 +318,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         
         /// @dev emit event about minted tickets
         /// TODO REWORK EVENT
-        emit TicketsMinted(_rollType, _rollID, address(ticketsContract), _msgSender(), _amount);
+        emit TicketsMinted(roll.rollType, _rollID, address(ticketsContract), _msgSender(), _amount);
 
         return true;
     
@@ -327,7 +331,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @return "true" on successful function call
      */
-    function claimPrize(uint256 _rollType, uint256 _rollID, uint256 _ticketID) external returns(bool) {
+    function claimPrize(uint256 _rollID, uint256 _ticketID) external returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -349,17 +353,15 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
         /**
          * @dev send Prize asset to caller
-         * 
-         * roll.prizeCollection - IERC721
          */
-        roll.prizeCollection.safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
+        IERC721(roll.prizeCollection).safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
         
         /// @dev set Prize status to "Claimed"
         roll.prizeClaimed = true;
 
         /// @dev anounce about claimed prize - where who what
         /// TODO REWORK EVENT
-        event PrizeClaimed(_rollType, _rollID, ticketsContract, winningTicketID, msg.sender, prizeAddress, prizeID);
+        event PrizeClaimed(roll.rollType, _rollID, ticketsContract, winningTicketID, msg.sender, prizeAddress, prizeID);
 
         return true;
         
@@ -372,7 +374,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @return "true" on successful function call
      */
-    function claimRevenue(uint256 _rollType, uint256 _rollID) public returns (bool) {
+    function claimRevenue(uint256 _rollID) public returns (bool) {
 
         /// @dev check that caller is a owner of the Roll
         require(_msgSender() == getRollTokenContract().ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
@@ -403,21 +405,17 @@ contract CoreRollNFT is Pausable, Ownable, Context {
 
         /**
          * @dev send revenue to caller
-         * 
-         * roll.participationToken is IERC20
          */
-        roll.participationToken.transfer(_msgSender(), fee);
+        IERC20(roll.participationToken).transfer(_msgSender(), fee);
         
         /**
          * @dev transfer fees to treasury
-         * 
-         * roll.participationToken is IERC20
          */
-        roll.participationToken.transfer(getTreasuryContract(), fee);
+        IERC20(roll.participationToken).transfer(getTreasuryContract(), fee);
 
         /// @dev announce about Roll's claimed revenue - where who what
         /// TODO REWORK EVENT
-        emit RevenueClaimed(_rollType, _rollID, rollHost, rollOwner, tokenAddress, amount);
+        emit RevenueClaimed(roll.rollType, _rollID, rollHost, rollOwner, tokenAddress, amount);
 
         return true;
 
@@ -430,7 +428,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * @return "true" on successful function call
      */
-    function withdrawPrize(uint256 _rollType, uint256 _rollID) public returns(bool) {
+    function withdrawPrize(uint256 _rollID) public returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -449,17 +447,15 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         
         /**
          * @dev send Prize asset to caller
-         * 
-         * roll.prizeCollection - IERC721
          */
-        roll.prizeCollection.safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
+        IERC721(roll.prizeCollection).safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
         
         /// @dev set Prize status to "Claimed"
         roll.prizeClaimed = true;
 
         /// @dev announce about withdrawn prize from unsuccessful Roll - where who what
         /// TODO REWORK EVENT
-        emit PrizeWithdrawn(_rollType, _rollID, rollHost, rollOwner, prizeAddress, prizeID);
+        emit PrizeWithdrawn(roll.rollType, _rollID, rollHost, rollOwner, prizeAddress, prizeID);
 
         return true;
 
@@ -474,7 +470,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * 
      * TODO implememnt Multi Call pattern on backend for banch refund
      */
-    function refundParticipation(uint256 _rollType, uint256 _rollID, uint256 _ticketId) public returns(bool) {
+    function refundParticipation(uint256 _rollID, uint256 _ticketId) public returns(bool) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -490,13 +486,11 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         
         /**
          * @dev send Participation amount to caller
-         * 
-         * roll.participationToken - IERC20
          */
-        roll.participationToken.transfer(_msgSender(), roll.participationPrice);
+        IERC20(roll.participationToken).transfer(_msgSender(), roll.participationPrice);
 
         /// @dev announce about refunded tickets from unsuccessful Roll
-        emit TicketsRefunded(_rollType, _rollID, rollHost, msg.sender, tokenAddress, refundAmount, ticketsAmount);
+        emit TicketsRefunded(roll.rollType, _rollID, rollHost, msg.sender, tokenAddress, refundAmount, ticketsAmount);
 
         return true;
 
@@ -592,6 +586,91 @@ contract CoreRollNFT is Pausable, Ownable, Context {
         return _participantsAmount.mul(roll.participationPrice);
     }
 
+    /**
+     * @dev Define Roll type according to set Min and Max participants values
+     * 
+     * Check if parameters are provided and assign Roll type ID, according to combination of parameters.
+     * 
+     * @param _minParticipants - Minimum amount of participants that Host set for the Roll
+     * @param _maxParticipants - Maximum amount of participants that Host set for the Roll
+     * 
+     * @return Roll type ID
+     */
+    function defineRollType(uint256 _minParticipants,uint256 _maxParticipants) internal return(uint8 rollType) {
+
+        /// @dev define Roll type
+        if (_maxParticipants == 0) {
+            
+            if (_minParticipants == 0) {
+
+                /**
+                 * Roll type #1 - When no participation limits are set.
+                 * 
+                 * Roll time will define when to Close participation sales and initiate winner selection.
+                 * 
+                 * That type of Roll will be finished in most scenarios, since there is no requirements to Minimum participants.
+                 * However - Roll of the type #1 will be closed, without selected winner, if there is no participants at all at the moment of Roll time.
+                 */
+                rollType = 1;
+
+            } else {
+                
+                /**
+                 * Roll type #2 - When minimum participants limit is set. No maximum participants limit.
+                 * 
+                 * Roll time will define when to Close participation sales.
+                 * 
+                 * To initiate winner selection - amount of participants should be more or equal to minimum participants limit.
+                 */
+                rollType = 2;
+
+            }
+
+        } else {
+            
+            /**
+             * @dev check that _maxParticipants is more then _minParticipants
+             * 
+             * _maxParticipants == _minParticipants scenario is not covered.
+             * Because we can not be sure what Host wanted to set - minimum or maximum limit.
+             */
+            require(_maxParticipants > _minParticipants, "CoreRollNFT: Maximum participants should be less than Minimum participant to create Roll");
+
+            if (_minParticipants == 0) {
+                
+                /**
+                 * Roll type #3 - When Maximum participants limit is set. No Minimum participants limit.
+                 * 
+                 * When Maximum participants limit is reached - Close participation sales and initiate winner selection process.
+                 * 
+                 * Roll time will define when to Close participation sales and set Roll status to Closed.
+                 * Prize will become available to withdraw by Roll owner.
+                 * Roll participation tokens (RPT) will become available to be refunded by participants.
+                 */
+                rollType = 3;
+
+            } else {
+                
+                /**
+                 * Roll type #4 - When both Minimum and Maximum participants limits are set.
+                 * 
+                 * When Maximum participants limit is reached - Close participation sales and initiate winner selection process.
+                 * 
+                 * Roll time will define when to Close participation sales as well.
+                 * 
+                 * If Minimum participants limit is reached - Roll status will be set to "Finished" and winner selection process will be initialized.
+                 * 
+                 * Otherwise - set Roll status to Closed.
+                 */
+                rollType = 4;
+
+            }
+            
+        }
+
+        
+    }
+
     /// TODO
     
     /**
@@ -615,16 +694,16 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      */
     function makeRollURI(
         uint256 _rollId,
-        uint256 _rollType,
+        uint8 _rollType,
         address _host,
         uint64 _rollTime,
         uint256 _minParticipants,
         uint256 _maxParticipants,
-        IERC20 _participationToken,
-        uint256 participationPrice
-        IERC721 _prizeAddress,
+        address _participationToken,
+        uint256 participationPrice,
+        address _prizeAddress,
         uint256 _prizeId,
-        IERC721RollTicket _ticketsContract
+        address _ticketsContract
     ) internal returns(string memory rollURI) {
         
         /// TODO FINISH FUNCTION IMPLEMENTATION
