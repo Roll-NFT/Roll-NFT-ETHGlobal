@@ -131,7 +131,7 @@ contract CoreRollNFT is Pausable, Ownable, Context {
      * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
      * @param host - Roll host address
      */
-    event RollFinsihed(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+    event RollFinished(uint rollType, uint rollID, uint winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     
     /**
      * @dev Set the owner 
