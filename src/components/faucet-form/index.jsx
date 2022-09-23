@@ -90,7 +90,7 @@ const FaucetForm = () => {
                 status: {
                     error: false,
                     class: "text-success",
-                    msg: `NFT minted! ${process.env.NEXT_PUBLIC_SC_FAUCET}${
+                    msg: `NFT minted! ${process.env.NEXT_PUBLIC_RARIBLE_URL}${
                         process.env.NEXT_PUBLIC_SC_FAUCET
                     }:${_tokenId.toNumber()}`,
                 },
