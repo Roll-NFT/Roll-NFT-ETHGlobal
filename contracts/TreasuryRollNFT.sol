@@ -14,18 +14,22 @@ contract TreasuryRollNFT is AccessControlEnumerable {
      */
     mapping(address => uint256) public balance;
 
-    constructor() payable {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(MANAGER_ROLE, msg.sender);
+    constructor(address owner) payable {
+        _setupRole(DEFAULT_ADMIN_ROLE, owner);
+        _setupRole(MANAGER_ROLE, owner);
     }
 
-    // CoreRollNFT: IERC20(tokenAddress).approve(address treasuryRollNFTAddress, uint amount)
-    function deposit(address _tokenAddress, uint256 _amount) external {
+    // TODO: ERC721 lost & found
+
+    // TODO: on "tokenReceived" hook we can update the balance of the ERC-721 and ERC-20
+    // TODO: create the ITreasuryRollNFT
+    // TODO: we need to approve in the CoreRollNFT Contract
+    function depositERC20(address _tokenAddress, uint256 _amount) external {
         IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _amount);
         balance[_tokenAddress] += _amount;
     }
 
-    function withdraw(address _tokenAddress, uint256 _amount) external onlyRole(MANAGER_ROLE) {
+    function withdrawERC20(address _tokenAddress, uint256 _amount) external onlyRole(MANAGER_ROLE) {
         require(balance[_tokenAddress] >= _amount, "Balance is insufficient");
         IERC20(_tokenAddress).transfer(msg.sender, _amount);
         balance[_tokenAddress] -= _amount;

@@ -104,7 +104,7 @@ describe("TreasuryRollNFT", function () {
       await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
 
       // Check the balance of ERC20 token for the TreasuryContract
       treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
@@ -122,7 +122,7 @@ describe("TreasuryRollNFT", function () {
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Tries to deposit the ERC-20 Token into the TreasuryContract
-      await expect(treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100)).to.be.reverted;
+      await expect(treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100)).to.be.reverted;
 
     });
 
@@ -136,7 +136,7 @@ describe("TreasuryRollNFT", function () {
       await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Tries to deposit the ERC-20 Token into the TreasuryContract
-      await expect(treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 200)).to.be.reverted;
+      await expect(treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 200)).to.be.reverted;
     });
 
   });
@@ -152,10 +152,10 @@ describe("TreasuryRollNFT", function () {
       await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
 
       // Withdraw ERC-20 Token from the TreasuryContract
-      await treasuryContract.connect(treasuryOwner).withdraw(linkTokenContract.address, 100);
+      await treasuryContract.connect(treasuryOwner).withdrawERC20(linkTokenContract.address, 100);
 
       // Check the balance of ERC20 token for the TreasuryContract
       treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
@@ -180,13 +180,13 @@ describe("TreasuryRollNFT", function () {
       await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
 
       // Grant manager role
       await treasuryContract.grantManagerRole(address1.address);
 
       // Tries to withdraw ERC-20 Token from the TreasuryContract
-      await treasuryContract.connect(address1).withdraw(linkTokenContract.address, 100);
+      await treasuryContract.connect(address1).withdrawERC20(linkTokenContract.address, 100);
 
       // Check the balance of ERC20 token for the TreasuryContract
       treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
@@ -211,10 +211,10 @@ describe("TreasuryRollNFT", function () {
       await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
 
       // Tries to withdraw ERC-20 Token from the TreasuryContract
-      await expect(treasuryContract.connect(address1).withdraw(linkTokenContract.address, 100)).to.be.reverted;
+      await expect(treasuryContract.connect(address1).withdrawERC20(linkTokenContract.address, 100)).to.be.reverted;
 
     });
 
@@ -228,10 +228,10 @@ describe("TreasuryRollNFT", function () {
       await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
 
       // Tries to withdraw ERC-20 Token from the TreasuryContract
-      await expect(treasuryContract.connect(treasuryOwner).withdraw(linkTokenContract.address, 200)).to.be.reverted;
+      await expect(treasuryContract.connect(treasuryOwner).withdrawERC20(linkTokenContract.address, 200)).to.be.reverted;
     });
 
   });
