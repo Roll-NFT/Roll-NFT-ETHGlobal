@@ -123,6 +123,19 @@ html[data-theme="light"] body {
         color: var(--color-light-body);
     }
 
+    select {
+        background: var(--color-gray-2);
+        border-color: var(--color-border-white);
+        color: var(--color-light-body);
+        height: 50px;
+        border-radius: 5px;
+        font-size: 14px;
+        padding: 10px 20px;
+        border: 2px solid var(--color-border);
+        transition: 0.3s;
+        width: 100%;
+    }
+
     .rbt-single-widget.widget_categories ul li a:hover span {
         color: var(--color-primary);
     }

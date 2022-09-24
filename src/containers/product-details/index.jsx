@@ -53,6 +53,7 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                                 ticketSupply={roll.ticketSupply}
                                 ticketPrice={roll.ticketPrice}
                                 ticketCurrency={roll.ticketCurrency}
+                                network={roll.network}
                                 endDate={roll.endDate}
                                 host={roll.userAddress}
                             />
@@ -60,6 +61,7 @@ const ProductDetailsArea = ({ space, className, roll }) => (
                                 bids={roll.tickets}
                                 properties={roll.attributes}
                                 tags={roll.categories}
+                                network={roll.network}
                             />
                         </div>
                     </div>

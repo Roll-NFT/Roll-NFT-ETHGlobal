@@ -1,7 +1,12 @@
 import { combineReducers } from "redux";
 import balancesReducer from "./balances";
 import userReducer from "./users";
-import { rollReducer, categoryReducer, heroReducer } from "./rolls";
+import {
+    rollReducer,
+    categoryReducer,
+    heroReducer,
+    ticketReducer,
+} from "./rolls";
 
 export default combineReducers({
     balances: balancesReducer,
@@ -9,4 +14,5 @@ export default combineReducers({
     roll: rollReducer,
     category: categoryReducer,
     hero: heroReducer,
+    ticket: ticketReducer,
 });

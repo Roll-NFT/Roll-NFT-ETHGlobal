@@ -109,6 +109,11 @@ export const RollAttributeType = PropTypes.shape({
     value: PropTypes.string,
 });
 
+export const NetworkType = PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+});
+
 export const ProductType = PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     title: PropTypes.string.isRequired,

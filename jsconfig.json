@@ -10,7 +10,8 @@
             "@layout/*": ["src/layouts/*"],
             "@utils/*": ["src/utils/*"],
             "@hooks": ["src/hooks"],
-            "@store/*": ["src/store/*"]
+            "@store/*": ["src/store/*"],
+            "@lib/*": ["src/lib/*"]
         }
     }
 }

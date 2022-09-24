@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ethers } from "ethers";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import PropTypes from "prop-types";
@@ -12,8 +13,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { rollUpdate } from "@store/actions/rolls";
-import { useMoralis } from "react-moralis";
+import { rollUpdate, ticketUpdate } from "@store/actions/rolls";
+import { useMoralis, useChain } from "react-moralis";
+import erc20Token from "@lib/ERC20.json";
+import { NetworkType } from "@utils/types";
 
 const PlaceBet = ({
     title,
@@ -21,17 +24,20 @@ const PlaceBet = ({
     ticketSupply,
     ticketPrice,
     ticketCurrency,
+    network,
     endDate,
     host,
     btnColor,
     className,
 }) => {
     const [showBidModal, setShowBidModal] = useState(false);
-    const [ticket, setTicket] = useState(null);
+    const [currencyMapping, setCurrencyMapping] = useState(null);
+    const [currencyContract, setCurrencyContract] = useState(null);
     const router = useRouter();
-    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const { authenticate, isAuthenticated } = useMoralis();
+    const ticket = useSelector((state) => state.ticket);
+    const { authenticate, isAuthenticated, user } = useMoralis();
+    const { chain } = useChain();
     const { slug } = router.query;
     const stock = ticketSupply - ticketsSold;
     const {
@@ -46,7 +52,30 @@ const PlaceBet = ({
         setShowBidModal((prev) => !prev);
     };
 
-    const buyTickets = async () => {
+    const availableCurrencies = () => {
+        const _currencies = process.env.NEXT_PUBLIC_CURRENCIES.split(",");
+        const _addresses =
+            process.env.NEXT_PUBLIC_CURRENCIES_ADDRESSES.split(",");
+        const currenciesMapping = {};
+        for (let i = 0; i < _currencies.length; i++) {
+            currenciesMapping[_currencies[i]] = _addresses[i];
+        }
+        setCurrencyMapping(currenciesMapping);
+    };
+
+    const getCurrencyContract = async () => {
+        const erc20TokenAddress = currencyMapping[ticketCurrency.toUpperCase()];
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+            erc20TokenAddress,
+            erc20Token.abi,
+            signer
+        );
+        setCurrencyContract(contract);
+    };
+
+    const saveTicketsDB = async () => {
         await axios
             .put(
                 `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls/${slug}`,
@@ -68,6 +97,14 @@ const PlaceBet = ({
             });
     };
 
+    const buyTickets = async () => {
+        const wei = ethers.utils.parseUnits(ticket.total.toString(), 18);
+        const txn = await currencyContract.transfer(
+            process.env.NEXT_PUBLIC_CORE_CONTRACT,
+            wei
+        );
+    };
+
     const onSubmit = async (data) => {
         if (!isAuthenticated) {
             authenticate({
@@ -75,19 +112,49 @@ const PlaceBet = ({
             });
             return;
         }
+        if (chain && network.id !== chain.networkId) {
+            toast(`Wrong network! Please change to network #${network.name}`);
+            return;
+        }
         handleBidModal();
         const _quantity = parseInt(data.quantity, 10);
         const _fee = _quantity * ticketPrice * 0.05;
         const _total = _quantity * ticketPrice + _fee;
-        setTicket({
-            quantity: _quantity,
-            userId: user.id,
-            userAddress: user.address,
-            total: _total,
-            fee: _fee,
-            createdAt: new Date(),
-        });
+        dispatch(
+            ticketUpdate({
+                quantity: _quantity,
+                userId: user.id,
+                userAddress: user.get("ethAddress"),
+                total: _total,
+                fee: _fee,
+                createdAt: new Date(),
+            })
+        );
     };
+
+    useEffect(() => {
+        const onTokenTransfer = (from, to, value) => {
+            saveTicketsDB();
+        };
+        if (currencyContract) {
+            currencyContract.on("Transfer", onTokenTransfer);
+        }
+        return () => {
+            if (currencyContract) {
+                currencyContract.off("Transfer", onTokenTransfer);
+            }
+        };
+    }, [currencyContract]);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            getCurrencyContract();
+        }
+    }, [user]);
+
+    useEffect(() => {
+        availableCurrencies();
+    }, []);
 
     return (
         <>
@@ -98,8 +165,7 @@ const PlaceBet = ({
                             <b>Tickets sold</b>: {ticketsSold}/{ticketSupply}
                         </h6>
                         <h6 className="title mb-3">
-                            <b>Ticket price</b>: {ticketPrice}
-                            {ticketCurrency}
+                            <b>Ticket price</b>: {ticketPrice} {ticketCurrency}
                         </h6>
                         <h6 className="title mb-3">
                             <b>Host</b>:{" "}
@@ -176,6 +242,7 @@ PlaceBet.propTypes = {
     ticketSupply: PropTypes.number,
     ticketPrice: PropTypes.number,
     ticketCurrency: PropTypes.string,
+    network: PropTypes.objectOf(NetworkType),
     endDate: PropTypes.string,
     host: PropTypes.string,
     btnColor: PropTypes.string,

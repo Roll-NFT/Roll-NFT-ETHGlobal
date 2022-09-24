@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import Button from "@ui/button";
-import ErrorText from "@ui/error-text";
-import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useMoralis } from "react-moralis";
+import nftFaucet from "@lib/NFTFaucet.json";
 import countriesData from "../../data/countries.json";
-import nftFaucet from "../../lib/NFTFaucet.json";
 
 const FaucetForm = () => {
     const { authenticate, isAuthenticated, user } = useMoralis();
@@ -30,6 +28,7 @@ const FaucetForm = () => {
         if (txn) {
             setTokenId(txn.toNumber());
         }
+        console.log("txn.toNumber: ", txn.toNumber());
     };
 
     const mintNFT = async () => {

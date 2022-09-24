@@ -30,6 +30,15 @@ const attributeSchema = new mongoose.Schema({
     },
 });
 
+const networkSchema = new mongoose.Schema({
+    id: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
+});
+
 const raffleSchema = new mongoose.Schema(
     {
         raffleId: {
@@ -42,7 +51,7 @@ const raffleSchema = new mongoose.Schema(
             type: String,
         },
         network: {
-            type: String,
+            type: networkSchema,
         },
         nftId: {
             type: String,

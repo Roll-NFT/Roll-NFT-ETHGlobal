@@ -1,8 +1,17 @@
 import PropTypes from "prop-types";
-import { IDType, ImageType, RollAttributeType } from "@utils/types";
+import { ImageType, RollAttributeType, NetworkType } from "@utils/types";
 
-const DetailsTabContent = ({ owner, properties, tags }) => (
+const DetailsTabContent = ({ network, properties, tags }) => (
     <div className="rn-pd-bd-wrapper mt--20">
+        <div className="rn-pd-sm-property-wrapper">
+            <h6 className="pd-property-title">Network</h6>
+            <div className="property-wrapper">
+                <div key={network.id} className="pd-property-inner">
+                    <span className="color-body type">{network.name}</span>
+                    <span className="color-white value">id: {network.id}</span>
+                </div>
+            </div>
+        </div>
         {properties && (
             <div className="rn-pd-sm-property-wrapper">
                 <h6 className="pd-property-title">Property</h6>
@@ -48,6 +57,7 @@ DetailsTabContent.propTypes = {
     }),
     properties: PropTypes.arrayOf(PropTypes.objectOf(RollAttributeType)),
     tags: PropTypes.arrayOf(PropTypes.string),
+    network: PropTypes.objectOf(NetworkType),
 };
 
 export default DetailsTabContent;

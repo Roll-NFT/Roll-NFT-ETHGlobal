@@ -33,11 +33,22 @@ export default async (req, res) => {
     if (req.method === "POST") {
         const { user, nft, form } = req.body;
 
+        const categories = [
+            "Art",
+            "Music",
+            "Metaverse",
+            "Domain Name",
+            "Game",
+            "Collectibles",
+        ];
+        const random = Math.floor(Math.random() * categories.length);
+        const category = categories[random];
+
         const newRaffle = new Raffles({
             raffleId: v4(),
             userId: user.id,
             userAddress: user.address,
-            network: "80001",
+            network: { id: user.networkId, name: user.chain },
             nftId: nft.id,
             nftContractAddress: nft.contractAddress,
             nftCollection: nft.collection,
@@ -49,8 +60,8 @@ export default async (req, res) => {
             endDate: form.endDate,
             ticketSupply: form.supply,
             ticketPrice: form.price,
-            ticketCurrency: "wETH",
-            categories: ["Art"],
+            ticketCurrency: form.currency,
+            categories: [category],
             likeCount: 0,
             tickets: [],
             ticketsSold: 0,

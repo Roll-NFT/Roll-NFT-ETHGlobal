@@ -1,5 +1,10 @@
 import { HYDRATE } from "next-redux-wrapper";
-import { ROLL_UPDATE, CATEGORY_UPDATE, HERO_UPDATE } from "../../actions";
+import {
+    ROLL_UPDATE,
+    CATEGORY_UPDATE,
+    HERO_UPDATE,
+    TICKET_UPDATE,
+} from "../../actions";
 
 export const rollReducer = (state = null, action = { type: null }) => {
     switch (action.type) {
@@ -28,6 +33,17 @@ export const heroReducer = (state = [], action = { type: null }) => {
         case HYDRATE:
             return action.payload.hero;
         case HERO_UPDATE:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
+export const ticketReducer = (state = [], action = { type: null }) => {
+    switch (action.type) {
+        case HYDRATE:
+            return action.payload.ticket;
+        case TICKET_UPDATE:
             return action.payload;
         default:
             return state;

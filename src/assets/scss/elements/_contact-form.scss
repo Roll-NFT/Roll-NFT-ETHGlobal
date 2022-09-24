@@ -60,6 +60,19 @@
     textarea {
         min-height: 100px;
     }
+
+    select {
+        background: var(--background-color-4);
+        border-color: var(--color-border-white);
+        color: var(--color-white);
+        height: 50px;
+        border-radius: 5px;
+        font-size: 14px;
+        padding: 10px 20px;
+        border: 2px solid var(--color-border);
+        transition: 0.3s;
+        width: 100%;
+    }
 }
 
 .form-wrapper-one input::-webkit-input-placeholder {

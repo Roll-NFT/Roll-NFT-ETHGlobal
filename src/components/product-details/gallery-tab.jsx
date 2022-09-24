@@ -25,6 +25,7 @@ const GalleryTab = ({ images }) => (
                                     alt={image?.alt || "NFT"}
                                     width={167}
                                     height={167}
+                                    priority
                                 />
                             </span>
                         </Nav.Link>
@@ -44,6 +45,7 @@ const GalleryTab = ({ images }) => (
                                     alt={image?.alt || "NFT"}
                                     width={560}
                                     height={560}
+                                    priority
                                 />
                             </div>
                         </TabPane>

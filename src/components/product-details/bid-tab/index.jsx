@@ -5,10 +5,11 @@ import TabContent from "react-bootstrap/TabContent";
 import TabPane from "react-bootstrap/TabPane";
 import Nav from "react-bootstrap/Nav";
 import { useSelector } from "react-redux";
+import { NetworkType } from "@utils/types";
 import BidsTabContent from "./bids-tab-content";
 import DetailsTabContent from "./details-tab-content";
 
-const BidTab = ({ className, bids, owner, properties, tags }) => {
+const BidTab = ({ className, bids, network, properties, tags }) => {
     const user = useSelector((state) => state.user);
 
     return (
@@ -30,7 +31,7 @@ const BidTab = ({ className, bids, owner, properties, tags }) => {
                 <TabContent className="rn-bid-content">
                     <TabPane eventKey="nav-profile">
                         <DetailsTabContent
-                            owner={owner}
+                            network={network}
                             properties={properties}
                             tags={tags}
                         />
@@ -53,7 +54,7 @@ const BidTab = ({ className, bids, owner, properties, tags }) => {
 BidTab.propTypes = {
     className: PropTypes.string,
     bids: PropTypes.arrayOf(PropTypes.shape({})),
-    owner: PropTypes.shape({}),
+    network: PropTypes.objectOf(NetworkType),
     properties: PropTypes.arrayOf(PropTypes.shape({})),
     tags: PropTypes.arrayOf(PropTypes.string),
 };

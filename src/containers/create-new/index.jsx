@@ -15,6 +15,7 @@ import { useMoralis } from "react-moralis";
 
 const CreateNewArea = ({ className, space, nft }) => {
     const [selectedImage, setSelectedImage] = useState();
+    const [currencies, setCurrencies] = useState(null);
     const [hasImageError, setHasImageError] = useState(false);
     const { authenticate, isAuthenticated } = useMoralis();
     const user = useSelector((state) => state.user);
@@ -42,6 +43,7 @@ const CreateNewArea = ({ className, space, nft }) => {
             )
             .then((response) => {
                 toast(`Roll saved successfully!`);
+                reset();
                 Router.push(`/roll/${response.data.raffleId}`);
             })
             .catch((errorResponse) => {
@@ -60,12 +62,12 @@ const CreateNewArea = ({ className, space, nft }) => {
             });
         }
     };
+
     const onSubmit = (data) => {
         if (hasImageError) {
             return;
         }
         dispatch(balanceSelect(0));
-        reset();
         saveRaffle(data);
     };
 
@@ -78,6 +80,11 @@ const CreateNewArea = ({ className, space, nft }) => {
     useEffect(() => {
         setHasImageError(!selectedImage);
     }, [selectedImage]);
+
+    useEffect(() => {
+        console.log(process.env.NEXT_PUBLIC_CURRENCIES.split(","));
+        setCurrencies(process.env.NEXT_PUBLIC_CURRENCIES.split(","));
+    }, []);
 
     return (
         <div
@@ -237,13 +244,50 @@ const CreateNewArea = ({ className, space, nft }) => {
                                         </div>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-2">
+                                        <div className="input-box pb--20">
+                                            <label
+                                                htmlFor="currency"
+                                                className="form-label"
+                                            >
+                                                Currency*
+                                            </label>
+                                            <select
+                                                id="currency"
+                                                placeholder="e.g. '0.5'"
+                                                {...register("currency", {
+                                                    required:
+                                                        "Currency is required",
+                                                })}
+                                            >
+                                                <option value="">Select</option>
+                                                {currencies &&
+                                                    currencies.map(
+                                                        (currency) => (
+                                                            <option
+                                                                value={currency}
+                                                                key={currency}
+                                                            >
+                                                                {currency}
+                                                            </option>
+                                                        )
+                                                    )}
+                                            </select>
+                                            {errors.currency && (
+                                                <ErrorText>
+                                                    {errors.currency?.message}
+                                                </ErrorText>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-2">
                                         <div className="input-box pb--20">
                                             <label
                                                 htmlFor="price"
                                                 className="form-label"
                                             >
-                                                Ticket Price (wETH)*
+                                                Ticket Price*
                                             </label>
                                             <input
                                                 id="price"
