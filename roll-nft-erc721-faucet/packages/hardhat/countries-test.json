@@ -1,0 +1,73 @@
+[{
+	"code": "bi",
+	"name": "Burundi",
+	"ipfsCID": "QmQAtHynk5NrYeAVzEaRsk3vjaUpD2HQRghXP8bbL7UmJj",
+	"ipfsSize": 66607,
+	"population": 11175378,
+	"currency": "BIF",
+	"city": "Bujumbura"
+}, {
+	"code": "bs",
+	"name": "Bahamas",
+	"ipfsCID": "QmaU2SsYdwKAfj8DyZbf7qezFN2HjB3zKh5UDuxYLFk37s",
+	"ipfsSize": 34602,
+	"population": 385640,
+	"currency": "BSD",
+	"city": "Nassau"
+}, {
+	"code": "ls",
+	"name": "Lesotho",
+	"ipfsCID": "QmbtzAXoaFa6po4N4zTfGNdXcXBLs7r2Xtt4j3u4d1SXev",
+	"ipfsSize": 52904,
+	"population": 2108132,
+	"currency": "LSL",
+	"city": "Maseru"
+}, {
+	"code": "gf",
+	"name": "French Guiana",
+	"ipfsCID": "QmZK9XN3F6JaADx76ZNZWuKEUwTbUr37uc4Q3qHYMko6DN",
+	"ipfsSize": 38424,
+	"population": 290691,
+	"currency": "EUR",
+	"city": "Cayenne"
+}, {
+	"code": "ge",
+	"name": "Georgia",
+	"ipfsCID": "QmXru2GfRgwKz2pLT2cz2Ekub4co1Vz9WeerRuE3P3bBzT",
+	"ipfsSize": 30640,
+	"population": 3726549,
+	"currency": "GEL",
+	"city": "Tbilisi"
+}, {
+	"code": "kh",
+	"name": "Cambodia",
+	"ipfsCID": "QmYviYRtZLhdkkEbstHiwSfSiMEFTx12dEeQoCpKMeXgeS",
+	"ipfsSize": 151876,
+	"population": 16249798,
+	"currency": "KHR",
+	"city": "Phnom Penh"
+}, {
+	"code": "cy",
+	"name": "Cyprus",
+	"ipfsCID": "QmS5bijDnXYSfWHJNMUEDQvRyBUmUPJt9VtyE7k6m2aKKe",
+	"ipfsSize": 67288,
+	"population": 1189265,
+	"currency": "EUR",
+	"city": "Nicosia"
+}, {
+	"code": "tv",
+	"name": "Tuvalu",
+	"ipfsCID": "QmQrKdYY68tCCVuyYiaVs9W9UY2XDgRBWWqjRtLUuTCndW",
+	"ipfsSize": 60675,
+	"population": 11508,
+	"currency": "AUD",
+	"city": "Funafuti"
+}, {
+	"code": "nu",
+	"name": "Niue",
+	"ipfsCID": "Qme9CjDpAsLFFKkF5N5tGZAgmBoFoMnacjDud82R2DZkJr",
+	"ipfsSize": 50250,
+	"population": 1624,
+	"currency": "NZD",
+	"city": "Alofi"
+}]
