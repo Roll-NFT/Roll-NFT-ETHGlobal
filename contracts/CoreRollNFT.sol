@@ -15,11 +15,20 @@ import "./RollOwnershipToken.sol";
 import "./IRoll.sol";
 import "./TreasuryRollNFT.sol";
 
+/**
+ * @dev Chainlink VRF imports
+ * 
+ * TODO Solve npm install conflicts. Install it properly. Update imports.
+ */
+
+import "./ChainlinkVRF/VRFConsumerBaseV2.sol";
+
+
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
 /// @custom:security-contact loizage@icloud.com
-contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
+contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerBaseV2 {
     using Counters for Counters.Counter;
     using SafeMath for uint256;
     using Strings for uint256;
@@ -130,7 +139,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * @param host - Roll host address
      */
     // event RollFinished(uint8 rollType, uint256 rollID, uint256 winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
-    event RollClosed(uint256 indexed rollID);
+    event RollFinished(uint256 indexed rollID, uint256 indexed winnerTokenId);
 
     /// TODO DOC
     event SalesOpen(uint256 indexed rollID);
@@ -386,8 +395,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
             
             statusSalesClosed(_rollID);
             
-            /// @dev 
-            /// TODO INITIATE WINNER SELECTION
+            /// @dev initiate winner selection
+            /// TODO Rethink how we can do it otherwise
+            playRoll(_rollID);
         }
         
         /// @dev emit event about new Participant
@@ -761,7 +771,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
             
         }
 
-        require(false, " ");
+        require(false, "CoreRollNFT: Failed to define Roll type");
     }
 
     /**
@@ -803,7 +813,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         rolls[_rollID] = IRoll.Status.RollFinished;
 
         /// TODO rework event
-        emit RollFinished(_rollID);
+        emit RollFinished(_rollID, rolls[_rollID].winnerTokenId);
     }
 
     /**
@@ -818,6 +828,39 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
 
         /// TODO rework event
         emit RollClosed(_rollID);
+    }
+
+    /**
+     * @dev Initiates winner selection process
+     */
+    function playRoll(_rollID) public whenNotPaused {
+
+        /// @dev request random number
+
+    }
+
+    /**
+     * @dev function that is called by chainlink VRF
+     * 
+     * Select winner for the Roll ID == requestId
+     */
+    function fulfillRandomWords(
+        uint256 requestId,
+        uint256[] memory randomWords
+    ) internal override {
+        
+        /// @dev get total amount of participants
+        uint256 totalParticipants = getRollTicketsContract(requestId).totalSupply();
+        
+        /**
+         * @dev get a random value in totalParticipants range
+         * @dev set recieved winnerTokenId value to Roll parameters structure
+         */
+        rolls[requestId].winnerTokenId = (randomWords[0] % totalParticipants) + 1;
+
+        /// @dev update Roll status and emit RollFinished event
+        statusRollFinished(requestId);
+
     }
 
     /// TODO
