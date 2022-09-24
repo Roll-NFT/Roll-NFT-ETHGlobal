@@ -6,31 +6,24 @@ import HeroArea from "@containers/hero/layout-02";
 import CategoryArea from "@containers/category";
 import LiveExploreArea from "@containers/live-explore";
 import ServiceArea from "@containers/services";
-import TopSellerArea from "@containers/top-seller/layout-01";
-import ExploreProductArea from "@containers/explore-product/layout-02";
 import { normalizedData } from "@utils/methods";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { heroUpdate } from "@store/actions/rolls";
+import { addDays } from "date-fns";
 import homepageData from "../data/home.json";
 
 const Home = () => {
     const content = normalizedData(homepageData?.content || []);
     const hero = useSelector((state) => state.hero);
     const dispatch = useDispatch();
-
-    function addDays(date, days) {
-        const result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    }
-
     const [endingSoonRaffles, setEndingSoonRaffles] = useState([]);
+
     async function getEndingSoonRaffles() {
-        const soonish = 5;
         const startDate = new Date();
-        const endDate = addDays(startDate, soonish);
+        const endDate = addDays(startDate, 5);
+
         await axios(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`, {
             params: { startDate, endDate },
         })
@@ -78,20 +71,6 @@ const Home = () => {
                     }}
                 />
                 <CategoryArea data={content["category-section"]} />
-
-                {/* <TopSellerArea
-                    data={{
-                        ...content["top-sller-section"],
-                        sellers: sellerData,
-                    }}
-                /> */}
-                {/* <ExploreProductArea
-                    data={{
-                        ...content["live-explore-section"],
-                        products: endingSoonRaffles,
-                    }}
-                    className="rn-live-bidding-area"
-                /> */}
             </main>
             <Footer />
         </Wrapper>

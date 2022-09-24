@@ -35,7 +35,7 @@ export const balance = (state = initialState, action = { type: null }) => {
     }
 };
 
-export const balances = (state = [initialState], action = { type: null }) => {
+export const balances = (state = null, action = { type: null }) => {
     switch (action.type) {
         case HYDRATE:
             return action.payload.balances;

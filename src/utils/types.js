@@ -89,7 +89,7 @@ export const RollType = PropTypes.shape({
     raffleId: PropTypes.string,
     userId: PropTypes.string,
     userAddress: PropTypes.string,
-    network: PropTypes.objectOf(NetworkType),
+    network: NetworkType,
     nftId: PropTypes.string,
     nftContractAddress: PropTypes.string,
     nftCollection: PropTypes.string,

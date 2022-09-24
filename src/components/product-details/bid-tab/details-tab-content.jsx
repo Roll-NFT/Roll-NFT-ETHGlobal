@@ -63,9 +63,9 @@ DetailsTabContent.propTypes = {
         slug: PropTypes.string,
         image: ImageType,
     }),
-    properties: PropTypes.arrayOf(PropTypes.objectOf(RollAttributeType)),
+    properties: PropTypes.arrayOf(RollAttributeType),
     tags: PropTypes.arrayOf(PropTypes.string),
-    network: PropTypes.objectOf(NetworkType),
+    network: NetworkType,
 };
 
 export default DetailsTabContent;

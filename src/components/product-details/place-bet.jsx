@@ -315,7 +315,7 @@ PlaceBet.propTypes = {
     ticketSupply: PropTypes.number,
     ticketPrice: PropTypes.number,
     ticketCurrency: PropTypes.string,
-    network: PropTypes.objectOf(NetworkType),
+    network: NetworkType,
     endDate: PropTypes.string,
     host: PropTypes.string,
     btnColor: PropTypes.string,

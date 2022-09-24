@@ -5,13 +5,19 @@ import Anchor from "@ui/anchor";
 import Router from "next/router";
 import { useDispatch } from "react-redux";
 import { balanceSelect } from "@store/actions/balances";
+import { ThreeDots } from "react-loader-spinner";
+import { useState } from "react";
 
 const Product = ({ overlay, collection, title, slug, image, id }) => {
     const dispatch = useDispatch();
-    const handleClick = (event) => {
-        event.preventDefault();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setLoading(true);
         dispatch(balanceSelect(id));
-        Router.push(slug);
+        Router.push(slug).then(() => {
+            setLoading(false);
+        });
     };
 
     return (
@@ -22,7 +28,7 @@ const Product = ({ overlay, collection, title, slug, image, id }) => {
             <div className="card-thumbnail">
                 {image && (
                     <Anchor
-                        path={slug}
+                        path="#"
                         onClick={(e) => {
                             handleClick(e);
                         }}
@@ -33,6 +39,23 @@ const Product = ({ overlay, collection, title, slug, image, id }) => {
                             width={533}
                             height={533}
                         />
+                        {loading && (
+                            <ThreeDots
+                                height="25"
+                                width="50"
+                                radius="9"
+                                color="#00a3ff"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{
+                                    display: "block",
+                                    left: "50%",
+                                    transform: "translate(-50%)",
+                                    bottom: "120px",
+                                    position: "absolute",
+                                }}
+                                visible
+                            />
+                        )}
                     </Anchor>
                 )}
             </div>

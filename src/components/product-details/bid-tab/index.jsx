@@ -58,7 +58,7 @@ const BidTab = ({ className, bids, network, properties, tags }) => {
 BidTab.propTypes = {
     className: PropTypes.string,
     bids: PropTypes.arrayOf(PropTypes.shape({})),
-    network: PropTypes.objectOf(NetworkType),
+    network: NetworkType,
     properties: PropTypes.arrayOf(PropTypes.shape({})),
     tags: PropTypes.arrayOf(PropTypes.string),
 };

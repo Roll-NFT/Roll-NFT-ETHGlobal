@@ -11,9 +11,11 @@ const ExploreProductArea = ({ className, space, data }) => {
     const [hasMore, setHasMore] = useState(false);
 
     useEffect(() => {
-        const currentProducts = data.products.slice(0, 10);
-        setProducts(currentProducts);
-        setHasMore(currentProducts.length < data.products.length);
+        if (data.products) {
+            const currentProducts = data.products.slice(0, 10);
+            setProducts(currentProducts);
+            setHasMore(currentProducts.length < data.products.length);
+        }
     }, [data.products]);
 
     const loadMoreHandler = () => {
@@ -41,7 +43,6 @@ const ExploreProductArea = ({ className, space, data }) => {
                         </div>
                     </div>
                 )}
-
                 {products.length > 0 && (
                     <div className="row g-5">
                         {products.map((prod) => (

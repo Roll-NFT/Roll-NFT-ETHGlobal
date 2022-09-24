@@ -93,14 +93,12 @@ const MyNFTs = () => {
                         </div>
                     </div>
                 )}
-                {balances?.length ? (
+                {balances && (
                     <ExploreProductArea
                         data={{
                             products: balances,
                         }}
                     />
-                ) : (
-                    "Looks Like you do not have any NFTs"
                 )}
             </main>
             <Footer />
