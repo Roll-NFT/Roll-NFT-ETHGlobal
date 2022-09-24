@@ -4,6 +4,7 @@ import {
     CATEGORY_UPDATE,
     HERO_UPDATE,
     TICKET_UPDATE,
+    APPROVE_UPDATE,
 } from "../../actions";
 
 export const rollReducer = (state = null, action = { type: null }) => {
@@ -39,11 +40,22 @@ export const heroReducer = (state = [], action = { type: null }) => {
     }
 };
 
-export const ticketReducer = (state = [], action = { type: null }) => {
+export const ticketReducer = (state = null, action = { type: null }) => {
     switch (action.type) {
         case HYDRATE:
             return action.payload.ticket;
         case TICKET_UPDATE:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
+export const approveReducer = (state = null, action = { type: null }) => {
+    switch (action.type) {
+        case HYDRATE:
+            return action.payload.approved;
+        case APPROVE_UPDATE:
             return action.payload;
         default:
             return state;

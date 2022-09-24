@@ -6,6 +6,7 @@ import {
     categoryReducer,
     heroReducer,
     ticketReducer,
+    approveReducer,
 } from "./rolls";
 
 export default combineReducers({
@@ -15,4 +16,5 @@ export default combineReducers({
     category: categoryReducer,
     hero: heroReducer,
     ticket: ticketReducer,
+    approved: approveReducer,
 });

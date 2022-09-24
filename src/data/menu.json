@@ -19,7 +19,7 @@
     },
     {
         "id": 4,
-        "text": "NFT Faucet",
+        "text": "Faucets",
         "path": "/faucet",
         "env": "dev"
     }

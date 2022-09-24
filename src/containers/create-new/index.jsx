@@ -12,11 +12,16 @@ import axios from "axios";
 import Router from "next/router";
 import { balanceSelect } from "@store/actions/balances";
 import { useMoralis } from "react-moralis";
+import { ThreeDots } from "react-loader-spinner";
+import { formatWithOptions } from "date-fns/fp";
+import { eo } from "date-fns/locale";
+import { addDays, addYears } from "date-fns";
 
 const CreateNewArea = ({ className, space, nft }) => {
     const [selectedImage, setSelectedImage] = useState();
     const [currencies, setCurrencies] = useState(null);
     const [hasImageError, setHasImageError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { authenticate, isAuthenticated } = useMoralis();
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -30,7 +35,10 @@ const CreateNewArea = ({ className, space, nft }) => {
         mode: "onChange",
     });
 
+    const dateToString = formatWithOptions({ locale: eo }, "yyyy-MM-dd");
+
     const saveRaffle = async (form) => {
+        setLoading(true);
         await axios
             .post(
                 `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`,
@@ -44,26 +52,36 @@ const CreateNewArea = ({ className, space, nft }) => {
             .then((response) => {
                 toast(`Roll saved successfully!`);
                 reset();
-                Router.push(`/roll/${response.data.raffleId}`);
+                Router.push(`/roll/${response.data.raffleId}`).then(() => {
+                    setLoading(false);
+                });
             })
             .catch((errorResponse) => {
                 toast("Error saving Roll, please try again later!");
                 console.log(errorResponse);
+                setLoading(false);
             });
     };
 
     const handleClick = (event) => {
+        setLoading(true);
         event.preventDefault();
         if (isAuthenticated) {
-            Router.push("/select-nft");
+            Router.push("/select-nft").then(() => {
+                setLoading(false);
+            });
         } else {
             authenticate({
                 signingMessage: "Roll NFT Authentication",
             });
+            setLoading(false);
         }
     };
 
     const onSubmit = (data) => {
+        if (loading) {
+            return;
+        }
         if (hasImageError) {
             return;
         }
@@ -82,7 +100,6 @@ const CreateNewArea = ({ className, space, nft }) => {
     }, [selectedImage]);
 
     useEffect(() => {
-        console.log(process.env.NEXT_PUBLIC_CURRENCIES.split(","));
         setCurrencies(process.env.NEXT_PUBLIC_CURRENCIES.split(","));
     }, []);
 
@@ -136,6 +153,19 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                         Choose a NFT
                                                     </span>
                                                 </>
+                                            )}
+                                            {loading && !selectedImage && (
+                                                <ThreeDots
+                                                    height="40"
+                                                    width="40"
+                                                    radius="9"
+                                                    color="#fff"
+                                                    ariaLabel="three-dots-loading"
+                                                    wrapperStyle={{
+                                                        display: "block",
+                                                    }}
+                                                    visible
+                                                />
                                             )}
                                         </label>
                                     </div>
@@ -230,6 +260,12 @@ const CreateNewArea = ({ className, space, nft }) => {
                                             <input
                                                 id="endDate"
                                                 placeholder="e.g. '2022/12/31'"
+                                                min={dateToString(
+                                                    addDays(new Date(), 1)
+                                                )}
+                                                max={dateToString(
+                                                    addYears(new Date(), 1)
+                                                )}
                                                 type="date"
                                                 {...register("endDate", {
                                                     required:
@@ -377,7 +413,21 @@ const CreateNewArea = ({ className, space, nft }) => {
                                     <div className="d-grid d-md-flex justify-content-md-end">
                                         <div className="input-box ">
                                             <Button type="submit">
-                                                Create Roll
+                                                {!loading ? (
+                                                    "Create Roll"
+                                                ) : (
+                                                    <ThreeDots
+                                                        height="40"
+                                                        width="40"
+                                                        radius="9"
+                                                        color="#fff"
+                                                        ariaLabel="three-dots-loading"
+                                                        wrapperStyle={{
+                                                            display: "block",
+                                                        }}
+                                                        visible
+                                                    />
+                                                )}
                                             </Button>
                                         </div>
                                     </div>

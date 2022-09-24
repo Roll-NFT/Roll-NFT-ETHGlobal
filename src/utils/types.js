@@ -56,6 +56,11 @@ export const ItemType = PropTypes.shape({
     image: ImageType,
 });
 
+export const NetworkType = PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+});
+
 export const BalanceType = PropTypes.shape({
     id: PropTypes.number,
     collection: PropTypes.string,
@@ -84,7 +89,7 @@ export const RollType = PropTypes.shape({
     raffleId: PropTypes.string,
     userId: PropTypes.string,
     userAddress: PropTypes.string,
-    network: PropTypes.string,
+    network: PropTypes.objectOf(NetworkType),
     nftId: PropTypes.string,
     nftContractAddress: PropTypes.string,
     nftCollection: PropTypes.string,
@@ -107,11 +112,6 @@ export const RollType = PropTypes.shape({
 export const RollAttributeType = PropTypes.shape({
     trait_type: PropTypes.string,
     value: PropTypes.string,
-});
-
-export const NetworkType = PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
 });
 
 export const ProductType = PropTypes.shape({

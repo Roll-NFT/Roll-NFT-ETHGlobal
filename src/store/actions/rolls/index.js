@@ -1,4 +1,10 @@
-import { ROLL_UPDATE, CATEGORY_UPDATE, HERO_UPDATE, TICKET_UPDATE } from "..";
+import {
+    ROLL_UPDATE,
+    CATEGORY_UPDATE,
+    HERO_UPDATE,
+    TICKET_UPDATE,
+    APPROVE_UPDATE,
+} from "..";
 
 export const rollUpdate = (roll) => ({
     type: ROLL_UPDATE,
@@ -18,4 +24,9 @@ export const heroUpdate = (hero) => ({
 export const ticketUpdate = (ticket) => ({
     type: TICKET_UPDATE,
     payload: ticket,
+});
+
+export const approveUpdate = (approve) => ({
+    type: APPROVE_UPDATE,
+    payload: approve,
 });

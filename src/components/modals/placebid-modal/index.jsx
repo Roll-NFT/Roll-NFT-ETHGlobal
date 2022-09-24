@@ -2,15 +2,18 @@ import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 import Button from "@ui/button";
 import { RollTicketType } from "@utils/types";
+import { ThreeDots } from "react-loader-spinner";
 
 const PlaceBidModal = ({
     show,
     cancel,
     confirm,
+    confirmButtonLabel,
     title,
     ticketPrice,
     ticketCurrency,
     ticket,
+    loading,
 }) => (
     <Modal
         className="rn-popup-modal placebid-modal-wrapper"
@@ -66,20 +69,34 @@ const PlaceBidModal = ({
                     </div>
                 </div>
                 <div className="bit-continue-button">
-                    <Button
-                        color="primary-alta"
-                        size="medium"
-                        onClick={cancel}
-                        className="float-start"
-                    >
-                        Cancel
-                    </Button>
+                    {!loading && (
+                        <Button
+                            color="primary-alta"
+                            size="medium"
+                            onClick={cancel}
+                            className="float-start"
+                        >
+                            Cancel
+                        </Button>
+                    )}
                     <Button
                         size="medium"
                         className="float-end"
                         onClick={confirm}
                     >
-                        Buy tickets
+                        {!loading ? (
+                            confirmButtonLabel
+                        ) : (
+                            <ThreeDots
+                                height="10"
+                                width="80"
+                                radius="9"
+                                color="#fff"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{ display: "block" }}
+                                visible
+                            />
+                        )}
                     </Button>
                 </div>
             </div>
@@ -91,9 +108,11 @@ PlaceBidModal.propTypes = {
     show: PropTypes.bool.isRequired,
     cancel: PropTypes.func.isRequired,
     confirm: PropTypes.func.isRequired,
+    confirmButtonLabel: PropTypes.string,
     title: PropTypes.string,
     ticketPrice: PropTypes.number,
     ticketCurrency: PropTypes.string,
     ticket: PropTypes.objectOf(RollTicketType),
+    loading: PropTypes.bool,
 };
 export default PlaceBidModal;

@@ -18,6 +18,13 @@ const Home = () => {
         }
     }, [balances]);
 
+    useEffect(
+        () => () => {
+            setNft({});
+        },
+        []
+    );
+
     return (
         <Wrapper>
             <SEO pageTitle="Create New Roll" />

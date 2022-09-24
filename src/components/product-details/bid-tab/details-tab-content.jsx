@@ -3,15 +3,23 @@ import { ImageType, RollAttributeType, NetworkType } from "@utils/types";
 
 const DetailsTabContent = ({ network, properties, tags }) => (
     <div className="rn-pd-bd-wrapper mt--20">
-        <div className="rn-pd-sm-property-wrapper">
-            <h6 className="pd-property-title">Network</h6>
-            <div className="property-wrapper">
-                <div key={network.id} className="pd-property-inner">
-                    <span className="color-body type">{network.name}</span>
-                    <span className="color-white value">id: {network.id}</span>
+        {network && (
+            <div className="rn-pd-sm-property-wrapper">
+                <h6 className="pd-property-title">Network</h6>
+                <div className="property-wrapper">
+                    <div key={`1-${network.id}`} className="pd-property-inner">
+                        <span className="color-body type">Name</span>
+                        <span className="color-white value">
+                            {network.name}
+                        </span>
+                    </div>
+                    <div key={`2-${network.id}`} className="pd-property-inner">
+                        <span className="color-body type">ID</span>
+                        <span className="color-white value">{network.id}</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        )}
         {properties && (
             <div className="rn-pd-sm-property-wrapper">
                 <h6 className="pd-property-title">Property</h6>

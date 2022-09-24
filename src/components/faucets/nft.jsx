@@ -4,9 +4,10 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useMoralis } from "react-moralis";
 import nftFaucet from "@lib/NFTFaucet.json";
+import Anchor from "@ui/anchor";
 import countriesData from "../../data/countries.json";
 
-const FaucetForm = () => {
+const NFTFaucet = () => {
     const { authenticate, isAuthenticated, user } = useMoralis();
     const [contract, setContract] = useState(null);
     const [tokenId, setTokenId] = useState("");
@@ -28,7 +29,6 @@ const FaucetForm = () => {
         if (txn) {
             setTokenId(txn.toNumber());
         }
-        console.log("txn.toNumber: ", txn.toNumber());
     };
 
     const mintNFT = async () => {
@@ -40,7 +40,7 @@ const FaucetForm = () => {
                     status: {
                         error: false,
                         class: "text-warning",
-                        msg: "Please wait. NFT is minting...",
+                        msg: "Please confirm transaction on your wallet. NFT is minting...",
                     },
                 });
                 const mintTxn = await contract.mintFlagNFT(
@@ -52,7 +52,7 @@ const FaucetForm = () => {
                 await mintTxn.wait();
                 toast(`NFT minted successfully!`);
             } catch (error) {
-                toast(`NFT mint failed!`);
+                toast(`Token mint failed! ${error.reason}`);
                 setMintingState({
                     minting: false,
                     status: {
@@ -89,9 +89,10 @@ const FaucetForm = () => {
                 status: {
                     error: false,
                     class: "text-success",
-                    msg: `NFT minted! ${process.env.NEXT_PUBLIC_RARIBLE_URL}${
-                        process.env.NEXT_PUBLIC_NFT_FAUCET
-                    }:${_tokenId.toNumber()}`,
+                    msg: "NFT minted successfully!",
+                    // msg: `NFT minted! ${process.env.NEXT_PUBLIC_RARIBLE_URL}${
+                    //     process.env.NEXT_PUBLIC_NFT_FAUCET
+                    // }:${_tokenId.toNumber()}`,
                 },
             });
         };
@@ -108,9 +109,25 @@ const FaucetForm = () => {
 
     return (
         <div className="form-wrapper-one registration-area">
-            <h3 className="mb--30">NFT Faucet</h3>
-            <p>
-                Supported network: {process.env.NEXT_PUBLIC_APP_CHAIN_ID_NAME}
+            <h3 className="mb-1">NFT Faucet</h3>
+            <h5 className="mb--30">Squared Country Flags Collection</h5>
+            <p className="connect-td">
+                This is a sample NFT collection created for the single purpouse
+                of testing RollNFT features, such as creating a new Roll. <br />
+                <br />
+                You will need native token to pay for the gas fee:
+                <Anchor
+                    path="https://faucet.polygon.technology"
+                    target="_blank"
+                    className="mt-0"
+                >
+                    https://faucet.polygon.technology
+                </Anchor>
+                <br />
+                Supported networks: {
+                    process.env.NEXT_PUBLIC_APP_CHAIN_ID_NAME
+                }{" "}
+                (please connect your wallet to that network prior to minting).
             </p>
             <Button type="submit" size="medium" onClick={onClick}>
                 Mint NFT
@@ -123,4 +140,4 @@ const FaucetForm = () => {
         </div>
     );
 };
-export default FaucetForm;
+export default NFTFaucet;

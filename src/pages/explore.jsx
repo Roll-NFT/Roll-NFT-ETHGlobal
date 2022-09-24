@@ -2,7 +2,6 @@ import SEO from "@components/seo";
 import Wrapper from "@layout/wrapper";
 import Header from "@layout/header";
 import Footer from "@layout/footer";
-import Breadcrumb from "@components/breadcrumb";
 import ExploreProductArea from "@containers/explore-product/layout-02";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -35,7 +34,6 @@ const Home02 = () => {
             <SEO pageTitle="Explore" />
             <Header />
             <main id="main-content">
-                {/* <Breadcrumb pageTitle="Explore" currentPage="Explore" /> */}
                 <ExploreProductArea
                     data={{
                         section_title: {
