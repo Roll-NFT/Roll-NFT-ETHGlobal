@@ -380,6 +380,8 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
         /// @dev check that Roll status is "SalesOpen"
         require(roll.status == IRoll.Status.SalesOpen, "CoreRollNFT: Roll status should be SalesOpen to participate");
 
+        /// TODO @dev check that Roll time is not passed
+        
         /// @dev get Tickets contract interface
         IERC721RollTicket ticketsContract = getRollTicketsContract(_rollID);
 
