@@ -59,6 +59,7 @@ const Home02 = () => {
                             title: "Explore",
                         },
                         products,
+                        showFilters: true,
                     }}
                 />
             </main>

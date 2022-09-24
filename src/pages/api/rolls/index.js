@@ -88,7 +88,7 @@ export default async (req, res) => {
             }
             const data = await Raffles.find({
                 endDate: filter,
-            });
+            }).sort("endDate");
             res.status(200).json({ data });
         } catch (error) {
             res.status(400).json({ error });
