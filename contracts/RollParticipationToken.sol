@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "./IERC721RollTicket.sol";
 
 /**
  * @title {ERC721} contract representing collection of Roll participation tokens (tickets)
@@ -137,7 +138,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
      * @dev Return Base URI
      */
     function baseURI() public view returns (string memory) {
-        _baseURI()
+        return _baseURI();
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)

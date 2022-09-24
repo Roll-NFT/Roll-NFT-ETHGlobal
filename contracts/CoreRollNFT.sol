@@ -8,6 +8,10 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
+/**
+ * Roll NFT infrastructure
+ */
 import "./IERC721RollToken.sol";
 import "./IERC721RollTicket.sol";
 import "./RollParticipationToken.sol";
@@ -39,7 +43,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     Counters.Counter private _rollIdCounter;
 
     /// @dev Chainlinl VRF state variables
-    mapping(uint256 => uint256[]) public vrfRequestIdToRandomWords;
+    // mapping(uint256 => uint256[]) public vrfRollIdToRandomWords;
     mapping(uint256 => uint256) public vrfRequestIdToRollID;
     /// @dev link token contract address
     LinkTokenInterface public immutable VRF_LINK_TOKEN;
@@ -62,15 +66,15 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     uint256 public revenuePercentageFee;
     
     /**
-     * @dev Contract that will hold assets
+     * TODO @dev Contract that will hold assets
      * To implement logic for assets in future
      */
-    address public immutable contractIddleAssets;
+    // address public immutable contractIddleAssets;
 
     /**
      * @dev Contract that will hold and operate with treasury assets. Such as Revenue fee and unclaimed assets.
      */
-    address public immutable contractTreasury;
+    // address public immutable contractTreasury;
     
     /**
      * @dev Roll ownership Token collection (ROLT) - ERC721 contract
@@ -181,11 +185,12 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     constructor(
         string memory _baseTokenURI,
         uint256 _revenueFee,
+        address _vrfCoordinator,
         address _vrfLinkToken,
         bytes32 _vrfKeyHash,
         uint32 _vrfCallbackGasLimit, /* 50000 */
         uint16 _vrfRequestConfirmations /* 3 */
-    ) VRFConsumerBaseV2(vrfCoordinator) {
+    ) VRFConsumerBaseV2(_vrfCoordinator) {
 
         /// @dev Chainlink VRF
         VRF_COORDINATOR = VRFCoordinatorV2Interface(_vrfCoordinator);

@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
  * 
  * @notice Defines Mint and Burn functions
  */
-interface IERC721RollTicket is IERC721, IERC721Enumerable, IERC721Metadata, IERC165, IAccessControlEnumerable, IAccessControl {
+interface IERC721RollTicket is IERC721, IERC721Enumerable, IERC721Metadata, IAccessControlEnumerable {
 
     /**
      * @dev Burn Roll participation token by it's ID
@@ -40,7 +40,7 @@ interface IERC721RollTicket is IERC721, IERC721Enumerable, IERC721Metadata, IERC
      * 
      * @param to - address to be minted to
      * 
-     * @returns minted ticket ID
+     * @return minted ticket ID
      */
     function mintToken(address to) external returns (uint256);
     

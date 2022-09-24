@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
@@ -22,7 +23,7 @@ import "./IERC721RollToken.sol";
  * @notice 
  * @custom:security-contact loizage@icloud.com
  */
-contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable, ERC721URIStorage, IERC721RollToken {
+contract RollOwnershipToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Pausable, AccessControlEnumerable, Context, IERC721RollToken {
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
@@ -124,7 +125,7 @@ contract RollOwnershipToken is Context, AccessControlEnumerable, ERC721Pausable,
      * @dev Return Base URI
      */
     function baseURI() public view returns (string memory) {
-        _baseURI()
+        return _baseURI();
     }
 
     /**
