@@ -40,6 +40,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
 
     /// @dev Chainlinl VRF state variables
     mapping(uint256 => uint256[]) public vrfRequestIdToRandomWords;
+    mapping(uint256 => uint256) public vrfRequestIdToRollID;
     /// @dev link token contract address
     LinkTokenInterface public immutable VRF_LINK_TOKEN;
     /// @dev VRF Coordinator address
@@ -161,6 +162,10 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     
     /// TODO DOC
     event SalesClosed(uint256 indexed rollID);
+
+    /// TODO DOC
+    event PendingResult(uint256 indexed rollID, uint256 indexed requerstID);
+
     
     /**
      * @dev Set Roll NFT infrastracture.
@@ -810,8 +815,8 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      */
     function statusSalesOpen(uint256 _rollID) internal {
         
-        /// @dev open participation sales
-        rolls[_rollID] = IRoll.Status.SalesOpen;
+        /// @dev Open participation sales
+        rolls[_rollID].status = IRoll.Status.SalesOpen;
 
         /// TODO rework event
         emit SalesOpen(_rollID);
@@ -824,8 +829,8 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      */
     function statusSalesClosed(uint256 _rollID) internal {
         
-        /// @dev open participation sales
-        rolls[_rollID] = IRoll.Status.SalesClosed;
+        /// @dev Close participation sales
+        rolls[_rollID].status = IRoll.Status.SalesClosed;
 
         /// TODO rework event
         emit SalesClosed(_rollID);
@@ -838,8 +843,8 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      */
     function statusRollFinished(uint256 _rollID) internal {
         
-        /// @dev open participation sales
-        rolls[_rollID] = IRoll.Status.RollFinished;
+        /// @dev Finnish Roll (success)
+        rolls[_rollID].status = IRoll.Status.RollFinished;
 
         /// TODO rework event
         emit RollFinished(_rollID, rolls[_rollID].winnerTokenId);
@@ -852,8 +857,8 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      */
     function statusRollClosed(uint256 _rollID) internal {
         
-        /// @dev open participation sales
-        rolls[_rollID] = IRoll.Status.RollClosed;
+        /// @dev Close Roll (failure)
+        rolls[_rollID].status = IRoll.Status.RollClosed;
 
         /// TODO rework event
         emit RollClosed(_rollID);
@@ -863,14 +868,15 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      * @dev set PendingResult status to Roll with _rollID number
      * 
      * @param _rollID - Roll ID number
+     * @param _requerstId - chainlink VRF requerst ID
      */
-    function statusPendingResult(uint256 _rollID) internal {
+    function statusPendingResult(uint256 _rollID, uint256 _requerstId) internal {
         
-        /// @dev open participation sales
-        rolls[_rollID] = IRoll.Status.PendingResult;
+        /// @dev Initiate winner selection
+        rolls[_rollID].status = IRoll.Status.PendingResult;
 
         /// TODO rework event
-        emit PendingResult(_rollID);
+        emit PendingResult(_rollID, _requerstId);
     }
 
     /**
@@ -883,6 +889,8 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      * Requirement:
      * 
      * Roll status  - "SalesClosed"
+     * 
+     * @param _rollID - Roll ID number
      */
     function drawRoll(_rollID) public whenNotPaused {
 
@@ -890,10 +898,13 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
         require(roll.status == IRoll.Status.SalesClosed, "CoreRollNFT: Roll status should be SalesClosed to draw the Roll");
 
         /// @dev request RNG from chainlink VRF
-        requestRandomWords(_rollID);
+        uint256 requerstId = requestRandomWords(_rollID);
+
+        /// @dev check that RNG request is successful
+        require(requerstId != uint256(0), "CoreRollNFT: Failed to request random words from chainlink VRF")
 
         /// @dev set Roll status to PendingResult and emit PendingResult
-        statusPendingResult(_rollID);
+        statusPendingResult(_rollID, requerstId);
 
     }
 
@@ -901,16 +912,24 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      * @dev function to request RNG from chainlink VRF
      * 
      * Assumes the subscription is funded sufficiently.
+     * 
+     * @return VRF request ID
      */
-    function requestRandomWords(uint256 _rollID) internal {
+    function requestRandomWords(uint256 _rollID) internal returns(uint256) {
         // Will revert if subscription is not set and funded.
-        uint256 s_requestId = COORDINATOR.requestRandomWords(
+        uint256 requestId = COORDINATOR.requestRandomWords(
         vrfKeyHash,
         vrfSubscriptionId,
         vrfRequestConfirmations,
         vrfCallbackGasLimit,
         uin32(1) /* TODO Implement multiple RNG request for multiple winner / prize */
         );
+
+        /// @dev make mapping relation for Request ID vs Roll ID
+        vrfRequestIdToRollID[requestId] = _rollID;
+
+        return requestId;
+
     }
 
     /**
@@ -922,18 +941,21 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
         uint256 requestId,
         uint256[] memory randomWords
     ) internal override {
-        
+
+        /// @dev get Roll ID related to Request ID
+        uint256 rollID = vrfRequestIdToRollID[requestId];
+
         /// @dev get total amount of participants
-        uint256 totalParticipants = getRollTicketsContract(requestId).totalSupply();
+        uint256 totalParticipants = getRollTicketsContract(rollID).totalSupply();
         
         /**
          * @dev get a random value in totalParticipants range
          * @dev set recieved winnerTokenId value to Roll parameters structure
          */
-        rolls[requestId].winnerTokenId = (randomWords[0] % totalParticipants) + 1;
+        rolls[rollID].winnerTokenId = (randomWords[0] % totalParticipants) + 1;
 
         /// @dev update Roll status and emit RollFinished event
-        statusRollFinished(requestId);
+        statusRollFinished(rollID);
 
     }
 
