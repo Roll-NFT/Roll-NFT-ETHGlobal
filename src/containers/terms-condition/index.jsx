@@ -14,7 +14,7 @@ const TermsAndConditionsArea = ({ className, space }) => (
             <div className="row">
                 <div className="offset-lg-2 col-lg-8 ">
                     <div className="condition-wrapper">
-                        <h2>Terms & Conditions for the Rafles</h2>
+                        <h2>Rolls Terms & Conditions</h2>
                         <p className="mb-2">
                             - When you create a roll, the NFT prize you have
                             chosen will be transferred from your wallet into our
