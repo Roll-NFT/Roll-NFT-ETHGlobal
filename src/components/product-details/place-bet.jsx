@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import PropTypes from "prop-types";
@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { rollUpdate, ticketUpdate, approveUpdate } from "@store/actions/rolls";
 import { useMoralis, useChain } from "react-moralis";
-import erc20Token from "@lib/erc20.json";
+import erc20Token from "@lib/contracts/erc20.json";
 import { NetworkType } from "@utils/types";
 import { ThreeDots } from "react-loader-spinner";
 
@@ -114,7 +114,6 @@ const PlaceBet = ({
                 process.env.NEXT_PUBLIC_CORE_CONTRACT,
                 wei
             );
-            setLoading(false);
         } catch (error) {
             setLoading(false);
             toast(error.reason);
@@ -136,10 +135,18 @@ const PlaceBet = ({
     };
 
     const onConfirm = async (data) => {
-        if (approved) {
+        if (loading) {
+            return;
+        }
+        if (!approved) {
+            approveToken();
+            return;
+        }
+        const weiTotal = ethers.utils.parseUnits(ticket.total.toString(), 18);
+        if (approved.value >= weiTotal) {
             buyTickets();
         } else {
-            approveToken();
+            dispatch(approveUpdate(null));
         }
     };
 
@@ -153,7 +160,11 @@ const PlaceBet = ({
             });
             return;
         }
-        if (chain && network.id !== chain.networkId) {
+        if (
+            chain &&
+            network &&
+            network.id.toString() !== chain.networkId.toString()
+        ) {
             toast(`Wrong network! Please change to network #${network.name}`);
             return;
         }
@@ -179,6 +190,7 @@ const PlaceBet = ({
         };
         const onTokenApproval = (owner, spender, value) => {
             dispatch(approveUpdate({ owner, spender, value }));
+            setLoading(false);
             toast("Amount approved successfully. You can now buy tickets!");
         };
         if (currencyContract) {

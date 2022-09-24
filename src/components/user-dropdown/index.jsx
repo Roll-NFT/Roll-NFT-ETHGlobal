@@ -1,18 +1,15 @@
 import Anchor from "@ui/anchor";
 import { useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "@utils/format";
-import { useSelector } from "react-redux";
 
 const UserDropdown = () => {
-    const { logout } = useMoralis();
-    const user = useSelector((state) => state.user);
-
+    const { logout, user } = useMoralis();
     return (
         <>
             <div>
                 Connected as <br />
-                <u>{getEllipsisTxt(user.address || "")}</u> <br />
-                {user && <span>to {user.chain}</span>}
+                <u>{getEllipsisTxt(user.get("ethAddress") || "")}</u> <br />
+                <span>to {user.get("chain")}</span>
             </div>
             <div className="mainmenu-wrapper">
                 <div className="mainmenu-nav d-none d-xl-block">

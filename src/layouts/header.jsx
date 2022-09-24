@@ -11,9 +11,7 @@ import ColorSwitcher from "@components/color-switcher";
 import BurgerButton from "@ui/burger-button";
 import Button from "@ui/button";
 import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { userUpdate } from "@store/actions/users";
 import Router from "next/router";
 import headerData from "../data/header.json";
 import menuData from "../data/menu.json";
@@ -22,26 +20,20 @@ const Header = ({ className }) => {
     const sticky = useSticky();
     const { offcanvas, offcanvasHandler } = useOffcanvas();
     const { search, searchHandler } = useFlyoutSearch();
-    const { authenticate, isAuthenticated, user } = useMoralis();
-    const userApp = useSelector((state) => state.user);
+    const { authenticate, isAuthenticated, user, setUserData } = useMoralis();
     const { chain } = useChain();
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if (user && chain) {
             const { chainId } = chain;
-            dispatch(
-                userUpdate({
-                    id: user.id,
-                    address: user.get("ethAddress"),
-                    chain: chain.name,
-                    chainId,
-                    blockExplorerUrl: chain.blockExplorerUrl,
-                    faucets: chain.faucets,
-                    networkId: chain.networkId,
-                    currency: chain.nativeCurrency,
-                })
-            );
+            setUserData({
+                chain: chain.name,
+                chainId,
+                blockExplorerUrl: chain.blockExplorerUrl,
+                faucets: chain.faucets,
+                networkId: chain.networkId,
+                currency: chain.nativeCurrency,
+            });
         }
     }, [user, chain]);
 

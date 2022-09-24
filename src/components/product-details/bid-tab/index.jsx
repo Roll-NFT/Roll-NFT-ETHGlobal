@@ -4,13 +4,13 @@ import TabContainer from "react-bootstrap/TabContainer";
 import TabContent from "react-bootstrap/TabContent";
 import TabPane from "react-bootstrap/TabPane";
 import Nav from "react-bootstrap/Nav";
-import { useSelector } from "react-redux";
 import { NetworkType } from "@utils/types";
+import { useMoralis } from "react-moralis";
 import BidsTabContent from "./bids-tab-content";
 import DetailsTabContent from "./details-tab-content";
 
 const BidTab = ({ className, bids, network, properties, tags }) => {
-    const user = useSelector((state) => state.user);
+    const { user } = useMoralis();
 
     return (
         <TabContainer defaultActiveKey="nav-profile">
@@ -40,10 +40,14 @@ const BidTab = ({ className, bids, network, properties, tags }) => {
                         <BidsTabContent bids={bids} showAddress />
                     </TabPane>
                     <TabPane eventKey="nav-tickets">
-                        <BidsTabContent
-                            bids={bids.filter((bid) => bid.userId === user.id)}
-                            showAddress={false}
-                        />
+                        {user && (
+                            <BidsTabContent
+                                bids={bids.filter(
+                                    (bid) => bid.userId === user.id
+                                )}
+                                showAddress={false}
+                            />
+                        )}
                     </TabPane>
                 </TabContent>
             </div>

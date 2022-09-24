@@ -36,7 +36,8 @@ const PlaceBidModal = ({
         </Modal.Header>
         <Modal.Body>
             <p className="mb-0">
-                You are about to purchase tickets for: {title}
+                You are about to purchase tickets for: <br />
+                {title}
             </p>
             <div className="placebid-form-box">
                 <div className="bid-content">
@@ -52,17 +53,14 @@ const PlaceBidModal = ({
                         <div className="bid-content-right">
                             <span>{ticket.quantity}</span>
                             <span>
-                                {ticketPrice}
-                                {ticketCurrency}
+                                {ticketPrice} {ticketCurrency}
                             </span>
                             <span>
-                                {ticket.fee}
-                                {ticketCurrency}
+                                {ticket.fee} {ticketCurrency}
                             </span>
                             <span>
                                 <b>
-                                    {ticket.total}
-                                    {ticketCurrency}
+                                    {ticket.total} {ticketCurrency}
                                 </b>
                             </span>
                         </div>

@@ -7,8 +7,7 @@ import Router from "next/router";
 
 const MaintenanceArea = () => {
     const { switchNetwork } = useChain();
-    const { enableWeb3 } = useMoralis();
-    const user = useSelector((state) => state.user);
+    const { enableWeb3, user } = useMoralis();
 
     async function switchToSupportedNetwork(networkId) {
         await enableWeb3();
@@ -38,7 +37,9 @@ const MaintenanceArea = () => {
                     <div className="maintanance-inner">
                         <div className="wrapper">
                             <h2>
-                                <span>{user && <span>{user.chain}</span>}</span>
+                                <span>
+                                    <span>{user && user.get("chain")}</span>
+                                </span>
                                 <br />
                                 is not supported
                             </h2>

@@ -7,7 +7,7 @@ import Button from "@ui/button";
 import ErrorText from "@ui/error-text";
 import { toast } from "react-toastify";
 import Anchor from "@ui/anchor";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import Router from "next/router";
 import { balanceSelect } from "@store/actions/balances";
@@ -22,9 +22,8 @@ const CreateNewArea = ({ className, space, nft }) => {
     const [currencies, setCurrencies] = useState(null);
     const [hasImageError, setHasImageError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const { authenticate, isAuthenticated } = useMoralis();
-    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    const { authenticate, isAuthenticated, user } = useMoralis();
 
     const {
         register,
@@ -39,10 +38,17 @@ const CreateNewArea = ({ className, space, nft }) => {
 
     const saveRaffle = async (form) => {
         setLoading(true);
+        const userObj = {
+            id: user.id,
+            address: user.get("ethAddress"),
+            chain: user.get("chain"),
+            chainId: user.get("chainId"),
+            networkId: user.get("networkId"),
+        };
         await axios
             .post(
                 `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`,
-                { user, nft, form },
+                { user: userObj, nft, form },
                 {
                     headers: {
                         "content-type": "application/json",
@@ -50,9 +56,9 @@ const CreateNewArea = ({ className, space, nft }) => {
                 }
             )
             .then((response) => {
-                toast(`Roll saved successfully!`);
-                reset();
+                toast(`Roll saved successfully! You will be redirected.`);
                 Router.push(`/roll/${response.data.raffleId}`).then(() => {
+                    reset();
                     setLoading(false);
                 });
             })
@@ -159,7 +165,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                     height="40"
                                                     width="40"
                                                     radius="9"
-                                                    color="#fff"
+                                                    color="#00a3ff"
                                                     ariaLabel="three-dots-loading"
                                                     wrapperStyle={{
                                                         display: "block",
@@ -417,8 +423,8 @@ const CreateNewArea = ({ className, space, nft }) => {
                                                     "Create Roll"
                                                 ) : (
                                                     <ThreeDots
-                                                        height="40"
-                                                        width="40"
+                                                        height="25"
+                                                        width="50"
                                                         radius="9"
                                                         color="#fff"
                                                         ariaLabel="three-dots-loading"

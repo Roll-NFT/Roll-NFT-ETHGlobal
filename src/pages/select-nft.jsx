@@ -5,10 +5,12 @@ import Header from "@layout/header";
 import Footer from "@layout/footer";
 import Breadcrumb from "@components/breadcrumb";
 import ExploreProductArea from "@containers/explore-product/layout-03";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { balancesUpdate } from "@store/actions/balances";
+import { ThreeDots } from "react-loader-spinner";
+import { useMoralis } from "react-moralis";
 
 export async function getStaticProps() {
     return { props: { className: "template-color-1" } };
@@ -38,11 +40,13 @@ const prepareData = (obj, network) =>
         .flat();
 
 const MyNFTs = () => {
-    const user = useSelector((state) => state.user);
+    const { user } = useMoralis();
     const balances = useSelector((state) => state.balances);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const getBalances = async (address, network) => {
+        setLoading(true);
         const covalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY;
         const covalentEndpoint = process.env.NEXT_PUBLIC_COVALENT_ENDPOINT;
         const covalentUrl = `${covalentEndpoint}/${network}/address/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${covalentKey}`;
@@ -53,13 +57,13 @@ const MyNFTs = () => {
             })
             .catch((errorResponse) => {
                 console.log("Error fetching data: ", errorResponse);
-            });
-        // .finally(() => console.log("Done fetching data"));
+            })
+            .finally(() => setLoading(false));
     };
 
     useEffect(() => {
         if (user) {
-            getBalances(user.address, user.networkId);
+            getBalances(user.get("ethAddress"), user.get("networkId"));
         }
     }, [user]);
 
@@ -74,6 +78,21 @@ const MyNFTs = () => {
                     rootTitle="Create New Roll"
                     rootPath="/roll/create"
                 />
+                {loading && (
+                    <div className="container">
+                        <div className="row text-center mt-5">
+                            <ThreeDots
+                                height="25"
+                                width="50"
+                                radius="9"
+                                color="#00a3ff"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{ display: "block" }}
+                                visible
+                            />
+                        </div>
+                    </div>
+                )}
                 {balances?.length ? (
                     <ExploreProductArea
                         data={{
