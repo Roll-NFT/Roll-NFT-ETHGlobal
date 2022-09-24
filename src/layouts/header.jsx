@@ -4,24 +4,100 @@ import { useMoralis, useChain } from "react-moralis";
 import Logo from "@components/logo";
 import MainMenu from "@components/menu/main-menu";
 import MobileMenu from "@components/menu/mobile-menu";
-import SearchForm from "@components/search-form/layout-01";
-import FlyoutSearchForm from "@components/search-form/layout-02";
 import UserDropdown from "@components/user-dropdown";
 import ColorSwitcher from "@components/color-switcher";
 import BurgerButton from "@ui/burger-button";
 import Button from "@ui/button";
-import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
+import { useOffcanvas, useSticky } from "@hooks";
 import { useEffect } from "react";
-import Router from "next/router";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    balancesUpdate,
+    currencyBalancesUpdate,
+} from "@store/actions/balances";
 import headerData from "../data/header.json";
 import menuData from "../data/menu.json";
 
 const Header = ({ className }) => {
     const sticky = useSticky();
     const { offcanvas, offcanvasHandler } = useOffcanvas();
-    const { search, searchHandler } = useFlyoutSearch();
     const { authenticate, isAuthenticated, user, setUserData } = useMoralis();
     const { chain } = useChain();
+    const dispatch = useDispatch();
+    const balances = useSelector((state) => state.balances);
+
+    const prepareNFTBalances = (obj, network) =>
+        obj.items
+            .filter(
+                (item) =>
+                    item.type === "nft" && item.supports_erc.includes("erc721")
+            )
+            .map((collection, i) =>
+                collection.nft_data.map((nft, j) => ({
+                    id: (i + 1) * 100 + j,
+                    collection: collection.contract_name,
+                    contract_address: collection.contract_address,
+                    network,
+                    token_id: nft.token_id,
+                    token_balance: nft.token_balance,
+                    title: nft.external_data.name,
+                    description: nft.external_data.description,
+                    image: nft.external_data.image,
+                    attributes: nft.external_data.attributes,
+                    supports_erc: nft.supports_erc,
+                    type: "nft",
+                }))
+            )
+            .flat();
+
+    const prepareCurrencyBalances = (obj, network, supportedCurrency) =>
+        obj.items
+            .filter(
+                (item) =>
+                    item.type === "cryptocurrency" &&
+                    item.supports_erc.includes("erc20") &&
+                    supportedCurrency.includes(item.contract_ticker_symbol)
+            )
+            .map((coin, i) => ({
+                id: i,
+                network,
+                ...coin,
+            }))
+
+            .flat();
+
+    const getBalances = async (address, network) => {
+        const covalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY;
+        const covalentEndpoint = process.env.NEXT_PUBLIC_COVALENT_ENDPOINT;
+        const covalentUrl = `${covalentEndpoint}/${network}/address/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${covalentKey}`;
+        await axios(covalentUrl)
+            .then((response) => {
+                const nftBalances = prepareNFTBalances(
+                    response.data.data,
+                    network
+                );
+                dispatch(balancesUpdate(nftBalances));
+
+                const supportedCurrency =
+                    process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
+                const currencyBalances = prepareCurrencyBalances(
+                    response.data.data,
+                    network,
+                    supportedCurrency
+                );
+                dispatch(currencyBalancesUpdate(currencyBalances));
+            })
+            .catch((errorResponse) => {
+                console.log("Error fetching data: ", errorResponse);
+            });
+    };
+
+    useEffect(() => {
+        if (user) {
+            getBalances(user.get("ethAddress"), user.get("networkId"));
+        }
+    }, [user]);
 
     useEffect(() => {
         if (user && chain) {

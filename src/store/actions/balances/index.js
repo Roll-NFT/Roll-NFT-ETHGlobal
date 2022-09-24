@@ -1,4 +1,9 @@
-import { BALANCES_UPDATE, BALANCES_RESET, BALANCE_SELECT } from "..";
+import {
+    BALANCES_UPDATE,
+    BALANCES_RESET,
+    BALANCE_SELECT,
+    CURRENCY_BALANCES_UPDATE,
+} from "..";
 
 export const balancesUpdate = (balances) => ({
     type: BALANCES_UPDATE,
@@ -12,4 +17,9 @@ export const balancesReset = () => ({
 export const balanceSelect = (id) => ({
     type: BALANCE_SELECT,
     id,
+});
+
+export const currencyBalancesUpdate = (balances) => ({
+    type: CURRENCY_BALANCES_UPDATE,
+    payload: balances,
 });

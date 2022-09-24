@@ -40,6 +40,8 @@ const Product = ({
         });
     };
 
+    const isActive = () => new Date(auction_date) > new Date();
+
     return (
         <>
             <div
@@ -77,7 +79,7 @@ const Product = ({
                             )}
                         </Anchor>
                     )}
-                    {auction_date && <CountdownTimer date={auction_date} />}
+                    {isActive() && <CountdownTimer date={auction_date} />}
                     {placeBid && (
                         <Button onClick={handleBidModal} size="small">
                             Place Bid

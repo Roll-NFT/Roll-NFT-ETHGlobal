@@ -106,7 +106,7 @@ const CreateNewArea = ({ className, space, nft }) => {
     }, [selectedImage]);
 
     useEffect(() => {
-        setCurrencies(process.env.NEXT_PUBLIC_CURRENCIES.split(","));
+        setCurrencies(process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(","));
     }, []);
 
     return (

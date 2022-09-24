@@ -1,6 +1,11 @@
 /* eslint-disable indent */
 import { HYDRATE } from "next-redux-wrapper";
-import { BALANCES_UPDATE, BALANCES_RESET, BALANCE_SELECT } from "../../actions";
+import {
+    BALANCES_UPDATE,
+    BALANCES_RESET,
+    BALANCE_SELECT,
+    CURRENCY_BALANCES_UPDATE,
+} from "../../actions";
 
 const initialState = {
     id: 0,
@@ -35,7 +40,7 @@ export const balance = (state = initialState, action = { type: null }) => {
     }
 };
 
-export const balances = (state = null, action = { type: null }) => {
+export const balancesReducer = (state = null, action = { type: null }) => {
     switch (action.type) {
         case HYDRATE:
             return action.payload.balances;
@@ -50,4 +55,18 @@ export const balances = (state = null, action = { type: null }) => {
     }
 };
 
-export default balances;
+export const currencyBalancesReducer = (
+    state = null,
+    action = { type: null }
+) => {
+    switch (action.type) {
+        case HYDRATE:
+            return action.payload.currencyBalances;
+        case CURRENCY_BALANCES_UPDATE:
+            return action.payload;
+        case BALANCES_RESET:
+            return [];
+        default:
+            return state;
+    }
+};

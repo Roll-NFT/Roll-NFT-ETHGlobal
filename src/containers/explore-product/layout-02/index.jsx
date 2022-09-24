@@ -65,13 +65,15 @@ const ExploreProductArea = ({ className, space, data }) => {
                             />
                         )}
                     </div>
-                    <div className="col-lg-8">
-                        <FilterButtons
-                            buttons={filters}
-                            filterHandler={filterHandler}
-                            active={category}
-                        />
-                    </div>
+                    {data?.showFilters && (
+                        <div className="col-lg-8">
+                            <FilterButtons
+                                buttons={filters}
+                                filterHandler={filterHandler}
+                                active={category}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="col-lg-12">
                     <motion.div layout className="isotope-list item-5">
@@ -116,11 +118,15 @@ ExploreProductArea.propTypes = {
         section_title: SectionTitleType,
         products: PropTypes.arrayOf(RollType),
         placeBid: PropTypes.bool,
+        showFilters: PropTypes.bool,
     }),
 };
 
 ExploreProductArea.defaultProps = {
     space: 1,
+    data: PropTypes.shape({
+        showFilters: true,
+    }),
 };
 
 export default ExploreProductArea;

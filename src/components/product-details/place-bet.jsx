@@ -56,9 +56,10 @@ const PlaceBet = ({
     };
 
     const getAvailableCurrencies = () => {
-        const _currencies = process.env.NEXT_PUBLIC_CURRENCIES.split(",");
+        const _currencies =
+            process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
         const _addresses =
-            process.env.NEXT_PUBLIC_CURRENCIES_ADDRESSES.split(",");
+            process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES_ADDRESSES.split(",");
         const currenciesMapping = {};
         for (let i = 0; i < _currencies.length; i++) {
             currenciesMapping[_currencies[i]] = _addresses[i];
@@ -133,8 +134,11 @@ const PlaceBet = ({
             toast(error.reason);
         }
     };
+    const claimPrize = async () => {
+        console.log("claimPrize");
+    };
 
-    const onConfirm = async (data) => {
+    const onConfirm = async () => {
         if (loading) {
             return;
         }
@@ -183,6 +187,8 @@ const PlaceBet = ({
         );
         handleBidModal();
     };
+
+    const isActive = (date) => new Date(date) > new Date();
 
     useEffect(() => {
         const onTokenTransfer = (from, to, value) => {
@@ -235,47 +241,74 @@ const PlaceBet = ({
                             </Anchor>
                         </h6>
                     </div>
-                    {endDate && (
+                    {isActive(endDate) && (
                         <div className="bid-list left-bid">
                             <h6 className="title">Time remaining:</h6>
                             <Countdown className="mt--15" date={endDate} />
                         </div>
                     )}
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row mt--20">
-                        <div className="col-md-2">
-                            <input
-                                id="quantity"
-                                placeholder="Quantity"
-                                className="h-100 border border-4 raffleQuantity"
-                                {...register("quantity", {
-                                    required: "Qty is required",
-                                    min: {
-                                        value: 1,
-                                        message: "Qty is required",
-                                    },
-                                    max: {
-                                        value: stock,
-                                        message: "Unavailable",
-                                    },
-                                })}
-                            />
-                            {errors.quantity && (
-                                <ErrorText>
-                                    {errors.quantity?.message}
-                                </ErrorText>
-                            )}
+                {isActive(endDate) && (
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="row mt--20">
+                            <div className="col-md-2">
+                                <input
+                                    id="quantity"
+                                    placeholder="Quantity"
+                                    className="h-100 border border-4 raffleQuantity"
+                                    {...register("quantity", {
+                                        required: "Qty is required",
+                                        min: {
+                                            value: 1,
+                                            message: "Qty is required",
+                                        },
+                                        max: {
+                                            value: stock,
+                                            message: "Unavailable",
+                                        },
+                                    })}
+                                />
+                                {errors.quantity && (
+                                    <ErrorText>
+                                        {errors.quantity?.message}
+                                    </ErrorText>
+                                )}
+                            </div>
+                            <div className="col-md-1" />
+                            <div className="col-md-9">
+                                <Button
+                                    type="submit"
+                                    color={btnColor || "primary-alta"}
+                                >
+                                    {!loading ? (
+                                        "Buy Roll Tickets"
+                                    ) : (
+                                        <ThreeDots
+                                            height="25"
+                                            width="50"
+                                            radius="9"
+                                            color="#fff"
+                                            ariaLabel="three-dots-loading"
+                                            wrapperStyle={{ display: "block" }}
+                                            visible
+                                        />
+                                    )}
+                                </Button>
+                            </div>
                         </div>
-                        <div className="col-md-1" />
-                        <div className="col-md-9">
+                    </form>
+                )}
+                {!isActive(endDate) && (
+                    <div className="row mt--20">
+                        <div className="col-md-2" />
+                        <div className="col-md-8">
                             <Button
                                 type="submit"
                                 color={btnColor || "primary-alta"}
-                                // onClick={handleBidModal}
+                                onClick={claimPrize}
                             >
                                 {!loading ? (
-                                    "Buy Roll Tickets"
+                                    "Claim prize"
                                 ) : (
                                     <ThreeDots
                                         height="25"
@@ -289,8 +322,9 @@ const PlaceBet = ({
                                 )}
                             </Button>
                         </div>
+                        <div className="col-md-2" />
                     </div>
-                </form>
+                )}
             </div>
             {ticket && (
                 <PlaceBidModal

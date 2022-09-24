@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import balancesReducer from "./balances";
+import { balancesReducer, currencyBalancesReducer } from "./balances";
 import userReducer from "./users";
 import {
     rollReducer,
@@ -11,6 +11,7 @@ import {
 
 export default combineReducers({
     balances: balancesReducer,
+    currencyBalances: currencyBalancesReducer,
     user: userReducer,
     roll: rollReducer,
     category: categoryReducer,

@@ -6,6 +6,7 @@ module.exports = {
         includePaths: [path.join(__dirname, "./src/assets/scss")],
     },
     images: {
+        unoptimized: true,
         domains: ["assets.vercel.com", "ipfs.io"],
     },
     webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

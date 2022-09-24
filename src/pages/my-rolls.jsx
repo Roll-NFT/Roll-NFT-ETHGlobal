@@ -1,14 +1,10 @@
-/* eslint-disable no-console */
 import SEO from "@components/seo";
 import Wrapper from "@layout/wrapper";
 import Header from "@layout/header";
 import Footer from "@layout/footer";
-import Breadcrumb from "@components/breadcrumb";
-import ExploreProductArea from "@containers/explore-product/layout-03";
-import { useEffect, useState } from "react";
+import ExploreProductArea from "@containers/explore-product/layout-02";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { balancesUpdate } from "@store/actions/balances";
+import { useState, useEffect } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useMoralis } from "react-moralis";
 
@@ -16,29 +12,36 @@ export async function getStaticProps() {
     return { props: { className: "template-color-1" } };
 }
 
-const MyNFTs = () => {
-    const balances = useSelector((state) => state.balances);
+const Home02 = () => {
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { user } = useMoralis();
+
+    async function getRaffles() {
+        setLoading(true);
+        await axios(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/rolls`, {
+            params: { user: user.id },
+        })
+            .then((response) => {
+                setProducts(response.data.data);
+            })
+            .catch((errorResponse) => {
+                console.log(errorResponse);
+            })
+            .finally(() => setLoading(false));
+    }
 
     useEffect(() => {
-        if (balances) {
-            setLoading(false);
-        } else {
-            setLoading(true);
+        if (user) {
+            getRaffles();
         }
-    }, [balances]);
+    }, [user]);
 
     return (
         <Wrapper>
-            <SEO pageTitle="Select NFT" />
+            <SEO pageTitle="My Rolls" />
             <Header />
             <main id="main-content">
-                <Breadcrumb
-                    pageTitle="Select NFT for this Roll"
-                    currentPage="Select NFT"
-                    rootTitle="Create New Roll"
-                    rootPath="/roll/create"
-                />
                 {loading && (
                     <div className="container">
                         <div className="row text-center mt-5">
@@ -54,17 +57,19 @@ const MyNFTs = () => {
                         </div>
                     </div>
                 )}
-                {balances && (
-                    <ExploreProductArea
-                        data={{
-                            products: balances,
-                        }}
-                    />
-                )}
+                <ExploreProductArea
+                    data={{
+                        section_title: {
+                            title: "My Rolls",
+                        },
+                        products,
+                        showFilters: false,
+                    }}
+                />
             </main>
             <Footer />
         </Wrapper>
     );
 };
 
-export default MyNFTs;
+export default Home02;

@@ -15,7 +15,7 @@ const BidTab = ({ className, bids, network, properties, tags }) => {
     return (
         <TabContainer defaultActiveKey="nav-profile">
             <div className={clsx("tab-wrapper-one", className)}>
-                <nav className="tab-button-one">
+                <nav className="tab-button-one mt-5">
                     <Nav as="div" className="nav-tabs">
                         <Nav.Link as="button" eventKey="nav-profile">
                             NFT Details
