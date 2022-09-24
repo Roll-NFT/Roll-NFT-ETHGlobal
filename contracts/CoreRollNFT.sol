@@ -20,9 +20,9 @@ import "./TreasuryRollNFT.sol";
  * 
  * TODO Solve npm install conflicts. Install it properly. Update imports.
  */
-
 import "./ChainlinkVRF/VRFConsumerBaseV2.sol";
-
+import "./ChainlinkVRF/LinkTokenInterface.sol";
+import "./ChainlinkVRF/VRFCoordinatorV2Interface.sol";
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
@@ -37,7 +37,22 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     
     /// @dev Roll ID counter
     Counters.Counter private _rollIdCounter;
-    
+
+    /// @dev Chainlinl VRF state variables
+    mapping(uint256 => uint256[]) public vrfRequestIdToRandomWords;
+    /// @dev link token contract address
+    LinkTokenInterface public immutable VRF_LINK_TOKEN;
+    /// @dev VRF Coordinator address
+    VRFCoordinatorV2Interface public immutable VRF_COORDINATOR;
+    /// @dev VRF key hash
+    bytes32 internal vrfKeyHash;
+    /// @dev VRF subscription id
+    uint64 public vrfSubscriptionId;
+    /// @dev VRF Callback Gas Limit. We can use 50_000
+    uint32 public vrfCallbackGasLimit;
+    /// @dev VRF Request confirmations. By default is 3
+    uint16 public vrfRequestConfirmations;
+
     /**
      *  @dev Fee percentage i.e 1%(100/10000)
      * 
@@ -154,11 +169,25 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      * 
      * @param baseTokenURI - to set base token URI for Roll ownership tokens
      * @param _revenueFee - percentage Revenue fee applaied to on "claimRevenue()"
+     * @param _vrfCoordinator - VRF: coordinator address
+     * @param linkToken - VRF: LINK token address
+     * @param _keyHash - VRF: key hash
      */
     constructor(
         string memory _baseTokenURI,
-        uint256 _revenueFee
-    ) {
+        uint256 _revenueFee,
+        address _vrfLinkToken,
+        bytes32 _vrfKeyHash,
+        uint32 _vrfCallbackGasLimit, /* 50000 */
+        uint16 _vrfRequestConfirmations /* 3 */
+    ) VRFConsumerBaseV2(vrfCoordinator) {
+
+        /// @dev Chainlink VRF
+        VRF_COORDINATOR = VRFCoordinatorV2Interface(_vrfCoordinator);
+        VRF_LINK_TOKEN = LinkTokenInterface(_vrfLinkToken);
+        vrfKeyHash = _vrfKeyHash;
+        vrfCallbackGasLimit = _vrfCallbackGasLimit;
+        vrfRequestConfirmations = _vrfRequestConfirmations;
         
         address sender = _msgSender();
         
@@ -837,6 +866,22 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
 
         /// @dev request random number
 
+    }
+
+    /**
+     * @dev function to request RNG from chainlink VRF
+     * 
+     * Assumes the subscription is funded sufficiently.
+     */
+    function requestRandomWords() internal {
+        // Will revert if subscription is not set and funded.
+        s_requestId = COORDINATOR.requestRandomWords(
+        keyHash,
+        s_subscriptionId,
+        requestConfirmations,
+        callbackGasLimit,
+        numWords
+        );
     }
 
     /**
