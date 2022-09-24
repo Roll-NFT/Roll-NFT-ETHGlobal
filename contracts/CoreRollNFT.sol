@@ -48,11 +48,11 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     bytes32 internal vrfKeyHash;
     /// @dev VRF subscription id
     uint64 public vrfSubscriptionId;
-    /// @dev VRF Callback Gas Limit. We can use 50_000
-    uint32 public vrfCallbackGasLimit;
     /// @dev VRF Request confirmations. By default is 3
     uint16 public vrfRequestConfirmations;
-
+    /// @dev VRF Callback Gas Limit. We can use 50_000
+    uint32 public vrfCallbackGasLimit;
+    
     /**
      *  @dev Fee percentage i.e 1%(100/10000)
      * 
@@ -873,14 +873,14 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      * 
      * Assumes the subscription is funded sufficiently.
      */
-    function requestRandomWords() internal {
+    function requestRandomWords(uint256 _rollID) internal {
         // Will revert if subscription is not set and funded.
         s_requestId = COORDINATOR.requestRandomWords(
-        keyHash,
-        s_subscriptionId,
-        requestConfirmations,
-        callbackGasLimit,
-        numWords
+        vrfKeyHash,
+        vrfSubscriptionId,
+        vrfRequestConfirmations,
+        vrfCallbackGasLimit,
+        uin32(1) /* TODO Implement multiple RNG request for multiple winner / prize */
         );
     }
 
