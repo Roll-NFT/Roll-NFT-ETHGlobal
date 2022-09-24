@@ -37,4 +37,7 @@ interface IERC721RollToken is IERC721 {
      */
     function mintRoll(address to, uint256 tokenId, string memory uri) external;
 
+    /// @dev TODO Update doc
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory);
+
 }

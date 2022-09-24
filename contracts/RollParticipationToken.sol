@@ -92,9 +92,16 @@ contract RollParticipationToken is Context, ERC721, AccessControlEnumerable, Pau
     /**
      * @dev See {IERC721RollTicket-burn}.
      */
-    function burnToken(uint256 tokenId) external virtual override {
+    function burnToken(uint256 tokenId) external override {
         require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
         _burn(tokenId);
+    }
+
+    function totalSupply() external view override returns (uint256) {
+
+        /// @dev get current token ID
+        return _tokenIdCounter.current();
+
     }
 
     /**

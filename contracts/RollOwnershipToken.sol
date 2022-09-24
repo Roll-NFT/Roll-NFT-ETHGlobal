@@ -165,7 +165,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
     function tokenURI(uint256 tokenId)
         public
         view
-        override(ERC721, ERC721URIStorage)
+        override(ERC721, ERC721URIStorage, IERC721RollToken)
         returns (string memory)
     {
         return super.tokenURI(tokenId);

@@ -38,5 +38,8 @@ interface IERC721RollTicket is IERC721 {
      * @return minted ticket ID
      */
     function mintToken(address to) external returns (uint256);
+
+    /// @dev TODO Update doc
+    function totalSupply() external view returns (uint256);
     
 }
