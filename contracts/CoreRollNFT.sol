@@ -79,9 +79,10 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
     // event RollCreated(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint256 prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
     event RollCreated(uint256 indexed rollID, address indexed rollHost, address indexed prizeAddress);
     
-    /// @dev announce about Roll's new participants / minted tickets
-    // event TicketsMinted(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address participant, uint256 amount);
-    event TicketsMinted(uint256 indexed rollID, uint256 indexed participantId, address indexed participant);
+    /// @dev announce about new participant (participation token minted)
+    // event NewParticipant(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address participant, uint256 amount);
+    // event NewParticipant(uint256 indexed rollID, uint256 indexed participantId, address indexed participant);
+    event NewParticipant(uint256 _rollID, uint256 ticketId, address participant);
     
     /// @dev announce about Roll's claimed prize
     event PrizeClaimed(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint256 prizeID);
@@ -310,6 +311,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         /// @dev emit event about hosted Roll
         emit RollCreated(rollId, host, _prizeAddress);
 
+        /// TODO Rethink if we have to emit this event
+        emit SalesOpen(rollId);
+
         return rollId;
 
     }
@@ -386,9 +390,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
             /// TODO INITIATE WINNER SELECTION
         }
         
-        /// @dev emit event about minted tickets
+        /// @dev emit event about new Participant
         /// TODO REWORK EVENT
-        emit TicketsMinted(_rollID, ticketId, _msgSender());
+        emit NewParticipant(_rollID, ticketId, _msgSender());
 
         return ticketId;
     
