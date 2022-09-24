@@ -9,6 +9,8 @@ import ProductBid from "@components/product-bid";
 import Button from "@ui/button";
 import { ImageType } from "@utils/types";
 import PlaceBidModal from "@components/modals/placebid-modal";
+import { ThreeDots } from "react-loader-spinner";
+import Router from "next/router";
 
 const Product = ({
     overlay,
@@ -26,9 +28,18 @@ const Product = ({
     disableShareDropdown,
 }) => {
     const [showBidModal, setShowBidModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const handleBidModal = () => {
         setShowBidModal((prev) => !prev);
     };
+
+    const onClick = () => {
+        setLoading(true);
+        Router.push(`/roll/${slug}`).then(() => {
+            setLoading(false);
+        });
+    };
+
     return (
         <>
             <div
@@ -40,13 +51,30 @@ const Product = ({
             >
                 <div className="card-thumbnail">
                     {image?.src && (
-                        <Anchor path={`/roll/${slug}`}>
+                        <Anchor path="#" onClick={onClick}>
                             <Image
                                 src={image.src}
                                 alt={image?.alt || "NFT_portfolio"}
                                 width={533}
                                 height={533}
                             />
+                            {loading && (
+                                <ThreeDots
+                                    height="25"
+                                    width="50"
+                                    radius="9"
+                                    color="#00a3ff"
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{
+                                        display: "block",
+                                        left: "50%",
+                                        transform: "translate(-50%)",
+                                        bottom: "120px",
+                                        position: "absolute",
+                                    }}
+                                    visible
+                                />
+                            )}
                         </Anchor>
                     )}
                     {auction_date && <CountdownTimer date={auction_date} />}
