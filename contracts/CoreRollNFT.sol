@@ -419,6 +419,10 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
         /// @dev mint participation tokens
         (ticketId) = ticketsContract.mintToken(_msgSender());
 
+        /// @dev emit event about new Participant
+        /// TODO REWORK EVENT
+        emit NewParticipant(_rollID, ticketId, _msgSender());
+
         /// @dev check if was minted last ticket
         if (ticketId == limit) {
             
@@ -426,13 +430,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
             
             /// @dev initiate winner selection
             /// TODO Rethink how we can do it otherwise
-            playRoll(_rollID);
+            drawRoll(_rollID);
         }
         
-        /// @dev emit event about new Participant
-        /// TODO REWORK EVENT
-        emit NewParticipant(_rollID, ticketId, _msgSender());
-
         return ticketId;
     
     }
@@ -860,11 +860,40 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     }
 
     /**
-     * @dev Initiates winner selection process
+     * @dev set PendingResult status to Roll with _rollID number
+     * 
+     * @param _rollID - Roll ID number
      */
-    function playRoll(_rollID) public whenNotPaused {
+    function statusPendingResult(uint256 _rollID) internal {
+        
+        /// @dev open participation sales
+        rolls[_rollID] = IRoll.Status.PendingResult;
 
-        /// @dev request random number
+        /// TODO rework event
+        emit PendingResult(_rollID);
+    }
+
+    /**
+     * @dev Draw the Roll. Initiates winner selection process.
+     * 
+     * Requests RNG from chainlink VRF.
+     * 
+     * Set status - "PendingResult"
+     * 
+     * Requirement:
+     * 
+     * Roll status  - "SalesClosed"
+     */
+    function drawRoll(_rollID) public whenNotPaused {
+
+        /// @dev check that Roll status is "SalesClosed"
+        require(roll.status == IRoll.Status.SalesClosed, "CoreRollNFT: Roll status should be SalesClosed to draw the Roll");
+
+        /// @dev request RNG from chainlink VRF
+        requestRandomWords(_rollID);
+
+        /// @dev set Roll status to PendingResult and emit PendingResult
+        statusPendingResult(_rollID);
 
     }
 
@@ -875,7 +904,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
      */
     function requestRandomWords(uint256 _rollID) internal {
         // Will revert if subscription is not set and funded.
-        s_requestId = COORDINATOR.requestRandomWords(
+        uint256 s_requestId = COORDINATOR.requestRandomWords(
         vrfKeyHash,
         vrfSubscriptionId,
         vrfRequestConfirmations,
