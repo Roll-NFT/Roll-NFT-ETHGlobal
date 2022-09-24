@@ -2,11 +2,6 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
-import "@openzeppelin/contracts/access/IAccessControlEnumerable.sol";
-import "@openzeppelin/contracts/access/IAccessControl.sol";
-import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 /**
  * @title ERC721 interface plus external Mint and Burn functions
@@ -16,7 +11,7 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
  * 
  * @notice Defines Mint and Burn functions
  */
-interface IERC721RollTicket is IERC721, IERC721Enumerable, IERC721Metadata, IAccessControlEnumerable {
+interface IERC721RollTicket is IERC721 {
 
     /**
      * @dev Burn Roll participation token by it's ID

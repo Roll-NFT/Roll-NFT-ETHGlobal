@@ -51,6 +51,11 @@ describe("CoreRollNFT", function () {
 
             const { coreContract, linkTokenContract, prizeContract } = await loadFixture(deployContract);
 
+            // Get the signer object of the CoreContract for signing the next 2 transactions
+            const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
+
+            // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
+            await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
         });
     })

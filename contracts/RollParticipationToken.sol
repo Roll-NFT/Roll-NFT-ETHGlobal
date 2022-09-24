@@ -2,11 +2,10 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 import "./IERC721RollTicket.sol";
 
 /**
@@ -28,7 +27,6 @@ import "./IERC721RollTicket.sol";
  * roles, as well as the default admin role, which will let it grant both minter
  * and pauser roles to other accounts.
  * 
- * Contract is {ERC721Enumerable} - to get all token ID of the address
  * 
  * Contract is pausable - that stops ERC721 transfers. Mint and Burn functions are not affected by Pause trigger
  * See {ERC721Pausable - _beforeTokenTransfer}
@@ -36,7 +34,7 @@ import "./IERC721RollTicket.sol";
  * @notice 
  * @custom:security-contact loizage@icloud.com
  */
-contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enumerable, ERC721Pausable, IERC721RollTicket {
+contract RollParticipationToken is Context, ERC721, AccessControlEnumerable, Pausable, IERC721RollTicket {
     
     using Counters for Counters.Counter;
 
@@ -80,7 +78,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
     /**
      * @dev See {IERC721RollTicket-safeMint}
      */
-    function mintToken(address to) external returns (uint256) {
+    function mintToken(address to) external override returns (uint256) {
         require(hasRole(MINTER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have minter role to mint");
         
         /// @dev increment _tokenIdCounter first, so numeration of tickets will start from 1.
@@ -94,7 +92,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
     /**
      * @dev See {IERC721RollTicket-burn}.
      */
-    function burnToken(uint256 tokenId) external virtual {
+    function burnToken(uint256 tokenId) external virtual override {
         require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
         _burn(tokenId);
     }
@@ -143,8 +141,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
-        whenNotPaused
-        override
+        override(ERC721)
     {
         super._beforeTokenTransfer(from, to, tokenId);
     }
@@ -154,7 +151,7 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, AccessControl)
+        override(ERC721, AccessControlEnumerable, IERC165)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

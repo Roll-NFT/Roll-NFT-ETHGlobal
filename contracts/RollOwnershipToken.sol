@@ -2,10 +2,9 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "./IERC721RollToken.sol";
 
@@ -23,7 +22,7 @@ import "./IERC721RollToken.sol";
  * @notice 
  * @custom:security-contact loizage@icloud.com
  */
-contract RollOwnershipToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Pausable, AccessControlEnumerable, Context, IERC721RollToken {
+contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlEnumerable, Pausable, IERC721RollToken {
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
@@ -70,7 +69,7 @@ contract RollOwnershipToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC72
     /**
      * @dev See {IERC721RollToken-safeMint}
      */
-    function safeMint(address to, uint256 tokenId, string memory uri) external {
+    function safeMint(address to, uint256 tokenId, string memory uri) external override whenNotPaused {
         require(hasRole(MINTER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have minter role to mint");
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
@@ -79,7 +78,7 @@ contract RollOwnershipToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC72
     /**
      * @dev See {IERC721RollToken-burn}.
      */
-    function burn(uint256 tokenId) external virtual {
+    function burn(uint256 tokenId) external override whenNotPaused {
         require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
         _burn(tokenId);
     }
@@ -153,7 +152,7 @@ contract RollOwnershipToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC72
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual override(ERC721, ERC721Enumerable, ERC721Pausable) {
+    ) internal virtual override(ERC721) {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
@@ -179,7 +178,7 @@ contract RollOwnershipToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC72
         public
         view
         virtual
-        override(AccessControlEnumerable, ERC721, ERC721Enumerable)
+        override(AccessControlEnumerable, ERC721, IERC165)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
