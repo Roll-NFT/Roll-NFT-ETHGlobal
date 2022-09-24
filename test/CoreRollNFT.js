@@ -49,64 +49,13 @@ describe("CoreRollNFT", function () {
         
         it("Should deploy: CoreRollNFT, LinkToken, FaucetNFT contracts", async function () {
 
-            const { coreContract, linkTokenContract, prizeContract } = await loadFixture(deployContract);
+            const { coreContract, linkTokenContract, prizeContract, coreDeployer} = await loadFixture(deployContract);
 
             // Get the signer object of the CoreContract for signing the next 2 transactions
             const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
-            // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-            await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+            expect(coreContractSigner).to.equal(coreDeployer);
 
         });
     })
-    
-    describe("CreateRoll", function () {
-
-        it("Should create Roll of type 5", async function () {
-          const { treasuryContract, linkTokenContract, coreContract } = await loadFixture(deployContract);
-    
-          // Get the signer object of the CoreContract for signing the next 2 transactions
-          const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
-    
-          // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-          await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
-    
-          // Deposit the ERC-20 Token into the TreasuryContract
-          await treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100);
-    
-          // Check the balance of ERC20 token for the TreasuryContract
-          treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
-          // Check the mapping of ERC20 token inside the TreasuryContract
-          linkTokenBalanceInTreasury = await treasuryContract.balanceOf(linkTokenContract.address);
-    
-          expect(treasuryContractBalance).to.equal(100);
-          expect(linkTokenBalanceInTreasury).to.equal(100);
-        });
-    
-        it("Should revert deposit if not approved", async function () {
-          const { treasuryContract, linkTokenContract, coreContract } = await loadFixture(deployContract);
-    
-          // Get the signer object of the CoreContract for signing the next 2 transactions
-          const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
-    
-          // Tries to deposit the ERC-20 Token into the TreasuryContract
-          await expect(treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 100)).to.be.reverted;
-    
-        });
-    
-        it("Should revert deposit if more the amount is bigger than approved", async function () {
-          const { treasuryContract, linkTokenContract, coreContract } = await loadFixture(deployContract);
-    
-          // Get the signer object of the CoreContract for signing the next 2 transactions
-          const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
-    
-          // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-          await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
-    
-          // Tries to deposit the ERC-20 Token into the TreasuryContract
-          await expect(treasuryContract.connect(coreContractSigner).deposit(linkTokenContract.address, 200)).to.be.reverted;
-        });
-    
-    });
-
 });

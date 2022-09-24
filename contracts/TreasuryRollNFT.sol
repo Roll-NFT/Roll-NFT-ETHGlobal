@@ -14,9 +14,9 @@ contract TreasuryRollNFT is AccessControlEnumerable {
      */
     mapping(address => uint256) public balance;
 
-    constructor() payable {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(MANAGER_ROLE, msg.sender);
+    constructor(address _manager) payable {
+        _setupRole(DEFAULT_ADMIN_ROLE, _manager);
+        _setupRole(MANAGER_ROLE, _manager);
     }
 
     // CoreRollNFT: IERC20(tokenAddress).approve(address treasuryRollNFTAddress, uint amount)

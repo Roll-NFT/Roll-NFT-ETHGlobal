@@ -22,7 +22,7 @@ interface IERC721RollToken is IERC721 {
      * 
      * @param tokenId - ID of the token to burn
      */
-    function burn(uint256 tokenId) external;
+    function burnRoll(uint256 tokenId) external;
     
     /**
      * @dev Creates new Roll ownership token for `to` with `tokenId` and set it's URI
@@ -35,6 +35,6 @@ interface IERC721RollToken is IERC721 {
      * @param tokenId - ID of the Roll ownership token
      * @param uri - URI with Roll metadata
      */
-    function safeMint(address to, uint256 tokenId, string memory uri) external;
+    function mintRoll(address to, uint256 tokenId, string memory uri) external;
 
 }

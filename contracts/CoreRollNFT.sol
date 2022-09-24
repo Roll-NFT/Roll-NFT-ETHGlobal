@@ -128,37 +128,52 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     /// @dev announce about updated Revenue fee
     event RevenueFeeUpdated(uint256 newFee, uint256 oldFee);
     
+    // /**
+    //  * @dev anounce about closed Roll (unsucceed)
+    //  * 
+    //  * @notice Announced when Roll conditions are not met. There is no winner selected. Prize is available to withdraw by Roll owner. Tickets are available to refund for participants.
+    //  * 
+    //  * @param rollType - Roll type, defines Roll executinion logic
+    //  * @param rollID - Roll ID, unique number of every Roll and it's ownership token
+    //  * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
+    //  * @param owner - Roll owner address, for owner to be informed that Prize is available to withdraw
+    //  * @param prizeAddress - Prize token collection address
+    //  * @param prizeID - Prize token ID
+    //  */
+    // event RollClosed(uint8 rollType, uint256 indexed rollID, address indexed prizeAddress, uint256 prizeID);
+    // event RollClosed(uint256 indexed rollID, address indexed prizeAddress, address indexed ticketsContract, address indexed owner);
+    // address indexed ticketsContract, address indexed owner
     /**
      * @dev anounce about closed Roll (unsucceed)
      * 
      * @notice Announced when Roll conditions are not met. There is no winner selected. Prize is available to withdraw by Roll owner. Tickets are available to refund for participants.
      * 
-     * @param rollType - Roll type, defines Roll executinion logic
      * @param rollID - Roll ID, unique number of every Roll and it's ownership token
-     * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
-     * @param owner - Roll owner address, for owner to be informed that Prize is available to withdraw
-     * @param prizeAddress - Prize token collection address
-     * @param prizeID - Prize token ID
-     */
-    // event RollClosed(uint8 rollType, uint256 indexed rollID, address indexed prizeAddress, uint256 prizeID);
-    // event RollClosed(uint256 indexed rollID, address indexed prizeAddress, address indexed ticketsContract, address indexed owner);
-    // address indexed ticketsContract, address indexed owner
+     */ 
     event RollClosed(uint256 indexed rollID);
     
+    // /**
+    //  * @dev announce about successfuly finished Roll
+    //  * 
+    //  * @notice Announced when Roll conditions are met. Winning token is selected. Prize is available to claim by winning token owner. Revenue available to claim by Roll owner.
+    //  * 
+    //  * @param rollType - Roll type, defines Roll executinion logic
+    //  * @param rollID - Roll ID, unique number of every Roll and it's ownership token
+    //  * @param winnerTokenId - Winner token ID
+    //  * @param winnerAddr - Winner token owner's address, for winner to be informed that Prize is available to claim
+    //  * @param owner - Roll owner address, for owner to be informed that Revenue is available to claim
+    //  * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
+    //  * @param host - Roll host address
+    //  */
+    // event RollFinished(uint8 rollType, uint256 rollID, uint256 winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
     /**
      * @dev announce about successfuly finished Roll
      * 
      * @notice Announced when Roll conditions are met. Winning token is selected. Prize is available to claim by winning token owner. Revenue available to claim by Roll owner.
      * 
-     * @param rollType - Roll type, defines Roll executinion logic
      * @param rollID - Roll ID, unique number of every Roll and it's ownership token
      * @param winnerToken - Winner token ID
-     * @param winnerAddr - Winner token owner's address, for winner to be informed that Prize is available to claim
-     * @param owner - Roll owner address, for owner to be informed that Revenue is available to claim
-     * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
-     * @param host - Roll host address
-     */
-    // event RollFinished(uint8 rollType, uint256 rollID, uint256 winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+     */ 
     event RollFinished(uint256 indexed rollID, uint256 indexed winnerTokenId);
 
     /// TODO DOC
@@ -339,7 +354,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
         string memory rollURI = makeRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _fixParticipants, _participationToken, _participationPrice, _prizeAddress, _prizeId);
         
         /// @dev mint Roll ownership token for caller
-        getRollTokenContract().safeMint(host, rollId, rollURI);
+        getRollTokenContract().mintRoll(host, rollId, rollURI);
         
         /// @dev clone tickets NFT contract
         address TicketsContract = cloneTicketsContract(rollId, rollURI);
@@ -657,7 +672,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context, VRFConsumerB
     /**
      * @dev get Roll participation token contract address
      * 
-     * That implements interface {IERC721RollTicket - safeMint, burn}
+     * That implements interface {IERC721RollTicket - mintToken, burnToken}
      */
     function getRollTicketsContract(uint _rollId) internal pure returns(IERC721RollTicket){
         return IERC721RollTicket(ticketsAddr[_rollId]);

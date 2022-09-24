@@ -69,7 +69,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
     /**
      * @dev See {IERC721RollToken-safeMint}
      */
-    function safeMint(address to, uint256 tokenId, string memory uri) external override whenNotPaused {
+    function mintRoll(address to, uint256 tokenId, string memory uri) external override whenNotPaused {
         require(hasRole(MINTER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have minter role to mint");
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
@@ -78,7 +78,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
     /**
      * @dev See {IERC721RollToken-burn}.
      */
-    function burn(uint256 tokenId) external override whenNotPaused {
+    function burnRoll(uint256 tokenId) external override whenNotPaused {
         require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
         _burn(tokenId);
     }
