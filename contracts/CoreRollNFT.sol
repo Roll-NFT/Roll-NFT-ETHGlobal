@@ -76,11 +76,13 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
     mapping (uint256 => IRoll.Roll) rolls;
     
     /// @dev announce about successful Roll creation
-    event RollCreated(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint256 prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
+    // event RollCreated(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address rollHost, address indexed prizeAddress, uint256 prizeID, uint256 minParticipants, uint256 maxParticipants, uint256 rollTime, address paymentToken, uint256 entryPrice);
+    event RollCreated(uint256 indexed rollID, address indexed rollHost, address indexed prizeAddress);
     
     /// @dev announce about Roll's new participants / minted tickets
-    event TicketsMinted(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address participant, uint256 amount);
-
+    // event TicketsMinted(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, address participant, uint256 amount);
+    event TicketsMinted(uint256 indexed rollID, uint256 indexed participantId, address indexed participant);
+    
     /// @dev announce about Roll's claimed prize
     event PrizeClaimed(uint8 indexed rollType, uint256 indexed rollID, address ticketsContract, uint256 winningTicketID, address winner, address indexed prizeAddress, uint256 prizeID);
     
@@ -108,8 +110,10 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * @param prizeAddress - Prize token collection address
      * @param prizeID - Prize token ID
      */
-    event RollClosed(uint8 rollType, uint256 indexed rollID, address indexed prizeAddress, uint256 prizeID);
+    // event RollClosed(uint8 rollType, uint256 indexed rollID, address indexed prizeAddress, uint256 prizeID);
+    // event RollClosed(uint256 indexed rollID, address indexed prizeAddress, address indexed ticketsContract, address indexed owner);
     // address indexed ticketsContract, address indexed owner
+    event RollClosed(uint256 indexed rollID);
     
     /**
      * @dev announce about successfuly finished Roll
@@ -124,7 +128,14 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * @param ticketsContract - tickets collection address, for participants to be informed that they have tickets in the collection to refund
      * @param host - Roll host address
      */
-    event RollFinished(uint8 rollType, uint256 rollID, uint256 winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+    // event RollFinished(uint8 rollType, uint256 rollID, uint256 winnerToken, address winnerAddr, address owner, address ticketsContract, address host);
+    event RollClosed(uint256 indexed rollID);
+
+    /// TODO DOC
+    event SalesOpen(uint256 indexed rollID);
+    
+    /// TODO DOC
+    event SalesClosed(uint256 indexed rollID);
     
     /**
      * @dev Set Roll NFT infrastracture.
@@ -161,7 +172,14 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         revenuePercentageFee = _revenueFee;
 
         /**
-         * @dev grant to deployer address a `MANAGER_ROLE`
+         * TODO
+         * @dev Deploy Iddle Assets contract and save it's address
+         * 
+         * @param sender - address to grant MANAGER_ROLE
+         */
+
+        /**
+         * @dev grant to deployer address a `MANAGER_ROLE` and `DEFAULT_ADMIN_ROLE`
          */
         _setupRole(DEFAULT_ADMIN_ROLE, sender);
         _setupRole(MANAGER_ROLE, sender);
@@ -193,6 +211,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * @param _rollTime - Block time stamp when Roll participation will be closed and winning selection process will be initialized
      * @param _minParticipants - Minimum amount of participants (tickets) for the Roll to be played
      * @param _maxParticipants - Maximum amount of participants (tickets) that Roll can fit in
+     * @param _fixParticipants - Fixed amount of participants (tickets) for Roll to be played. When set - Min and Max are not considered
      * @param _participationPrice - Amount of "_participationToken" to be paid for 1 ticket to participate in the Roll
      * @param _participationToken - Address of ERC20 token, that is used as currency for participation in the Roll
      * @param _prizeAddress - Address of Prize NFT collection (ERC721)
@@ -200,16 +219,17 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * 
      * @return Roll ID number, which is equal to RollOwnershipToken ID
      * 
-     * @notice Function to create new Raffle with provided parameters
+     * @notice Function to create new Raffle with provided parameters. Prize token ID should be approved to Core Roll NFT contract.
      */
     function createRoll(
         uint64 _rollTime,
-        uint _minParticipants,
-        uint _maxParticipants,
-        uint _participationPrice,
+        uint256 _minParticipants,
+        uint256 _maxParticipants,
+        uint256 _fixParticipants,
+        uint256 _participationPrice,
         address _participationToken,
         address _prizeAddress,
-        uint _prizeId
+        uint256 _prizeId
     ) public whenNotPaused returns(uint256){
 
         /// @dev check that _prizeAddress is set and is not 0
@@ -231,8 +251,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         /**
          * @dev transfer NFT prize to CoreRollNFT contract
          * 
+         * Host should approve Prize token ID to CoreRollNFT contract before calling createRoll function
          */
-        prizeContractInterface.transferFrom(msg.sender, address(this), _prizeId);
+        prizeContractInterface.transferFrom(host, address(this), _prizeId);
 
         
         /// TODO Implement Iddle assets contract and it's logic
@@ -243,7 +264,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         // prizeContractInterface.transferFrom(address(this), contractIddleAssets, _prizeId);
 
         /// @dev define rollType variable
-        uint8 rollType = defineRollType(_minParticipants, _maxParticipants);
+        uint8 rollType = defineRollType(_minParticipants, _maxParticipants, _fixParticipants);
 
         /// @dev increment Roll ID counter
         /// To start first Roll with ID 1
@@ -266,7 +287,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
 
         /// @dev form Roll URI
         /// TODO
-        string memory rollURI = makeRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _prizeAddress, _prizeId);
+        string memory rollURI = makeRollURI(rollId, rollType, host, _rollTime, _minParticipants, _maxParticipants, _fixParticipants, _participationToken, _participationPrice, _prizeAddress, _prizeId);
         
         /// @dev mint Roll ownership token for caller
         getRollTokenContract().safeMint(host, rollId, rollURI);
@@ -277,11 +298,17 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         /// @dev store tickets NFT contract address at ticketsAddr mapping
         ticketsAddr[rollId] = TicketsContract;
 
+        /**
+         * @dev update metadata with Participation token address (TicketsContract)
+         * 
+         * TODO 
+         */
+
         /// @dev define and store Roll structure to rolls mapping
-        rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _participationToken, _participationPrice, IRoll.Status.SalesOpen);
+        rolls[rollId] = IRoll.Roll(rollType, host, _rollTime, _minParticipants, _maxParticipants, _fixParticipants, _participationToken, _participationPrice, IRoll.Status.SalesOpen, _prizeAddress, _prizeId, false, uin256(0), false);
 
         /// @dev emit event about hosted Roll
-        emit RollCreated(rollType, rollId, TicketsContract, msg.sender, _prizeAddress, _prizeId, minParticipants, maxParticipants, rollTime, paymentToken, entryPrice);
+        emit RollCreated(rollId, host, _prizeAddress);
 
         return rollId;
 
@@ -292,11 +319,13 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * 
      * TODO UPDATE DOC
      * 
-     * @return "true" on successful function call
+     * @return Participation token ID number
+     * 
+     * @notice Function that allow to participate in Roll with _rollID number. Mints Participation token to caller. Payment token should be approved in amount of Roll participation price. 
      * 
      * TODO IMPLEMENT MULTI CALL BACK END PATTERN
      */
-    function participate(uint256 _rollID, address paymentToken,uint256 _tokenAmoun) public whenNotPaused returns(bool) {
+    function participate(uint256 _rollID) public whenNotPaused returns(uint256) {
         
         /// @dev get Roll parameters structure
         var roll = rolls[_rollID];
@@ -307,27 +336,61 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         /// @dev get Tickets contract interface
         IERC721RollTicket ticketsContract = getRollTicketsContract(_rollID);
 
-        /// @dev check that _ticketsAmount would not overflow maxParticipants
-        if (roll.rollType == uint8(3) && roll.rollType == uint8(4)) {
+        /// @dev get totalSupply of Participantion token collection - amount of participants
+        uint256 participantsBeforeMint = ticketsContract.totalSupply();
+        
+        /// @dev initiate limit local variable that represent participants cap
+        uint256 limit;
+        
+        /// @dev check that minting Participation token would not overflow maxParticipants
+        if (
+            roll.rollType == uint8(3)
+            && roll.rollType == uint8(4)
+        ) {
             
-            /// @dev get totalSupply of Participantion token collection - amount of participants
-            require(ticketsContract.totalSupply() < roll.maxParticipants, "CoreRollNFT: RPT totalSupply() should be less then maximum participants amount");
+            /// @dev get limit value
+            limit = roll.maxParticipants;
+            
+            /// @dev execute check
+            require(participantsBeforeMint < limit, "CoreRollNFT: RPT totalSupply() should be less then maximum participants amount");
+            
+        }
+
+        /// @dev check that minting Participation token would not overflow fixParticipants
+        if (roll.rollType == uint8(5)) {
+            
+            /// @dev get limit value
+            limit = roll.fixParticipants;
+            
+            /// @dev execute check
+            require(participantsBeforeMint < limit, "CoreRollNFT: RPT totalSupply() should be less then fixed participants amount");
             
         }
         
         /// @dev send payment to core contract
-        IERC20(roll.participationToken).transferFrom(_msgSender(), address(this), roll.participationPrice);
+        (success) = IERC20(roll.participationToken).transferFrom(_msgSender(), address(this), roll.participationPrice);
+
+        require(success, "CoreRollNFT: Failed to transfer participation price amount of payment token");
 
         /// @dev TODO approve and send payment to Iddle assets contract
         
         /// @dev mint participation tokens
-        ticketsContract.safeMint(_ticketId);
+        (ticketId) = ticketsContract.mintToken(_msgSender());
+
+        /// @dev check if was minted last ticket
+        if (ticketId == limit) {
+            
+            statusSalesClosed(_rollID);
+            
+            /// @dev 
+            /// TODO INITIATE WINNER SELECTION
+        }
         
         /// @dev emit event about minted tickets
         /// TODO REWORK EVENT
-        emit TicketsMinted(roll.rollType, _rollID, address(ticketsContract), _msgSender(), _amount);
+        emit TicketsMinted(_rollID, ticketId, _msgSender());
 
-        return true;
+        return ticketId;
     
     }
 
@@ -356,7 +419,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         require(_ticketID == roll.winnerTokenId, "CoreRollNFT: _ticketID should be equal Roll winner token ID to claim Prize")
 
         /// @dev burn winner token
-        getRollTicketsContract(_rollID).burn(_ticketId);
+        getRollTicketsContract(_rollID).burnToken(_ticketId);
 
         /**
          * @dev send Prize asset to caller
@@ -412,11 +475,15 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
 
         /**
          * @dev send revenue to caller
+         * 
+         * TODO transferFrom
          */
-        IERC20(roll.participationToken).transfer(_msgSender(), fee);
+        IERC20(roll.participationToken).transfer(_msgSender(), total);
         
         /**
          * @dev transfer fees to treasury
+         * 
+         * TODO transferFrom
          */
         IERC20(roll.participationToken).transfer(getTreasuryContract(), fee);
 
@@ -489,7 +556,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         require(_msgSender() == getRollTicketsContract(_rollID).ownerOf(_ticketId), "CoreRollNFT: Caller should be the _ticketId owner to refund Participation price");
 
         /// @dev burn Participation tokens
-        getRollTicketsContract(_rollID).burn(_ticketId);
+        getRollTicketsContract(_rollID).burnToken(_ticketId);
         
         /**
          * @dev send Participation amount to caller
@@ -523,9 +590,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
     }
 
     /**
-     * @dev get Roll ownership NFT contract address
+     * @dev get Roll ownership token contract address
      * 
-     * That implements interface {IERC721Roll - safeMint, burn}
+     * That implements interface {IERC721RollToken - mintToken, burnToken}
      */
     function getRollTokenContract() internal pure returns(IERC721RollToken){
         return IERC721RollToken(rollOwnershipToken);
@@ -533,9 +600,9 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
 
     /// 
     /**
-     * @dev get Roll tickets NFT contract address
+     * @dev get Roll participation token contract address
      * 
-     * That implements interface {IERC721Roll - safeMint, burn}
+     * That implements interface {IERC721RollTicket - safeMint, burn}
      */
     function getRollTicketsContract(uint _rollId) internal pure returns(IERC721RollTicket){
         return IERC721RollTicket(ticketsAddr[_rollId]);
@@ -603,8 +670,21 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
      * 
      * @return Roll type ID
      */
-    function defineRollType(uint256 _minParticipants,uint256 _maxParticipants) internal return(uint8 rollType) {
+    function defineRollType(uint256 _minParticipants,uint256 _maxParticipants, uint256 _fixParticipants) internal return(uint8) {
 
+        /**
+         * Roll type #5 - When fixed participants amount is set.
+         * 
+         * To initiate winner selection - Roll should have exact amount of participants (_fixParticipants)
+         * 
+         * Roll time will define when to Close participation sales and set Roll status to closed.
+         * 
+         * In that scenario Minimum and Maximum participants limits are not considered.
+         */
+        if (_fixParticipants != 0) {
+            return uint8(5);
+        }
+        
         /// @dev define Roll type
         if (_maxParticipants == 0) {
             
@@ -618,7 +698,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
                  * That type of Roll will be finished in most scenarios, since there is no requirements to Minimum participants.
                  * However - Roll of the type #1 will be closed, without selected winner, if there is no participants at all at the moment of Roll time.
                  */
-                rollType = 1;
+                return uint8(1);
 
             } else {
                 
@@ -629,11 +709,13 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
                  * 
                  * To initiate winner selection - amount of participants should be more or equal to minimum participants limit.
                  */
-                rollType = 2;
+                return uint8(2);
 
             }
 
-        } else {
+        };
+        
+        if (_maxParticipants != 0) {
             
             /**
              * @dev check that _maxParticipants is more then _minParticipants
@@ -654,7 +736,7 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
                  * Prize will become available to withdraw by Roll owner.
                  * Roll participation tokens (RPT) will become available to be refunded by participants.
                  */
-                rollType = 3;
+                return uint8(3);
 
             } else {
                 
@@ -669,13 +751,69 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
                  * 
                  * Otherwise - set Roll status to Closed.
                  */
-                rollType = 4;
+                return uint8(4);
 
             }
             
         }
 
+        require(false, " ");
+    }
+
+    /**
+     * @dev set SalesOpen status to Roll with _rollID number
+     * 
+     * @param _rollID - Roll ID number
+     */
+    function statusSalesOpen(uint256 _rollID) internal {
         
+        /// @dev open participation sales
+        rolls[_rollID] = IRoll.Status.SalesOpen;
+
+        /// TODO rework event
+        emit SalesOpen(_rollID);
+    }
+
+    /**
+     * @dev set SalesClosed status to Roll with _rollID number
+     * 
+     * @param _rollID - Roll ID number
+     */
+    function statusSalesClosed(uint256 _rollID) internal {
+        
+        /// @dev open participation sales
+        rolls[_rollID] = IRoll.Status.SalesClosed;
+
+        /// TODO rework event
+        emit SalesClosed(_rollID);
+    }
+
+    /**
+     * @dev set RollFinished status to Roll with _rollID number
+     * 
+     * @param _rollID - Roll ID number
+     */
+    function statusRollFinished(uint256 _rollID) internal {
+        
+        /// @dev open participation sales
+        rolls[_rollID] = IRoll.Status.RollFinished;
+
+        /// TODO rework event
+        emit RollFinished(_rollID);
+    }
+
+    /**
+     * @dev set RollClosed status to Roll with _rollID number
+     * 
+     * @param _rollID - Roll ID number
+     */
+    function statusRollClosed(uint256 _rollID) internal {
+        
+        /// @dev open participation sales
+        rolls[_rollID] = IRoll.Status.RollClosed;
+
+        /// TODO rework event
+        emit RollClosed(_rollID);
     }
 
     /// TODO
@@ -706,13 +844,16 @@ contract CoreRollNFT is Pausable, AccessControlEnumerable, Context {
         uint64 _rollTime,
         uint256 _minParticipants,
         uint256 _maxParticipants,
+        uint256 _fixParticipants,
         address _participationToken,
-        uint256 participationPrice,
+        uint256 _participationPrice,
         address _prizeAddress,
-        uint256 _prizeId,
-        address _ticketsContract
+        uint256 _prizeId
     ) internal returns(string memory rollURI) {
         
+        /// Status
+        IRoll.Status.SalesOpen
+
         /// TODO FINISH FUNCTION IMPLEMENTATION
         
         /// @dev create Tableland table with Roll metadata

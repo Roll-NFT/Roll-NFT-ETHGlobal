@@ -27,7 +27,7 @@ interface IERC721RollTicket is IERC721, IERC721Enumerable, IERC721Metadata, IERC
      * 
      * @param tokenId - ID of the token to burn
      */
-    function burn(uint256 tokenId) external;
+    function burnToken(uint256 tokenId) external;
     
     /**
      * @dev Creates new Roll participation token for `to`. Its token ID will be automatically
@@ -39,7 +39,9 @@ interface IERC721RollTicket is IERC721, IERC721Enumerable, IERC721Metadata, IERC
      * - the caller must have the `MINTER_ROLE`.
      * 
      * @param to - address to be minted to
+     * 
+     * @returns minted ticket ID
      */
-    function safeMint(address to) external;
+    function mintToken(address to) external returns (uint256);
     
 }

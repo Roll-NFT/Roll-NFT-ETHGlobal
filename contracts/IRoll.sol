@@ -33,6 +33,7 @@ interface IRoll {
      * @param rollTimestamp - block that will stop Roll entries sales, and to select winner or close the Roll
      * @param minParticipants - Roll participants minimum amount 
      * @param maxParticipants - Roll participants maximum amount
+     * @param fixParticipants - Roll participants fixed amount
      * @param participationToken - address of erc20 token that is used to participate in that Roll
      * @param participationPrice - amount to be paid to mint one participation ticket
      */
@@ -42,6 +43,7 @@ interface IRoll {
         uint64 rollTime;
         uint256 minParticipants;
         uint256 maxParticipants;
+        uint256 fixParticipants;
         address participationToken;
         uint256 participationPrice;
         Status status;

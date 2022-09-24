@@ -79,19 +79,21 @@ contract RollParticipationToken is Context, AccessControlEnumerable, ERC721Enume
     /**
      * @dev See {IERC721RollTicket-safeMint}
      */
-    function safeMint(address to) external {
+    function mintToken(address to) external returns (uint256) {
         require(hasRole(MINTER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have minter role to mint");
         
         /// @dev increment _tokenIdCounter first, so numeration of tickets will start from 1.
         /// @dev it will be easier to select winner and calculate chances 
         _tokenIdCounter.increment();
         _safeMint(to, _tokenIdCounter.current());
+
+        return _tokenIdCounter.current();
     }
 
     /**
      * @dev See {IERC721RollTicket-burn}.
      */
-    function burn(uint256 tokenId) external virtual {
+    function burnToken(uint256 tokenId) external virtual {
         require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
         _burn(tokenId);
     }
