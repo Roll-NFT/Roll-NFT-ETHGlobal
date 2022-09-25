@@ -17,7 +17,7 @@ const UserDropdown = () => {
 
     return (
         <div className="icon-box">
-            <Anchor path="/author">
+            <Anchor path="#">
                 <Image
                     src="/images/icons/unknown-user.png"
                     alt="Images"
@@ -75,35 +75,6 @@ const UserDropdown = () => {
                 </ul>
             </div>
         </div>
-        // <>
-        //     <div>
-        //         Connected as <br />
-        //         <u>{getEllipsisTxt(user.get("ethAddress") || "")}</u> <br />
-        //         <span>to {user.get("chain")}</span>
-        //     </div>
-        //     <div className="mainmenu-wrapper">
-        //         <div className="mainmenu-nav d-none d-xl-block">
-        //             <div className="mainmenu">
-        //                 <nav
-        //                     id="sideNav"
-        //                     className="mainmenu-nav d-none d-xl-block"
-        //                 >
-        //                     <ul className="ps-1">
-        //                         <li>
-        //                             <Anchor
-        //                                 path="#"
-        //                                 onClick={logout}
-        //                                 className="its_new"
-        //                             >
-        //                                 Sign Out
-        //                             </Anchor>
-        //                         </li>
-        //                     </ul>
-        //                 </nav>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </>
     );
 };
 

@@ -11,7 +11,7 @@ import Button from "@ui/button";
 import { useOffcanvas, useSticky } from "@hooks";
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
     balancesUpdate,
     currencyBalancesUpdate,
@@ -25,7 +25,6 @@ const Header = ({ className }) => {
     const { authenticate, isAuthenticated, user, setUserData } = useMoralis();
     const { chain } = useChain();
     const dispatch = useDispatch();
-    const balances = useSelector((state) => state.balances);
 
     const prepareNFTBalances = (obj, network) =>
         obj.items
@@ -64,7 +63,6 @@ const Header = ({ className }) => {
                 network,
                 ...coin,
             }))
-
             .flat();
 
     const getBalances = async (address, network) => {
@@ -147,21 +145,6 @@ const Header = ({ className }) => {
                             </div>
                         </div>
                         <div className="header-right">
-                            {/* <div className="setting-option d-none d-lg-block">
-                                <SearchForm />
-                            </div>
-                            <div className="setting-option rn-icon-list d-block d-lg-none">
-                                <div className="icon-box search-mobile-icon">
-                                    <button
-                                        type="button"
-                                        aria-label="Click here to open search form"
-                                        onClick={searchHandler}
-                                    >
-                                        <i className="feather-search" />
-                                    </button>
-                                </div>
-                                <FlyoutSearchForm isOpen={search} />
-                            </div> */}
                             {!isAuthenticated && (
                                 <div className="setting-option header-btn">
                                     <div className="icon-box">
@@ -186,14 +169,6 @@ const Header = ({ className }) => {
                                     <UserDropdown />
                                 </div>
                             )}
-                            {/* <div className="setting-option rn-icon-list notification-badge">
-                                <div className="icon-box">
-                                    <Anchor path={headerData.activity_link}>
-                                        <i className="feather-bell" />
-                                        <span className="badge">6</span>
-                                    </Anchor>
-                                </div>
-                            </div> */}
                             <div className="setting-option mobile-menu-bar d-block d-xl-none">
                                 <div className="hamberger">
                                     <BurgerButton onClick={offcanvasHandler} />
