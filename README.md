@@ -47,6 +47,33 @@ https://miro.com/app/board/uXjVPax8MnM=/?moveToWidget=3458764532498290731&cot=14
 
 https://www.figma.com/file/xU1tjigb8xT1IDwDecxHHy/Roll-NFT?node-id=0%3A1
 
+# Contracts
+
+### Last version MVP contracts
+
+Available in `contract-mvp-solving-eip-170` branch
+https://github.com/Roll-NFT/Roll-NFT-ETHGlobal/tree/contract-mvp-solving-eip-170
+With last submission commit `VRF Subscription ID fix`
+https://github.com/Roll-NFT/Roll-NFT-ETHGlobal/commit/773b1a1121b4e30d352a7c670afaf13d3fb8613c
+
+Last version of contracts deployed on Mumbai Polygon testned using Remix IDE.
+
+- RollOwnershipToken - 0x19FA5D16Ef5AE2Dd0CEE9bBFDcc59a4ea1f51cc9
+- TreasuryRollNFT - 0x15d48B638fFdB009C2634fEb26EFaBcAb197B11e
+- FaucetNFT (super simple faucet) - 0x8c51FF9c44faa9Bd32A82d9052a4E84D8FD09B40
+- CoreRollNFT - 0x0FCDA4F77BC885A297330a5f7D2e7D2a8dcb96B5
+
+### Deployment flow
+
+- Deploy RollOwnershipToken.sol
+- Deploy TreasuryRollNFT.sol
+- Deploy CoreRollNFT.sol - Provide constructor arguments: RollOwnershipToken, TreasuryRollNFT and Chainlink VRF parameters.
+- TreasuryRollNFT: Grant manager role to CoreRollNFT contract - Call TreasuryRollNFT.grantManagerRoll(CoreRollNFT)
+- RollOwnershipToken: Grant manager, minter, burner roles - Call RollOwnershipToken.connectCoreRollNFT(CoreRollNFT)
+- Add CoreRollNFT as a consumer to chainlink VRF subscription (https://vrf.chain.link/)
+- Unpause CoreRollNFT - Call RollOwnershipToken.unpause()
+- Deploy any of NFT faucet contracts
+
 # Respectful mentions:
 
 Teves#2400 - Teves `Golden hands` - For making that project to hit submission. And making ideas to become project product.
@@ -90,33 +117,9 @@ Kakashi_Hatake#5416
 ### And those who react on our requests:
 
 dtb#3153 - Tableland
+
 Irene | APWine 🍇🍷#0777 - APWine
+
 0xJess#2735 - AAVE
+
 farrahmay | Yearn Finance#7790 - Yearn
-
-# Contracts
-
-### Last version MVP contracts
-
-Available in `contract-mvp-solving-eip-170` branch
-https://github.com/Roll-NFT/Roll-NFT-ETHGlobal/tree/contract-mvp-solving-eip-170
-With last submission commit `VRF Subscription ID fix`
-https://github.com/Roll-NFT/Roll-NFT-ETHGlobal/commit/773b1a1121b4e30d352a7c670afaf13d3fb8613c
-
-Last version of contracts deployed on Mumbai Polygon testned using Remix IDE.
-
-- RollOwnershipToken - 0x19FA5D16Ef5AE2Dd0CEE9bBFDcc59a4ea1f51cc9
-- TreasuryRollNFT - 0x15d48B638fFdB009C2634fEb26EFaBcAb197B11e
-- FaucetNFT (super simple faucet) - 0x8c51FF9c44faa9Bd32A82d9052a4E84D8FD09B40
-- CoreRollNFT - 0x0FCDA4F77BC885A297330a5f7D2e7D2a8dcb96B5
-
-### Deployment flow
-
-- Deploy RollOwnershipToken.sol
-- Deploy TreasuryRollNFT.sol
-- Deploy CoreRollNFT.sol - Provide constructor arguments: RollOwnershipToken, TreasuryRollNFT and Chainlink VRF parameters.
-- TreasuryRollNFT: Grant manager role to CoreRollNFT contract - Call TreasuryRollNFT.grantManagerRoll(CoreRollNFT)
-- RollOwnershipToken: Grant manager, minter, burner roles - Call RollOwnershipToken.connectCoreRollNFT(CoreRollNFT)
-- Add CoreRollNFT as a consumer to chainlink VRF subscription (https://vrf.chain.link/)
-- Unpause CoreRollNFT - Call RollOwnershipToken.unpause()
-- Deploy any of NFT faucet contracts
