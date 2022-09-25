@@ -34,8 +34,9 @@
     "hardhat": "^2.11.1"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.4.1",
     "@openzeppelin/contracts": "^4.7.3",
-    "ganache-cli": "^6.12.2",
-    "solidity-coverage": "^0.8.2"
+    "dotenv": "^16.0.2",
+    "ganache-cli": "^6.12.2"
   }
 }
