@@ -13,7 +13,7 @@ const Product = ({ overlay, collection, title, slug, image, id }) => {
     const [loading, setLoading] = useState(false);
 
     const handleClick = (e) => {
-        e.preventDeafult();
+        e.preventDefault();
         setLoading(true);
         dispatch(balanceSelect(id));
         Router.push(slug).then(() => {
