@@ -28,7 +28,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    string private _baseTokenURI;
+    string private baseTokenURI;
     
     /**
      * @dev Grants `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE`, `BURNER_ROLE` and `MANAGER_ROLE` to the
@@ -40,14 +40,13 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
      * See {ERC721-tokenURI}.
      */
     constructor(
-        string memory baseTokenURI,
-        address _manager
+        string memory _baseTokenURI
     ) ERC721("Roll ownership Token collection", "ROLT") {
 
         /**
          * @dev set base Token URI
          */
-        _setBaseURI(baseTokenURI);
+        _setBaseURI(_baseTokenURI);
         
         /**
          * @dev grant contract deployer a `DEFAULT_ADMIN_ROLE`, `MANAGER_ROLE`, `MINTER_ROLE` and `BURNER_ROLE`
@@ -56,21 +55,20 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
          */
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MANAGER_ROLE, _msgSender());
-        _setupRole(MINTER_ROLE, _msgSender());
-        _setupRole(BURNER_ROLE, _msgSender());
-
-        /**
-         * @dev grant to _manager address a `MANAGER_ROLE`
-         */
-        _setupRole(MANAGER_ROLE, _manager);
         
+    }
+
+    /// @dev set CoreRollNFT contract as Burner / Minter
+    function connectCoreRollNFT(address _coreContractAddress) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        _setupRole(MINTER_ROLE, _coreContractAddress);
+        _setupRole(BURNER_ROLE, _coreContractAddress);
     }
 
     /**
      * @dev See {IERC721RollToken-safeMint}
      */
     function mintRoll(address to, uint256 tokenId, string memory uri) external override whenNotPaused {
-        require(hasRole(MINTER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have minter role to mint");
+        require(hasRole(MINTER_ROLE, _msgSender()), "RollToken: must have minter role to mint");
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
@@ -79,7 +77,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
      * @dev See {IERC721RollToken-burn}.
      */
     function burnRoll(uint256 tokenId) external override whenNotPaused {
-        require(hasRole(BURNER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have burner role to burn");
+        require(hasRole(BURNER_ROLE, _msgSender()), "RollToken: must have burner role to burn");
         _burn(tokenId);
     }
 
@@ -93,7 +91,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
      * - the caller must have the `MANAGER_ROLE`.
      */
     function pause() public virtual {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have manager role to pause");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "RollToken: must have manager role to pause");
         _pause();
     }
 
@@ -107,7 +105,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
      * - the caller must have the `MANAGER_ROLE`.
      */
     function unpause() public virtual {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have manager role to unpause");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "RollToken: must have manager role to unpause");
         _unpause();
     }
 
@@ -117,7 +115,7 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
      * That is used to autogenerate Token URIs - using `baseURI` and their token IDs.
      */
     function _baseURI() internal view virtual override returns (string memory) {
-        return _baseTokenURI;
+        return baseTokenURI;
     }
 
     /**
@@ -128,24 +126,24 @@ contract RollOwnershipToken is Context, ERC721, ERC721URIStorage, AccessControlE
     }
 
     /**
-     * @dev Set _baseTokenURI
+     * @dev Set baseTokenURI
      * 
      * Requirements:
      * 
      * - the caller must have the `MANAGER_ROLE`.
      */
-    function setBaseURI(string memory baseTokenURI) public virtual {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "ERC721RollMinterBurnerPauser: must have manager role to set BaseURI");
-        _setBaseURI(baseTokenURI);
+    function setBaseURI(string memory _baseTokenURI) public virtual {
+        require(hasRole(MANAGER_ROLE, _msgSender()), "RollToken: must have manager role to set BaseURI");
+        _setBaseURI(_baseTokenURI);
     }
 
     /**
-     * @dev Set _baseTokenURI
+     * @dev Set baseTokenURI
      * 
      * Internal use 
      */
-    function _setBaseURI(string memory baseTokenURI) internal {
-        _baseTokenURI = baseTokenURI;
+    function _setBaseURI(string memory _baseTokenURI) internal {
+        baseTokenURI = _baseTokenURI;
     }
 
     function _beforeTokenTransfer(
