@@ -195,7 +195,6 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
      * Set initial parameters.
      * Grant roles
      * 
-     * @param _baseTokenURI - to set base token URI for Roll ownership tokens
      * @param _revenueFee - percentage Revenue fee applaied to on "claimRevenue()"
      * @param _vrfCoordinator - VRF: coordinator address
      * @param _vrfLinkToken - VRF: LINK token address
@@ -204,13 +203,15 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
      * @param _vrfRequestConfirmations - VRF: Request confirmations (3 by default)
      */
     constructor(
-        string memory _baseTokenURI,
+        // string memory _baseTokenURI,
         uint256 _revenueFee,
         address _vrfCoordinator,
         address _vrfLinkToken,
         bytes32 _vrfKeyHash,
         uint32 _vrfCallbackGasLimit,
-        uint16 _vrfRequestConfirmations
+        uint16 _vrfRequestConfirmations,
+        address _rollOwnershipToken,
+        address _contractTreasury
     ) VRFConsumerBaseV2(_vrfCoordinator) {
 
         /// @dev Chainlink VRF
@@ -220,22 +221,22 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         vrfCallbackGasLimit = _vrfCallbackGasLimit;
         vrfRequestConfirmations = _vrfRequestConfirmations;
         
-        address sender = _msgSender();
-        
         /**
          * @dev Deploy Roll ownership Token contract and save it's address
          * 
          * @param _baseTokenURI - Roll ownership token Base URI
          * @param _msgSender - address to grant MANAGER_ROLE
          */
-        rollOwnershipToken = address(new RollOwnershipToken(_baseTokenURI, sender));
+        // rollOwnershipToken = address(new RollOwnershipToken(_baseTokenURI, sender));
+        rollOwnershipToken = _rollOwnershipToken;
         
         /**
          * @dev Deploy Treasury contract and save it's address
          * 
          * @param sender - address to grant MANAGER_ROLE
          */
-        contractTreasury = address(new TreasuryRollNFT(sender));
+        // contractTreasury = address(new TreasuryRollNFT(sender));
+        contractTreasury = _contractTreasury;
 
         /// @dev set initial Revenue fee
         /// TODO use internal function instead
@@ -251,8 +252,8 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         /**
          * @dev grant to deployer address a `MANAGER_ROLE` and `DEFAULT_ADMIN_ROLE`
          */
-        _setupRole(DEFAULT_ADMIN_ROLE, sender);
-        _setupRole(MANAGER_ROLE, sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _setupRole(MANAGER_ROLE, _msgSender());
     }
 
     /**
@@ -381,18 +382,18 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
          */
 
         /// @dev define and store Roll structure to rolls mapping
-        IRoll.Roll memory roll = rolls[rollId];
-        roll.rollType = rollType;
-        roll.host = host;
-        roll.rollTime = _rollTime;
-        roll.minParticipants = _minParticipants;
-        roll.maxParticipants = _maxParticipants;
-        roll.fixParticipants = _fixParticipants;
-        roll.participationToken = _participationToken;
-        roll.participationPrice = _participationPrice;
-        roll.status = IRoll.Status.SalesOpen;
-        roll.prizeCollection = _prizeAddress;
-        roll.prizeTokenId = _prizeId;
+        // IRoll.Roll memory roll = rolls[rollId];
+        rolls[rollId].rollType = rollType;
+        rolls[rollId].host = host;
+        rolls[rollId].rollTime = _rollTime;
+        rolls[rollId].minParticipants = _minParticipants;
+        rolls[rollId].maxParticipants = _maxParticipants;
+        rolls[rollId].fixParticipants = _fixParticipants;
+        rolls[rollId].participationToken = _participationToken;
+        rolls[rollId].participationPrice = _participationPrice;
+        rolls[rollId].status = IRoll.Status.SalesOpen;
+        rolls[rollId].prizeCollection = _prizeAddress;
+        rolls[rollId].prizeTokenId = _prizeId;
         // roll.prizeClaimed = false;
         // roll.winnerTokenId = uint256(0);
         // roll.revenueClaimed = false;
@@ -503,23 +504,23 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
     function claimPrize(uint256 _rollID) external whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
-        IRoll.Roll memory roll = rolls[_rollID];
+        // IRoll.Roll memory roll = rolls[_rollID];
 
         /// @dev check that Roll status is "RollFinished"
-        require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be RollFinished to claim Prize");
+        require(rolls[_rollID].status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be RollFinished to claim Prize");
 
         /// @dev check that Prize asset is available to withdraw
-        require(!roll.prizeClaimed, "CoreRollNFT: Prize available to claim only once");
+        require(!rolls[_rollID].prizeClaimed, "CoreRollNFT: Prize available to claim only once");
 
         /// @dev get winning token Id
-        uint256 winnerTokenId = roll.winnerTokenId;
+        // uint256 winnerTokenId = rolls[_rollID].winnerTokenId;
 
         /// @dev get Roll participation token contract interface
         IERC721RollTicket participationTokenContract = getRollTicketsContract(_rollID);
         
         /// @dev get owner of the winning token ID
 
-        address winTokenOwner = participationTokenContract.ownerOf(winnerTokenId);
+        address winTokenOwner = participationTokenContract.ownerOf(rolls[_rollID].winnerTokenId);
 
         /// @dev check that caller is a owner of the _ticketId
         require(_msgSender() == winTokenOwner, "CoreRollNFT: Caller should be the winning token owner to claim Prize");
@@ -528,19 +529,19 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         // require(_ticketID == roll.winnerTokenId, "CoreRollNFT: _ticketID should be equal Roll winner token ID to claim Prize");
 
         /// @dev burn winner token
-        participationTokenContract.burnToken(winnerTokenId);
+        participationTokenContract.burnToken(rolls[_rollID].winnerTokenId);
 
         /**
          * @dev send Prize asset to caller
          */
-        IERC721(roll.prizeCollection).safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
+        IERC721(rolls[_rollID].prizeCollection).safeTransferFrom(address(this), _msgSender(), rolls[_rollID].prizeTokenId);
         
         /// @dev set Prize status to "Claimed"
-        roll.prizeClaimed = true;
+        rolls[_rollID].prizeClaimed = true;
 
         /// @dev anounce about claimed prize - where who what
         /// TODO REWORK EVENT
-        emit PrizeClaimed(_rollID, _msgSender(), roll.prizeCollection);
+        emit PrizeClaimed(_rollID, _msgSender(), rolls[_rollID].prizeCollection);
         
         return true;
         
@@ -559,22 +560,22 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         require(_msgSender() == getRollTokenContract().ownerOf(_rollID), "CoreRollNFT: Caller should be the Roll owner to claim Revenue");
 
         /// @dev get Roll parameters structure
-        IRoll.Roll memory roll = rolls[_rollID];
+        // IRoll.Roll memory roll = rolls[_rollID];
 
         /// @dev check that Roll status is "RollFinished"
-        require(roll.status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be RollFinished to claim Revenue");
+        require(rolls[_rollID].status == IRoll.Status.RollFinished, "CoreRollNFT: Roll status should be RollFinished to claim Revenue");
 
         /// @dev check that revenue is available to claim
-        require(!roll.revenueClaimed, "CoreRollNFT: Revenue available to claim only once");
+        require(!rolls[_rollID].revenueClaimed, "CoreRollNFT: Revenue available to claim only once");
 
         /// @dev set revenue status to claimed
-        roll.revenueClaimed = true;
+        rolls[_rollID].revenueClaimed = true;
 
         /// @dev burn Roll ownership token
         getRollTokenContract().burnRoll(_rollID);
 
         /// @dev calculate Revenue to claim
-        uint256 revenue = calculateRevenue(getRollTicketsContract(_rollID).totalSupply(), roll.participationPrice);
+        uint256 revenue = calculateRevenue(getRollTicketsContract(_rollID).totalSupply(), rolls[_rollID].participationPrice);
         
         /// @dev calculate Revenue fee
         uint256 fee = calculateRevenueFee(revenue);
@@ -587,18 +588,18 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
          * 
          * TODO transferFrom
          */
-        IERC20(roll.participationToken).transfer(_msgSender(), total);
+        IERC20(rolls[_rollID].participationToken).transfer(_msgSender(), total);
         
         /**
          * @dev transfer fees to treasury
          * 
          * TODO transferFrom
          */
-        IERC20(roll.participationToken).transfer(getTreasuryContract(), fee);
+        IERC20(rolls[_rollID].participationToken).transfer(getTreasuryContract(), fee);
 
         /// @dev announce about Roll's claimed revenue - where who what
         /// TODO REWORK EVENT
-        emit RevenueClaimed(_rollID, roll.participationToken, total);
+        emit RevenueClaimed(_rollID, rolls[_rollID].participationToken, total);
         
         return true;
 
@@ -614,7 +615,7 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
     function withdrawPrize(uint256 _rollID) public whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
-        IRoll.Roll memory roll = rolls[_rollID];
+        // IRoll.Roll memory roll = rolls[_rollID];
 
         /// @dev get ROLT contract interface
         IERC721RollToken ROLTContract = getRollTokenContract();
@@ -626,10 +627,10 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         require(_msgSender() == rollOwner, "CoreRollNFT: Caller should be the Roll owner to withdraw Prize asset");
 
         /// @dev check that Roll status is "RollClosed"
-        require(roll.status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to withdraw Prize asset");
+        require(rolls[_rollID].status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to withdraw Prize asset");
 
         /// @dev check that Prize asset is available to withdraw
-        require(!roll.prizeClaimed, "CoreRollNFT: Prize available to withdraw only once");
+        require(!rolls[_rollID].prizeClaimed, "CoreRollNFT: Prize available to withdraw only once");
 
         /// @dev burn Roll ownership token
         ROLTContract.burnRoll(_rollID);
@@ -637,14 +638,14 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         /**
          * @dev send Prize asset to caller
          */
-        IERC721(roll.prizeCollection).safeTransferFrom(address(this), _msgSender(), roll.prizeTokenId);
+        IERC721(rolls[_rollID].prizeCollection).safeTransferFrom(address(this), _msgSender(), rolls[_rollID].prizeTokenId);
         
         /// @dev set Prize status to "Claimed"
-        roll.prizeClaimed = true;
+        rolls[_rollID].prizeClaimed = true;
 
         /// @dev announce about withdrawn prize from unsuccessful Roll - where who what
         /// TODO REWORK EVENT
-        emit PrizeWithdrawn(_rollID, rollOwner, roll.prizeCollection);
+        emit PrizeWithdrawn(_rollID, rollOwner, rolls[_rollID].prizeCollection);
         
         return true;
 
@@ -662,10 +663,10 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
     function refundParticipation(uint256 _rollID, uint256 _ticketId) public whenNotPaused returns(bool) {
         
         /// @dev get Roll parameters structure
-        IRoll.Roll memory roll = rolls[_rollID];
+        // IRoll.Roll memory roll = rolls[_rollID];
 
         /// @dev check that Roll status is "RollClosed"
-        require(roll.status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to refund Participation price");
+        require(rolls[_rollID].status == IRoll.Status.RollClosed, "CoreRollNFT: Roll status should be RollClosed to refund Participation price");
 
         /// @dev check that caller is a owner of the _ticketId
         require(_msgSender() == getRollTicketsContract(_rollID).ownerOf(_ticketId), "CoreRollNFT: Caller should be the _ticketId owner to refund Participation price");
@@ -676,10 +677,10 @@ contract CoreRollNFT is Context, Pausable, AccessControlEnumerable, VRFConsumerB
         /**
          * @dev send Participation amount to caller
          */
-        IERC20(roll.participationToken).transfer(_msgSender(), roll.participationPrice);
+        IERC20(rolls[_rollID].participationToken).transfer(_msgSender(), rolls[_rollID].participationPrice);
 
         /// @dev announce about refunded tickets from unsuccessful Roll
-        emit TicketsRefunded(_rollID, roll.participationToken, roll.participationPrice);
+        emit TicketsRefunded(_rollID, rolls[_rollID].participationToken, rolls[_rollID].participationPrice);
         
         return true;
 
