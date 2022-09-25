@@ -1,31 +1,39 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+// npx hardhat run scripts/run.js
 
-async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+const main = async () => {
+  // const RollOwnershipTokenV0Factory = await hre.ethers.getContractFactory(
+  //   "RollOwnershipTokenV0"
+  // );
+  // const rollOwnershipToken = await RollOwnershipTokenV0Factory.deploy();
+  // await rollOwnershipToken.deployed();
+  // console.log("RollOwnershipToken implantado em:", rollOwnershipToken.address);
+  // // 0xf888F9BcdD17C6aDbd6733374511A4486A129375
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+  const RollParticipationTokenV0Factory = await hre.ethers.getContractFactory(
+    "RollParticipationTokenV0"
   );
-}
+  const rollParticipationToken = await RollParticipationTokenV0Factory.deploy();
+  await rollParticipationToken.deployed();
+  console.log("RollParticipationToken implantado em:", rollParticipationToken.address);
+  // 0xD931Cb4f45Bc5F2EC37fF91EE36dd5713c8090cE
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  // const TreasuryFactory = await hre.ethers.getContractFactory(
+  //   "TreasuryRollNFT"
+  // );
+  // const treasuryFactory = await TreasuryFactory.deploy(process.env.MUMBAI_PUBLIC_KEY);
+  // await treasuryFactory.deployed();
+  // console.log("TreasuryRollNFT implantado em:", treasuryFactory.address);
+  // // 0x573EA18457228Bc4215C646D55045083Ec7502fC
+
+};
+
+const runMain = async () => {
+  try {
+    await main();
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+runMain();

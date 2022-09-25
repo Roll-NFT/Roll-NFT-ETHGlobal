@@ -2,6 +2,7 @@ pragma solidity 0.8.4;
 //SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
@@ -35,9 +36,13 @@ contract RollParticipationTokenV0 is ERC721 {
     function mint(
         string memory ticketlId,
         string memory rollId,
-        address rollContract
+        address rollContract,
+        address currencyToken,
+        uint256 amount
     ) external {
         uint256 newItemId = _tokenIds.current();
+
+        ERC20(currencyToken).transferFrom(msg.sender, address(this), amount);
 
         _safeMint(msg.sender, newItemId);
 

@@ -1,6 +1,7 @@
 pragma solidity 0.8.4;
 //SPDX-License-Identifier: MIT
 
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -55,6 +56,8 @@ contract RollOwnershipTokenV0 is ERC721 {
         uint64 deadline
     ) external {
         uint256 newItemId = _tokenIds.current();
+
+        ERC721(prizeAddress).transferFrom(msg.sender, address(this), prizeTokenId);
 
         _safeMint(msg.sender, newItemId);
 
