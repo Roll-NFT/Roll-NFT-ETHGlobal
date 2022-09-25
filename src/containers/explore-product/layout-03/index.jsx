@@ -24,6 +24,14 @@ const ExploreProductArea = ({ className, space, data }) => {
         setHasMore(currentProducts.length < data.products.length);
     };
 
+    useEffect(
+        () => () => {
+            setProducts(null);
+            setHasMore(null);
+        },
+        []
+    );
+
     return (
         <div
             className={clsx(

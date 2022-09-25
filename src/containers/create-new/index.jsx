@@ -22,7 +22,7 @@ import ERC721Contract from "@lib/contracts/_erc721.json";
 import { ticketUpdate, approveUpdate } from "@store/actions/rolls";
 import { v4 } from "uuid";
 
-const CreateNewArea = ({ className, space, nft }) => {
+const CreateNewArea = ({ className, space }) => {
     const [selectedImage, setSelectedImage] = useState();
     const [currencies, setCurrencies] = useState(null);
     const [currencyMapping, setCurrencyMapping] = useState(null);
@@ -30,10 +30,12 @@ const CreateNewArea = ({ className, space, nft }) => {
     const [hasImageError, setHasImageError] = useState(false);
     const [roltContract, setRoltContract] = useState(null);
     const [nftContract, setNftContract] = useState(null);
-    const approved = useSelector((state) => state.approved);
     const [loading, setLoading] = useState(false);
+    const [nft, setNft] = useState(null);
     const dispatch = useDispatch();
+    const approved = useSelector((state) => state.approved);
     const ticket = useSelector((state) => state.ticket);
+    const balances = useSelector((state) => state.balances);
     const { authenticate, isAuthenticated, user } = useMoralis();
 
     const {
@@ -100,11 +102,14 @@ const CreateNewArea = ({ className, space, nft }) => {
                 }
             )
             .then((response) => {
-                toast(`Roll saved successfully! You will be redirected.`);
+                toast(
+                    `Roll saved successfully! You will be redirected shortly.`
+                );
                 Router.push(`/roll/${response.data.raffleId}`).then(() => {
                     dispatch(approveUpdate(null));
                     dispatch(ticketUpdate(null));
                     dispatch(balanceSelect(0));
+                    setLoading(false);
                     setConfirmButtonLabel("Approve");
                     reset();
                 });
@@ -112,8 +117,8 @@ const CreateNewArea = ({ className, space, nft }) => {
             .catch((errorResponse) => {
                 toast("Error saving Roll, please try again later!");
                 console.log(errorResponse);
-            });
-        setLoading(false);
+            })
+            .finally(() => setLoading(false));
     };
 
     async function mint() {
@@ -141,14 +146,15 @@ const CreateNewArea = ({ className, space, nft }) => {
                     deadline
                 );
                 await mintTxn.wait();
+                saveRaffle();
                 toast(
                     "ROLT NFT minted successfully! This NFT prooves that you are the owner of this Roll."
                 );
             } catch (error) {
                 console.log(error);
                 toast(`Token mint failed! ${error.reason}`);
+                setLoading(false);
             }
-            setLoading(false);
         }
     }
 
@@ -161,13 +167,14 @@ const CreateNewArea = ({ className, space, nft }) => {
                     nft.token_id
                 );
                 await txn.wait();
+                setConfirmButtonLabel("Create Roll");
                 toast(
                     "Transfer approved successfully. You can now create the Roll!"
                 );
             } catch (error) {
-                setLoading(false);
                 toast(error.reason);
             }
+            setLoading(false);
         }
     };
 
@@ -219,42 +226,41 @@ const CreateNewArea = ({ className, space, nft }) => {
     };
 
     useEffect(() => {
-        const onRollOwnershipTokenMinted = (owner, spender, tokenId) => {
-            saveRaffle();
-            // toast(
-            //     "ROLT NFT minted successfully!"
-            // );
-        };
+        // const onRollOwnershipTokenMinted = (owner, spender, tokenId) => {
+        //     saveRaffle();
+        //     toast(
+        //         "ROLT NFT minted successfully!"
+        //     );
+        // };
         const onTokenApproval = (owner, spender, tokenId) => {
             dispatch(approveUpdate({ owner, spender, tokenId }));
-            setLoading(false);
-            setConfirmButtonLabel("Create Roll");
+            // setLoading(false);
+            // setConfirmButtonLabel("Create Roll");
             // toast(
             //     "Transfer approved successfully. You can now create the Roll!"
             // );
         };
-        console.log();
         if (nftContract) {
             nftContract.on("Approval", onTokenApproval);
         }
-        if (roltContract) {
-            roltContract.on(
-                "RollOwnershipTokenMinted",
-                onRollOwnershipTokenMinted
-            );
-        }
+        // if (roltContract) {
+        //     roltContract.on(
+        //         "RollOwnershipTokenMinted",
+        //         onRollOwnershipTokenMinted
+        //     );
+        // }
         return () => {
             if (nftContract) {
                 nftContract.off("Approval", onTokenApproval);
             }
-            if (roltContract) {
-                roltContract.off(
-                    "RollOwnershipTokenMinted",
-                    onRollOwnershipTokenMinted
-                );
-            }
+            // if (roltContract) {
+            //     roltContract.off(
+            //         "RollOwnershipTokenMinted",
+            //         onRollOwnershipTokenMinted
+            //     );
+            // }
         };
-    }, [nftContract, roltContract]);
+    }, [nftContract]);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -263,7 +269,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                 getNftContract();
             }
         }
-    }, [user]);
+    }, [user, nft]);
 
     useEffect(() => {
         if (nft) {
@@ -278,6 +284,21 @@ const CreateNewArea = ({ className, space, nft }) => {
     useEffect(() => {
         getAvailableCurrencies();
         setCurrencies(process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(","));
+        const selected = balances.filter((item) => item.selected === true);
+        if (selected?.length > 0) {
+            setNft(selected[0]);
+        }
+        return () => {
+            setSelectedImage(null);
+            setCurrencies(null);
+            setCurrencyMapping(null);
+            setConfirmButtonLabel("Approve");
+            setHasImageError(null);
+            setRoltContract(null);
+            setNftContract(null);
+            setLoading(null);
+            setNft(null);
+        };
     }, []);
 
     return (
@@ -620,7 +641,6 @@ const CreateNewArea = ({ className, space, nft }) => {
 CreateNewArea.propTypes = {
     className: PropTypes.string,
     space: PropTypes.oneOf([1]),
-    nft: PropTypes.shape(),
 };
 
 CreateNewArea.defaultProps = {

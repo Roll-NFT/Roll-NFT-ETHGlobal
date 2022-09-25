@@ -123,18 +123,23 @@ const PlaceBet = ({
     };
 
     const approveToken = async () => {
-        setLoading(true);
-        try {
-            const wei = ethers.utils.parseUnits(ticket.total.toString(), 18);
-            const txn = await currencyContract.approve(
-                process.env.NEXT_PUBLIC_RPT_CONTRACT,
-                wei
-            );
-            await txn.wait();
-            toast("Amount approved successfully. You can now buy tickets!");
-        } catch (error) {
-            setLoading(false);
-            toast(error.reason);
+        if (currencyContract) {
+            setLoading(true);
+            try {
+                const wei = ethers.utils.parseUnits(
+                    ticket.total.toString(),
+                    18
+                );
+                const txn = await currencyContract.approve(
+                    process.env.NEXT_PUBLIC_RPT_CONTRACT,
+                    wei
+                );
+                await txn.wait();
+                toast("Amount approved successfully. You can now buy tickets!");
+            } catch (error) {
+                setLoading(false);
+                toast(error.reason);
+            }
         }
     };
 
@@ -257,7 +262,7 @@ const PlaceBet = ({
             getCurrencyContract();
             getRptContract();
         }
-    }, [user]);
+    }, [user, currencyMapping]);
 
     useEffect(() => {
         getAvailableCurrencies();

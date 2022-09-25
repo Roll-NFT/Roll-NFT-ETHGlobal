@@ -6,7 +6,7 @@ import Router from "next/router";
 import { useDispatch } from "react-redux";
 import { balanceSelect } from "@store/actions/balances";
 import { ThreeDots } from "react-loader-spinner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Product = ({ overlay, collection, title, slug, image, id }) => {
     const dispatch = useDispatch();
@@ -20,6 +20,13 @@ const Product = ({ overlay, collection, title, slug, image, id }) => {
             setLoading(false);
         });
     };
+
+    useEffect(
+        () => () => {
+            setLoading(null);
+        },
+        []
+    );
 
     return (
         <div
