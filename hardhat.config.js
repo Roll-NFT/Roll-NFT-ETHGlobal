@@ -5,7 +5,7 @@ require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.9",
+  solidity: "0.8.4",
   networks: {
     goerli: {
       url: process.env.GOERLI_ALCHEMY_KEY,
@@ -18,7 +18,10 @@ module.exports = {
     mumbai: {
       url: process.env.MUMBAI_QUICKNODE_KEY,
       accounts: [process.env.MUMBAI_PRIVATE_KEY],
-    }
+    },
+    // hardhat: {
+    //   allowUnlimitedContractSize: true
+    // }
   },
   etherscan: {
     apiKey: {
