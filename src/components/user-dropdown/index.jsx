@@ -45,7 +45,7 @@ const UserDropdown = () => {
                                     <div className="thumbnail">
                                         <Anchor path="#">
                                             <Image
-                                                src={`/images/coins/${currency.contract_ticker_symbol}.png`}
+                                                src={`/images/coins/${currency.contract_ticker_symbol.toLowerCase()}.png`}
                                                 alt={currency.contract_name}
                                                 layout="fixed"
                                                 width={25}
