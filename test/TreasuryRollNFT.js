@@ -6,9 +6,6 @@ const { time, loadFixture } = require("@nomicfoundation/hardhat-network-helpers"
 // We import Chai to use its asserting functions here.
 const { expect } = require("chai");
 
-const { keccak256 } = require("@ethersproject/keccak256");
-const { toUtf8Bytes } = require("@ethersproject/strings");
-
 describe("TreasuryRollNFT", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
@@ -23,10 +20,10 @@ describe("TreasuryRollNFT", function () {
     const TreasuryRollNFT = await ethers.getContractFactory("TreasuryRollNFT");
     const treasuryContract = await TreasuryRollNFT.deploy({ value: ethFunding });
     
-    // Deploy ERC20 Contract (LINK TOKEN)
-    const LinkToken = (await ethers.getContractFactory("LinkToken", tokenOwner));
+    // Deploy ERC20 Contract (RollToken)
+    const RollToken = (await ethers.getContractFactory("RollToken", tokenOwner));
     const totalSupply = (10 ** 9).toString();
-    const linkTokenContract = await LinkToken.deploy(ethers.utils.parseEther(totalSupply));
+    const rollTokenContract = await RollToken.deploy(ethers.utils.parseEther(totalSupply));
 
     // Deploy a fake CoreContract for testing purpouses
     const unlockTime = (await time.latest()) + (365 * 24 * 60 * 60);
@@ -34,12 +31,12 @@ describe("TreasuryRollNFT", function () {
     const coreContract = await CoreRollNFT.deploy(unlockTime, { value: ethFunding });
 
     // Fund the Participant with some ERC20 
-    await linkTokenContract.connect(tokenOwner).transfer(participant.address, 10 ** 8);
+    await rollTokenContract.connect(tokenOwner).transfer(participant.address, 10 ** 8);
 
     // Next is equivalent to Participant buying tickets (transfer ERC20 Token to the CoreContract)
-    await linkTokenContract.connect(participant).transfer(coreContract.address, 10 ** 7);
+    await rollTokenContract.connect(participant).transfer(coreContract.address, 10 ** 7);
 
-    return { treasuryContract, linkTokenContract, coreContract, treasuryOwner, participant, address1, address2 };
+    return { treasuryContract, rollTokenContract, coreContract, treasuryOwner, participant, address1, address2 };
   }
 
   describe("Access Control", function () {
@@ -95,143 +92,143 @@ describe("TreasuryRollNFT", function () {
   describe("Deposits", function () {
 
     it("Should deposit 100 LINK into the Treasury", async function () {
-      const { treasuryContract, linkTokenContract, coreContract } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-      await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+      await rollTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 100);
 
       // Check the balance of ERC20 token for the TreasuryContract
-      treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
+      treasuryContractBalance = await rollTokenContract.balanceOf(treasuryContract.address);
       // Check the mapping of ERC20 token inside the TreasuryContract
-      linkTokenBalanceInTreasury = await treasuryContract.balanceOf(linkTokenContract.address);
+      RollTokenBalanceInTreasury = await treasuryContract.balanceOf(rollTokenContract.address);
 
       expect(treasuryContractBalance).to.equal(100);
-      expect(linkTokenBalanceInTreasury).to.equal(100);
+      expect(RollTokenBalanceInTreasury).to.equal(100);
     });
 
     it("Should revert deposit if not approved", async function () {
-      const { treasuryContract, linkTokenContract, coreContract } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Tries to deposit the ERC-20 Token into the TreasuryContract
-      await expect(treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100)).to.be.reverted;
+      await expect(treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 100)).to.be.reverted;
 
     });
 
     it("Should revert deposit if more the amount is bigger than approved", async function () {
-      const { treasuryContract, linkTokenContract, coreContract } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-      await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+      await rollTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Tries to deposit the ERC-20 Token into the TreasuryContract
-      await expect(treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 200)).to.be.reverted;
+      await expect(treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 200)).to.be.reverted;
     });
 
   });
 
   describe("Withdrawals", function () {
     it("Should withdraw 100 LINK from the Treasury if admin", async function () {
-      const { treasuryContract, linkTokenContract, coreContract, treasuryOwner } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract, treasuryOwner } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-      await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+      await rollTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 100);
 
       // Withdraw ERC-20 Token from the TreasuryContract
-      await treasuryContract.connect(treasuryOwner).withdrawERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(treasuryOwner).withdrawERC20(rollTokenContract.address, 100);
 
       // Check the balance of ERC20 token for the TreasuryContract
-      treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
+      treasuryContractBalance = await rollTokenContract.balanceOf(treasuryContract.address);
       // Check the balance of ERC20 token for the treasuryOwner
-      treasuryOwnerBalance = await linkTokenContract.balanceOf(treasuryOwner.address);
+      treasuryOwnerBalance = await rollTokenContract.balanceOf(treasuryOwner.address);
       // Check the mapping of ERC20 token inside the TreasuryContract
-      linkTokenBalanceInTreasury = await treasuryContract.balanceOf(linkTokenContract.address);
+      RollTokenBalanceInTreasury = await treasuryContract.balanceOf(rollTokenContract.address);
 
       expect(treasuryContractBalance).to.equal(0);
-      expect(linkTokenBalanceInTreasury).to.equal(0);
+      expect(RollTokenBalanceInTreasury).to.equal(0);
       expect(treasuryOwnerBalance).to.equal(100);
 
     });
 
     it("Should withdraw 100 LINK from the Treasury if manager", async function () {
-      const { treasuryContract, linkTokenContract, coreContract, treasuryOwner, address1 } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract, treasuryOwner, address1 } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-      await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+      await rollTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 100);
 
       // Grant manager role
       await treasuryContract.grantManagerRole(address1.address);
 
       // Tries to withdraw ERC-20 Token from the TreasuryContract
-      await treasuryContract.connect(address1).withdrawERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(address1).withdrawERC20(rollTokenContract.address, 100);
 
       // Check the balance of ERC20 token for the TreasuryContract
-      treasuryContractBalance = await linkTokenContract.balanceOf(treasuryContract.address);
+      treasuryContractBalance = await rollTokenContract.balanceOf(treasuryContract.address);
       // Check the balance of ERC20 token for the treasuryOwner
-      address1Balance = await linkTokenContract.balanceOf(address1.address);
+      address1Balance = await rollTokenContract.balanceOf(address1.address);
       // Check the mapping of ERC20 token inside the TreasuryContract
-      linkTokenBalanceInTreasury = await treasuryContract.balanceOf(linkTokenContract.address);
+      RollTokenBalanceInTreasury = await treasuryContract.balanceOf(rollTokenContract.address);
 
       expect(treasuryContractBalance).to.equal(0);
-      expect(linkTokenBalanceInTreasury).to.equal(0);
+      expect(RollTokenBalanceInTreasury).to.equal(0);
       expect(treasuryOwnerBalance).to.equal(100);
 
     });
 
     it("Should fail to withdraw if not manager", async function () {
-      const { treasuryContract, linkTokenContract, coreContract, address1 } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract, address1 } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-      await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+      await rollTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 100);
 
       // Tries to withdraw ERC-20 Token from the TreasuryContract
-      await expect(treasuryContract.connect(address1).withdrawERC20(linkTokenContract.address, 100)).to.be.reverted;
+      await expect(treasuryContract.connect(address1).withdrawERC20(rollTokenContract.address, 100)).to.be.reverted;
 
     });
 
     it("Should fail to withdraw if not manager if balance is not sufficient", async function () {
-      const { treasuryContract, linkTokenContract, coreContract, treasuryOwner } = await loadFixture(deployContract);
+      const { treasuryContract, rollTokenContract, coreContract, treasuryOwner } = await loadFixture(deployContract);
 
       // Get the signer object of the CoreContract for signing the next 2 transactions
       const coreContractSigner = await ethers.getImpersonatedSigner(coreContract.address);
 
       // Aprove the TreasuryContract to spend the ERC-20 Token that belongs to the CoreContract
-      await linkTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
+      await rollTokenContract.connect(coreContractSigner).approve(treasuryContract.address, 100, {gasLimit: 100000});
 
       // Deposit the ERC-20 Token into the TreasuryContract
-      await treasuryContract.connect(coreContractSigner).depositERC20(linkTokenContract.address, 100);
+      await treasuryContract.connect(coreContractSigner).depositERC20(rollTokenContract.address, 100);
 
       // Tries to withdraw ERC-20 Token from the TreasuryContract
-      await expect(treasuryContract.connect(treasuryOwner).withdrawERC20(linkTokenContract.address, 200)).to.be.reverted;
+      await expect(treasuryContract.connect(treasuryOwner).withdrawERC20(rollTokenContract.address, 200)).to.be.reverted;
     });
 
   });
