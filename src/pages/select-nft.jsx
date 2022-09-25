@@ -6,11 +6,7 @@ import Footer from "@layout/footer";
 import Breadcrumb from "@components/breadcrumb";
 import ExploreProductArea from "@containers/explore-product/layout-03";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { balancesUpdate } from "@store/actions/balances";
 import { ThreeDots } from "react-loader-spinner";
-import { useMoralis } from "react-moralis";
 
 export async function getStaticProps() {
     return { props: { className: "template-color-1" } };
