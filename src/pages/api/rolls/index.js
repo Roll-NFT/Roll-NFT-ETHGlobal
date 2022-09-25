@@ -1,5 +1,4 @@
 import Cors from "cors";
-import { v4 } from "uuid";
 import connectDB from "../../../lib/connectDB";
 import Raffles from "../../../lib/raffleSchema";
 
@@ -45,7 +44,7 @@ export default async (req, res) => {
         const category = categories[random];
 
         const newRaffle = new Raffles({
-            raffleId: v4(),
+            raffleId: form.rollId,
             userId: user.id,
             userAddress: user.address,
             network: { id: user.networkId, name: user.chain },
@@ -56,11 +55,11 @@ export default async (req, res) => {
             nftTokenId: nft.token_id,
             attributes: nft.attributes,
             description: form.description,
-            title: form.raffleTitle,
+            title: form.rollName,
             endDate: form.endDate,
-            ticketSupply: form.supply,
-            ticketPrice: form.price,
-            ticketCurrency: form.currency,
+            ticketSupply: form.ticketSupply,
+            ticketPrice: form.ticketPrice,
+            ticketCurrency: form.ticketCurrency,
             categories: [category],
             likeCount: 0,
             tickets: [],

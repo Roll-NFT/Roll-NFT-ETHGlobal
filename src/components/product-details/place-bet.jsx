@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { rollUpdate, ticketUpdate, approveUpdate } from "@store/actions/rolls";
 import { useMoralis, useChain } from "react-moralis";
-import erc20Token from "@lib/contracts/erc20.json";
+import erc20Token from "@lib/contracts/ERC20.json";
 import { NetworkType } from "@utils/types";
 import { ThreeDots } from "react-loader-spinner";
 

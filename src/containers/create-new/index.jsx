@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react";
+import { ethers } from "ethers";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
@@ -7,7 +8,7 @@ import Button from "@ui/button";
 import ErrorText from "@ui/error-text";
 import { toast } from "react-toastify";
 import Anchor from "@ui/anchor";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Router from "next/router";
 import { balanceSelect } from "@store/actions/balances";
@@ -16,13 +17,23 @@ import { ThreeDots } from "react-loader-spinner";
 import { formatWithOptions } from "date-fns/fp";
 import { eo } from "date-fns/locale";
 import { addDays, addYears } from "date-fns";
+import ROLTContract from "@lib/contracts/ROLTContract.json";
+import ERC721Contract from "@lib/contracts/ERC721.json";
+import { ticketUpdate, approveUpdate } from "@store/actions/rolls";
+import { v4 } from "uuid";
 
 const CreateNewArea = ({ className, space, nft }) => {
     const [selectedImage, setSelectedImage] = useState();
     const [currencies, setCurrencies] = useState(null);
+    const [currencyMapping, setCurrencyMapping] = useState(null);
+    const [confirmButtonLabel, setConfirmButtonLabel] = useState("Approve");
     const [hasImageError, setHasImageError] = useState(false);
+    const [roltContract, setRoltContract] = useState(null);
+    const [nftContract, setNftContract] = useState(null);
+    const approved = useSelector((state) => state.approved);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const ticket = useSelector((state) => state.ticket);
     const { authenticate, isAuthenticated, user } = useMoralis();
 
     const {
@@ -36,7 +47,41 @@ const CreateNewArea = ({ className, space, nft }) => {
 
     const dateToString = formatWithOptions({ locale: eo }, "yyyy-MM-dd");
 
-    const saveRaffle = async (form) => {
+    const getAvailableCurrencies = () => {
+        const _currencies =
+            process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
+        const _addresses =
+            process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES_ADDRESSES.split(",");
+        const currenciesMapping = {};
+        for (let i = 0; i < _currencies.length; i++) {
+            currenciesMapping[_currencies[i]] = _addresses[i];
+        }
+        setCurrencyMapping(currenciesMapping);
+    };
+
+    const getRoltContract = async () => {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+            process.env.NEXT_PUBLIC_ROLT_CONTRACT,
+            ROLTContract.abi,
+            signer
+        );
+        setRoltContract(contract);
+    };
+
+    const getNftContract = async () => {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+            nft.contract_address,
+            ERC721Contract.abi,
+            signer
+        );
+        setNftContract(contract);
+    };
+
+    const saveRaffle = async () => {
         setLoading(true);
         const userObj = {
             id: user.id,
@@ -48,7 +93,7 @@ const CreateNewArea = ({ className, space, nft }) => {
         await axios
             .post(
                 `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rolls`,
-                { user: userObj, nft, form },
+                { user: userObj, nft, form: ticket },
                 {
                     headers: {
                         "content-type": "application/json",
@@ -58,8 +103,12 @@ const CreateNewArea = ({ className, space, nft }) => {
             .then((response) => {
                 toast(`Roll saved successfully! You will be redirected.`);
                 Router.push(`/roll/${response.data.raffleId}`).then(() => {
-                    reset();
+                    dispatch(approveUpdate(null));
+                    dispatch(ticketUpdate(null));
+                    dispatch(balanceSelect(0));
                     setLoading(false);
+                    setConfirmButtonLabel("Approve");
+                    reset();
                 });
             })
             .catch((errorResponse) => {
@@ -67,6 +116,54 @@ const CreateNewArea = ({ className, space, nft }) => {
                 console.log(errorResponse);
                 setLoading(false);
             });
+    };
+
+    async function mint() {
+        if (roltContract) {
+            setLoading(true);
+            try {
+                const {
+                    rollId, // string
+                    rollName, // string
+                    ticketSupply, // uint
+                    currencyToken, // address
+                    ticketPrice, // uint256 **
+                    deadline, // uint64
+                } = ticket;
+                const prizeAddress = nft.contract_address; // address
+                const prizeTokenId = nft.token_id; // uint256
+                const mintTxn = await roltContract.mint(
+                    rollId,
+                    rollName,
+                    ticketSupply,
+                    currencyToken,
+                    ticketPrice,
+                    prizeAddress,
+                    prizeTokenId,
+                    deadline
+                );
+                await mintTxn.wait();
+            } catch (error) {
+                console.log(error);
+                toast(`Token mint failed! ${error.reason}`);
+            }
+            setLoading(false);
+        }
+    }
+
+    const approveToken = async () => {
+        if (nftContract) {
+            setLoading(true);
+            try {
+                const txn = await nftContract.approve(
+                    process.env.NEXT_PUBLIC_ROLT_CONTRACT,
+                    nft.token_id
+                );
+            } catch (error) {
+                setLoading(false);
+                toast(error.reason);
+            }
+        }
     };
 
     const handleClick = (event) => {
@@ -85,15 +182,83 @@ const CreateNewArea = ({ className, space, nft }) => {
     };
 
     const onSubmit = (data) => {
+        dispatch(
+            ticketUpdate({
+                rollId: v4(), // string
+                rollName: data.raffleTitle, // Smart Contract
+                ticketSupply: data.supply, // Smart Contract
+                currencyToken: currencyMapping[data.currency], // Smart Contract
+                ticketPrice: data.price, // Smart Contract
+                deadline: Math.floor(+new Date(data.endDate) / 1000), // Smart Contract
+                endDate: data.endDate, // API
+                ticketCurrency: data.currency, // API
+                description: data.description, // API
+            })
+        );
         if (loading) {
             return;
         }
         if (hasImageError) {
             return;
         }
-        dispatch(balanceSelect(0));
-        saveRaffle(data);
+        if (!approved) {
+            approveToken();
+            return;
+        }
+        const token_id = ethers.utils.parseUnits(nft.token_id.toString(), 0);
+        if (Math.abs(approved.tokenId - token_id) < 1) {
+            mint();
+        } else {
+            dispatch(approveUpdate(null));
+        }
     };
+
+    useEffect(() => {
+        const onRollOwnershipTokenMinted = (owner, spender, tokenId) => {
+            saveRaffle();
+            setLoading(false);
+            toast(
+                "ROLT NFT minted successfully! This NFT prooves that you are the owner of this Roll."
+            );
+        };
+        const onTokenApproval = (owner, spender, tokenId) => {
+            dispatch(approveUpdate({ owner, spender, tokenId }));
+            setLoading(false);
+            toast(
+                "Transfer approved successfully. You can now create the Roll!"
+            );
+            setConfirmButtonLabel("Create Roll");
+        };
+        if (nftContract) {
+            nftContract.on("Approval", onTokenApproval);
+        }
+        if (roltContract) {
+            roltContract.on(
+                "RollOwnershipTokenMinted",
+                onRollOwnershipTokenMinted
+            );
+        }
+        return () => {
+            if (nftContract) {
+                nftContract.off("Approval", onTokenApproval);
+            }
+            if (roltContract) {
+                roltContract.off(
+                    "RollOwnershipTokenMinted",
+                    onRollOwnershipTokenMinted
+                );
+            }
+        };
+    }, [nftContract, roltContract]);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            getRoltContract();
+            if (nft) {
+                getNftContract();
+            }
+        }
+    }, [user]);
 
     useEffect(() => {
         if (nft) {
@@ -106,6 +271,7 @@ const CreateNewArea = ({ className, space, nft }) => {
     }, [selectedImage]);
 
     useEffect(() => {
+        getAvailableCurrencies();
         setCurrencies(process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(","));
     }, []);
 
@@ -296,7 +462,6 @@ const CreateNewArea = ({ className, space, nft }) => {
                                             </label>
                                             <select
                                                 id="currency"
-                                                placeholder="e.g. '0.5'"
                                                 {...register("currency", {
                                                     required:
                                                         "Currency is required",
@@ -420,7 +585,7 @@ const CreateNewArea = ({ className, space, nft }) => {
                                         <div className="input-box ">
                                             <Button type="submit">
                                                 {!loading ? (
-                                                    "Create Roll"
+                                                    confirmButtonLabel
                                                 ) : (
                                                     <ThreeDots
                                                         height="25"
