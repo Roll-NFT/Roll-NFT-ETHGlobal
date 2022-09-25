@@ -8,47 +8,20 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 interface IRoll {
     
     /**
-     * @dev Roll statuses and possible variations
-     * 
-     * @param SalesOpen (Open) - Roll is on going and available to participate. Tix sales are open.
-     * @param SalesClosed (Closed) - Ready to select winner. Roll is on going and is not available to participate. Tix sales are closed.
-     * @param PendingResult TODO UPDATE DOC
-     * @param RollFinished (Succeed) - Winner selected. Roll is finished and is not available to participate. Tix sales are closed. Winner can claim the Prize. Roll owner can claim Revenue.
-     * @param RollClosed (Unsucceed) - No winner selected. Roll is finished and is not available to participate. Tix sales are closed. Roll owner can withdraw the Prize. Participant can refund Tix.
-     * 
-     */
-    enum Status {
-        
-        SalesOpen,
-        SalesClosed,
-        PendingResult,
-        RollFinished,
-        RollClosed
-
-    }
-
-    /**
      * @dev Structure that contain crucial Roll parameters and conditions, that are checked on Roll execution
      * 
-     * @param rollType - define logic to be cheked on roll execution. Determinated on Roll creatinon according to provided arguments minParticipants, maxParticipants
      * @param host - address who created the Roll
-     * @param rollTimestamp - block that will stop Roll entries sales, and to select winner or close the Roll
-     * @param minParticipants - Roll participants minimum amount 
-     * @param maxParticipants - Roll participants maximum amount
+     * @param rollTime - block that will stop Roll entries sales, and to select winner or close the Roll
      * @param fixParticipants - Roll participants fixed amount
      * @param participationToken - address of erc20 token that is used to participate in that Roll
      * @param participationPrice - amount to be paid to mint one participation ticket
      */
     struct Roll {
-        uint8 rollType;
         address host;
-        uint64 rollTime;
-        uint256 minParticipants;
-        uint256 maxParticipants;
+        uint256 rollTime;
         uint256 fixParticipants;
         address participationToken;
         uint256 participationPrice;
-        Status status;
         address prizeCollection;
         uint256 prizeTokenId;
         bool prizeClaimed; // set True - on Prize withdrawal and when winner claims the Prize. Default value is "False"

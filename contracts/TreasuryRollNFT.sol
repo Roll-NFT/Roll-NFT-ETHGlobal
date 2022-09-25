@@ -4,8 +4,9 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "hardhat/console.sol";
+import "./ITreasury.sol";
 
-contract TreasuryRollNFT is AccessControlEnumerable {
+contract TreasuryRollNFT is AccessControlEnumerable, ITreasury {
     
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
@@ -15,27 +16,27 @@ contract TreasuryRollNFT is AccessControlEnumerable {
     mapping(address => uint256) public balance;
 
     constructor(address _manager) payable {
-        _setupRole(DEFAULT_ADMIN_ROLE, _manager);
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(MANAGER_ROLE, _manager);
     }
 
     // CoreRollNFT: IERC20(tokenAddress).approve(address treasuryRollNFTAddress, uint amount)
-    function deposit(address _tokenAddress, uint256 _amount) external {
+    function deposit(address _tokenAddress, uint256 _amount) external override {
         IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _amount);
         balance[_tokenAddress] += _amount;
     }
 
-    function withdraw(address _tokenAddress, uint256 _amount) external onlyRole(MANAGER_ROLE) {
+    function withdraw(address _tokenAddress, uint256 _amount) external override onlyRole(MANAGER_ROLE) {
         require(balance[_tokenAddress] >= _amount, "Balance is insufficient");
         IERC20(_tokenAddress).transfer(msg.sender, _amount);
         balance[_tokenAddress] -= _amount;
     }
 
-    function grantManagerRole(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function grantManagerRole(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
         grantRole(MANAGER_ROLE, account);
     }
 
-    function revokeManagerRole(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function revokeManagerRole(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
         revokeRole(MANAGER_ROLE, account);
     }
 

@@ -8,7 +8,7 @@ module.exports = {
   networks: {
     hardhat: {
     },
-    rinkeby: {
+    mumbai: {
       url: "https://eth-rinkeby.alchemyapi.io/v2/123abc123abc123abc123abc123abcde",
       accounts: [privateKey1, privateKey2, ...]
     }
