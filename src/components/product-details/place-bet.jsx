@@ -118,8 +118,8 @@ const PlaceBet = ({
             .catch((errorResponse) => {
                 toast("Error updating Roll, please try again later!");
                 console.log(errorResponse);
-            });
-        setLoading(false);
+            })
+            .finally(() => setLoading(false));
     };
 
     const approveToken = async () => {
@@ -159,8 +159,9 @@ const PlaceBet = ({
                 amount
             );
             await txn.wait();
+            await saveTicketsDB();
             toast(
-                "RPT NFT minted successfully! This NFT prooves that you own a ticket for this Roll."
+                "RPT NFT minted successfully! This NFT proves that you own a ticket for this Roll."
             );
         } catch (error) {
             setLoading(false);
@@ -224,12 +225,6 @@ const PlaceBet = ({
     const isActive = (date) => new Date(date) > new Date();
 
     useEffect(() => {
-        const onRollParticipationTokenMinted = (from, to, value) => {
-            saveTicketsDB();
-            // toast(
-            //     "RPT NFT minted successfully!"
-            // );
-        };
         const onTokenApproval = (owner, spender, value) => {
             dispatch(approveUpdate({ owner, spender, value }));
             setLoading(false);
@@ -238,21 +233,9 @@ const PlaceBet = ({
         if (currencyContract) {
             currencyContract.on("Approval", onTokenApproval);
         }
-        if (rptContract) {
-            rptContract.on(
-                "RollParticipationTokenMinted",
-                onRollParticipationTokenMinted
-            );
-        }
         return () => {
             if (currencyContract) {
                 currencyContract.off("Approval", onTokenApproval);
-            }
-            if (rptContract) {
-                rptContract.off(
-                    "RollParticipationTokenMinted",
-                    onRollParticipationTokenMinted
-                );
             }
         };
     }, [currencyContract, rptContract]);

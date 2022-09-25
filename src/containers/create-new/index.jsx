@@ -148,7 +148,7 @@ const CreateNewArea = ({ className, space }) => {
                 await mintTxn.wait();
                 saveRaffle();
                 toast(
-                    "ROLT NFT minted successfully! This NFT prooves that you are the owner of this Roll."
+                    "ROLT NFT minted successfully! This NFT proves that you are the owner of this Roll."
                 );
             } catch (error) {
                 console.log(error);
