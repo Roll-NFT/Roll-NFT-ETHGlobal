@@ -12,9 +12,10 @@ contract FaucetNFT is ERC721, ERC721Burnable {
 
     constructor() ERC721("FaucetNFT", "FUN") {}
 
-    function safeMint(address to) public {
+    function safeMint(address to) public returns(uint256) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
+        return tokenId;
     }
 }

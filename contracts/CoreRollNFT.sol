@@ -141,13 +141,13 @@ contract CoreRollNFT is Context, Pausable, AccessControl, VRFConsumerBaseV2 {
      * @param _addrTreasury - Treasury contract address
      */
     constructor(
-        // string memory _baseTokenURI,
         uint256 _revenueFee,
         address _vrfCoordinator,
         address _vrfLinkToken,
         bytes32 _vrfKeyHash,
         uint32 _vrfCallbackGasLimit,
         uint16 _vrfRequestConfirmations,
+        uint64 _vrfSubscriptionId,
         address _rollOwnershipToken,
         address _addrTreasury
     ) VRFConsumerBaseV2(_vrfCoordinator) {
@@ -158,6 +158,7 @@ contract CoreRollNFT is Context, Pausable, AccessControl, VRFConsumerBaseV2 {
         vrfKeyHash = _vrfKeyHash;
         vrfCallbackGasLimit = _vrfCallbackGasLimit;
         vrfRequestConfirmations = _vrfRequestConfirmations;
+        vrfSubscriptionId = _vrfSubscriptionId;
         
         rollOwnershipToken = _rollOwnershipToken;
         addrTreasury = _addrTreasury;
