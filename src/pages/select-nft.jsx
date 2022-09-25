@@ -6,6 +6,7 @@ import Footer from "@layout/footer";
 import Breadcrumb from "@components/breadcrumb";
 import ExploreProductArea from "@containers/explore-product/layout-03";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { ThreeDots } from "react-loader-spinner";
 
 export async function getStaticProps() {
