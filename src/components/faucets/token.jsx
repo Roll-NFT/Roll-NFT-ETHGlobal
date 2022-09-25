@@ -3,7 +3,7 @@ import Button from "@ui/button";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useMoralis } from "react-moralis";
-import rollToken from "@lib/contracts/rolltoken.json";
+import rollToken from "@lib/contracts/_rolltoken.json";
 import Anchor from "@ui/anchor";
 
 const TokenFaucet = () => {

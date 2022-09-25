@@ -3,7 +3,7 @@ import Button from "@ui/button";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useMoralis } from "react-moralis";
-import nftFaucet from "@lib/contracts/nftfaucet.json";
+import nftFaucet from "@lib/contracts/_nftfaucet.json";
 import Anchor from "@ui/anchor";
 import countriesData from "../../data/countries.json";
 

@@ -17,8 +17,8 @@ import { ThreeDots } from "react-loader-spinner";
 import { formatWithOptions } from "date-fns/fp";
 import { eo } from "date-fns/locale";
 import { addDays, addYears } from "date-fns";
-import ROLTContract from "@lib/contracts/roltcontract.json";
-import ERC721Contract from "@lib/contracts/erc721.json";
+import ROLTContract from "@lib/contracts/_roltcontract.json";
+import ERC721Contract from "@lib/contracts/_erc721.json";
 import { ticketUpdate, approveUpdate } from "@store/actions/rolls";
 import { v4 } from "uuid";
 
