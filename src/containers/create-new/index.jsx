@@ -82,7 +82,6 @@ const CreateNewArea = ({ className, space, nft }) => {
     };
 
     const saveRaffle = async () => {
-        setLoading(true);
         const userObj = {
             id: user.id,
             address: user.get("ethAddress"),
@@ -106,7 +105,6 @@ const CreateNewArea = ({ className, space, nft }) => {
                     dispatch(approveUpdate(null));
                     dispatch(ticketUpdate(null));
                     dispatch(balanceSelect(0));
-                    setLoading(false);
                     setConfirmButtonLabel("Approve");
                     reset();
                 });
@@ -114,8 +112,8 @@ const CreateNewArea = ({ className, space, nft }) => {
             .catch((errorResponse) => {
                 toast("Error saving Roll, please try again later!");
                 console.log(errorResponse);
-                setLoading(false);
             });
+        setLoading(false);
     };
 
     async function mint() {
@@ -143,6 +141,9 @@ const CreateNewArea = ({ className, space, nft }) => {
                     deadline
                 );
                 await mintTxn.wait();
+                toast(
+                    "ROLT NFT minted successfully! This NFT prooves that you are the owner of this Roll."
+                );
             } catch (error) {
                 console.log(error);
                 toast(`Token mint failed! ${error.reason}`);
@@ -158,6 +159,10 @@ const CreateNewArea = ({ className, space, nft }) => {
                 const txn = await nftContract.approve(
                     process.env.NEXT_PUBLIC_ROLT_CONTRACT,
                     nft.token_id
+                );
+                await txn.wait();
+                toast(
+                    "Transfer approved successfully. You can now create the Roll!"
                 );
             } catch (error) {
                 setLoading(false);
@@ -216,19 +221,19 @@ const CreateNewArea = ({ className, space, nft }) => {
     useEffect(() => {
         const onRollOwnershipTokenMinted = (owner, spender, tokenId) => {
             saveRaffle();
-            setLoading(false);
-            toast(
-                "ROLT NFT minted successfully! This NFT prooves that you are the owner of this Roll."
-            );
+            // toast(
+            //     "ROLT NFT minted successfully!"
+            // );
         };
         const onTokenApproval = (owner, spender, tokenId) => {
             dispatch(approveUpdate({ owner, spender, tokenId }));
             setLoading(false);
-            toast(
-                "Transfer approved successfully. You can now create the Roll!"
-            );
             setConfirmButtonLabel("Create Roll");
+            // toast(
+            //     "Transfer approved successfully. You can now create the Roll!"
+            // );
         };
+        console.log();
         if (nftContract) {
             nftContract.on("Approval", onTokenApproval);
         }

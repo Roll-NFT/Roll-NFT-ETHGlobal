@@ -15,11 +15,14 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { rollUpdate, ticketUpdate, approveUpdate } from "@store/actions/rolls";
 import { useMoralis, useChain } from "react-moralis";
-import erc20Token from "@lib/contracts/ERC20.json";
+import RPTContract from "@lib/contracts/RPTContract.json";
+import ERC20Token from "@lib/contracts/ERC20.json";
 import { NetworkType } from "@utils/types";
 import { ThreeDots } from "react-loader-spinner";
+import { v4 } from "uuid";
 
 const PlaceBet = ({
+    rollId,
     title,
     ticketsSold,
     ticketSupply,
@@ -34,6 +37,7 @@ const PlaceBet = ({
     const [showBidModal, setShowBidModal] = useState(false);
     const [currencyMapping, setCurrencyMapping] = useState(null);
     const [currencyContract, setCurrencyContract] = useState(null);
+    const [rptContract, setRptContract] = useState(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const dispatch = useDispatch();
@@ -67,6 +71,17 @@ const PlaceBet = ({
         setCurrencyMapping(currenciesMapping);
     };
 
+    const getRptContract = async () => {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+            process.env.NEXT_PUBLIC_RPT_CONTRACT,
+            RPTContract.abi,
+            signer
+        );
+        setRptContract(contract);
+    };
+
     const getCurrencyContract = async () => {
         if (currencyMapping) {
             const erc20TokenAddress =
@@ -75,7 +90,7 @@ const PlaceBet = ({
             const signer = provider.getSigner();
             const contract = new ethers.Contract(
                 erc20TokenAddress,
-                erc20Token.abi,
+                ERC20Token.abi,
                 signer
             );
             setCurrencyContract(contract);
@@ -112,22 +127,35 @@ const PlaceBet = ({
         try {
             const wei = ethers.utils.parseUnits(ticket.total.toString(), 18);
             const txn = await currencyContract.approve(
-                process.env.NEXT_PUBLIC_CORE_CONTRACT,
+                process.env.NEXT_PUBLIC_RPT_CONTRACT,
                 wei
             );
+            await txn.wait();
+            toast("Amount approved successfully. You can now buy tickets!");
         } catch (error) {
             setLoading(false);
             toast(error.reason);
         }
     };
 
+    // mint
     const buyTickets = async () => {
         setLoading(true);
         try {
-            const wei = ethers.utils.parseUnits(ticket.total.toString(), 18);
-            const txn = await currencyContract.transfer(
-                process.env.NEXT_PUBLIC_CORE_CONTRACT,
-                wei
+            const ticketlId = v4();
+            const rollContract = process.env.NEXT_PUBLIC_ROLT_CONTRACT;
+            const currencyToken = currencyMapping[ticketCurrency.toUpperCase()];
+            const amount = ethers.utils.parseUnits(ticket.total.toString(), 18);
+            const txn = await rptContract.mint(
+                ticketlId,
+                rollId,
+                rollContract,
+                currencyToken,
+                amount
+            );
+            await txn.wait();
+            toast(
+                "RPT NFT minted successfully! This NFT prooves that you own a ticket for this Roll."
             );
         } catch (error) {
             setLoading(false);
@@ -191,29 +219,43 @@ const PlaceBet = ({
     const isActive = (date) => new Date(date) > new Date();
 
     useEffect(() => {
-        const onTokenTransfer = (from, to, value) => {
+        const onRollParticipationTokenMinted = (from, to, value) => {
             saveTicketsDB();
+            // toast(
+            //     "RPT NFT minted successfully!"
+            // );
         };
         const onTokenApproval = (owner, spender, value) => {
             dispatch(approveUpdate({ owner, spender, value }));
             setLoading(false);
-            toast("Amount approved successfully. You can now buy tickets!");
+            // toast("Amount approved successfully. You can now buy tickets!");
         };
         if (currencyContract) {
-            currencyContract.on("Transfer", onTokenTransfer);
             currencyContract.on("Approval", onTokenApproval);
+        }
+        if (rptContract) {
+            rptContract.on(
+                "RollParticipationTokenMinted",
+                onRollParticipationTokenMinted
+            );
         }
         return () => {
             if (currencyContract) {
-                currencyContract.off("Transfer", onTokenTransfer);
                 currencyContract.off("Approval", onTokenApproval);
             }
+            if (rptContract) {
+                rptContract.off(
+                    "RollParticipationTokenMinted",
+                    onRollParticipationTokenMinted
+                );
+            }
         };
-    }, [currencyContract]);
+    }, [currencyContract, rptContract]);
 
     useEffect(() => {
         if (isAuthenticated) {
             getCurrencyContract();
+            getRptContract();
         }
     }, [user]);
 
@@ -331,7 +373,7 @@ const PlaceBet = ({
                     show={showBidModal}
                     cancel={handleBidModal}
                     confirm={onConfirm}
-                    confirmButtonLabel={approved ? "Buy Tickets" : "Approve"}
+                    confirmButtonLabel={approved ? "Buy Ticket(s)" : "Approve"}
                     title={title}
                     ticketPrice={ticketPrice}
                     ticketCurrency={ticketCurrency}
@@ -344,6 +386,7 @@ const PlaceBet = ({
 };
 
 PlaceBet.propTypes = {
+    rollId: PropTypes.string,
     title: PropTypes.string,
     ticketsSold: PropTypes.number,
     ticketSupply: PropTypes.number,

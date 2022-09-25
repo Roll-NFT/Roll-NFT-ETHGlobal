@@ -110,7 +110,7 @@ PlaceBidModal.propTypes = {
     title: PropTypes.string,
     ticketPrice: PropTypes.number,
     ticketCurrency: PropTypes.string,
-    ticket: PropTypes.objectOf(RollTicketType),
+    ticket: RollTicketType,
     loading: PropTypes.bool,
 };
 export default PlaceBidModal;

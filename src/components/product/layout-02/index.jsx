@@ -12,7 +12,8 @@ const Product = ({ overlay, collection, title, slug, image, id }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDeafult();
         setLoading(true);
         dispatch(balanceSelect(id));
         Router.push(slug).then(() => {

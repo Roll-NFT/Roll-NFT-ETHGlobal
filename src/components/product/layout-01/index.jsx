@@ -33,7 +33,8 @@ const Product = ({
         setShowBidModal((prev) => !prev);
     };
 
-    const onClick = () => {
+    const onClick = (e) => {
+        e.preventDefault();
         setLoading(true);
         Router.push(`/roll/${slug}`).then(() => {
             setLoading(false);
@@ -53,7 +54,12 @@ const Product = ({
             >
                 <div className="card-thumbnail">
                     {image?.src && (
-                        <Anchor path="#" onClick={onClick}>
+                        <Anchor
+                            path="#"
+                            onClick={(e) => {
+                                onClick(e);
+                            }}
+                        >
                             <Image
                                 src={image.src}
                                 alt={image?.alt || "NFT_portfolio"}
