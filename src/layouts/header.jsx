@@ -50,20 +50,20 @@ const Header = ({ className }) => {
             )
             .flat();
 
-    // const prepareCurrencyBalances = (obj, network, supportedCurrency) =>
-    //     obj.items
-    //         .filter(
-    //             (item) =>
-    //                 item.type === "cryptocurrency" &&
-    //                 item.supports_erc.includes("erc20") &&
-    //                 supportedCurrency.includes(item.contract_ticker_symbol)
-    //         )
-    //         .map((coin, i) => ({
-    //             id: i,
-    //             network,
-    //             ...coin,
-    //         }))
-    //         .flat();
+    const prepareCurrencyBalances = (obj, network, supportedCurrency) =>
+        obj.items
+            .filter(
+                (item) =>
+                    item.type === "cryptocurrency" &&
+                    item.supports_erc.includes("erc20") &&
+                    supportedCurrency.includes(item.contract_ticker_symbol)
+            )
+            .map((coin, i) => ({
+                id: i,
+                network,
+                ...coin,
+            }))
+            .flat();
 
     const getBalances = async (address, network) => {
         const covalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY;
@@ -77,14 +77,14 @@ const Header = ({ className }) => {
                 );
                 dispatch(balancesUpdate(nftBalances));
 
-                // const supportedCurrency =
-                //     process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
-                // const currencyBalances = prepareCurrencyBalances(
-                //     response.data.data,
-                //     network,
-                //     supportedCurrency
-                // );
-                // dispatch(currencyBalancesUpdate(currencyBalances));
+                const supportedCurrency =
+                    process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
+                const currencyBalances = prepareCurrencyBalances(
+                    response.data.data,
+                    network,
+                    supportedCurrency
+                );
+                dispatch(currencyBalancesUpdate(currencyBalances));
             })
             .catch((errorResponse) => {
                 console.log("Error fetching data: ", errorResponse);

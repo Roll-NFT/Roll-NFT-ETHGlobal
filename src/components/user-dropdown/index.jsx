@@ -36,31 +36,32 @@ const UserDropdown = () => {
                 </div>
                 <div className="rn-product-inner">
                     <ul className="product-list">
-                        {currencyBalances.map((currency) => (
-                            <li
-                                className="single-product-list"
-                                key={currency.contract_address}
-                            >
-                                <div className="thumbnail">
-                                    <Anchor path="#">
-                                        <Image
-                                            src={`/images/coins/${currency.contract_ticker_symbol}.png`}
-                                            alt={currency.contract_name}
-                                            layout="fixed"
-                                            width={25}
-                                            height={25}
-                                        />
-                                    </Anchor>
-                                </div>
-                                <div className="content">
-                                    <span className="price">
-                                        {fomatBalance(currency.balance)}{" "}
-                                        {currency.contract_ticker_symbol}
-                                    </span>
-                                </div>
-                                <div className="button" />
-                            </li>
-                        ))}
+                        {currencyBalances &&
+                            currencyBalances.map((currency) => (
+                                <li
+                                    className="single-product-list"
+                                    key={currency.contract_address}
+                                >
+                                    <div className="thumbnail">
+                                        <Anchor path="#">
+                                            <Image
+                                                src={`/images/coins/${currency.contract_ticker_symbol}.png`}
+                                                alt={currency.contract_name}
+                                                layout="fixed"
+                                                width={25}
+                                                height={25}
+                                            />
+                                        </Anchor>
+                                    </div>
+                                    <div className="content">
+                                        <span className="price">
+                                            {fomatBalance(currency.balance)}{" "}
+                                            {currency.contract_ticker_symbol}
+                                        </span>
+                                    </div>
+                                    <div className="button" />
+                                </li>
+                            ))}
                     </ul>
                 </div>
                 <ul className="list-inner">
