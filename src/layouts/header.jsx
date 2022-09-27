@@ -50,8 +50,10 @@ const Header = ({ className }) => {
             )
             .flat();
 
-    const prepareCurrencyBalances = (obj, network, supportedCurrency) =>
-        obj.items
+    const prepareCurrencyBalances = (obj, network) => {
+        const supportedCurrency =
+            process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES_ADDRESSES.split(",");
+        const balances = obj.items
             .filter(
                 (item) =>
                     item.type === "cryptocurrency" &&
@@ -60,12 +62,28 @@ const Header = ({ className }) => {
                         item.contract_address.toLowerCase()
                     )
             )
-            .map((coin, i) => ({
-                id: i,
+            .map((coin) => ({
                 network,
                 ...coin,
             }))
             .flat();
+        const supportedCurrencyTickers =
+            process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
+        const supported = supportedCurrency.map((coin, i) => ({
+            network,
+            contract_ticker_symbol: supportedCurrencyTickers[i],
+            contract_name: supportedCurrencyTickers[i],
+            contract_address: coin,
+            balance: 0,
+        }));
+        const merged = [...supported, ...balances];
+        const unique = [
+            ...new Map(
+                merged.map((item) => [item.contract_address, item])
+            ).values(),
+        ];
+        return unique;
+    };
 
     const getBalances = async (address, network) => {
         const covalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY;
@@ -78,13 +96,9 @@ const Header = ({ className }) => {
                     network
                 );
                 dispatch(balancesUpdate(nftBalances));
-
-                const supportedCurrency =
-                    process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES_ADDRESSES;
                 const currencyBalances = prepareCurrencyBalances(
                     response.data.data,
-                    network,
-                    supportedCurrency
+                    network
                 );
                 dispatch(currencyBalancesUpdate(currencyBalances));
             })
