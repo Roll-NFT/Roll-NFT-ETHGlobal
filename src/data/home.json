@@ -168,7 +168,7 @@
                 },
                 {
                     "id": 3,
-                    "title": "Promote your the Roll",
+                    "title": "Promote your Roll",
                     "path": "/explore",
                     "subtitle": "Step-03",
                     "description": "Promote your Roll in order to sell the greatest amount of tickets before the deadline expires.",
@@ -180,7 +180,7 @@
                 },
                 {
                     "id": 4,
-                    "title": "Draw the Roll and claim the tickets prize",
+                    "title": "Draw the Roll and claim the prize",
                     "path": "/explore",
                     "subtitle": "Step-04",
                     "description": "As soons as the tickets are sold out, the Roll will be drawn. The host will be able to claim the revenue and the winner participant may claim the NFT.",
