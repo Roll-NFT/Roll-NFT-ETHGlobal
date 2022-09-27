@@ -70,7 +70,7 @@ contract RollParticipationTokenV0 is ERC721 {
                 '", "description": "',
                 ticket.id,
                 '", "image": "ipfs://QmeE95PecUUiqioifzkyayLwSP3hLKnVSzRA2vCDVwXqST",',
-                '"attributes": [{"attribute": "Status", "value": "',
+                '"attributes": [{"trait_type": "Status", "value": "',
                 Strings.toString(ticket.status),
                 '"}]}'
             )
