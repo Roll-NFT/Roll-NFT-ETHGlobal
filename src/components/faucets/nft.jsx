@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import Button from "@ui/button";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
-import { useMoralis } from "react-moralis";
 import nftFaucet from "@lib/contracts/_nftfaucet.json";
+import PropTypes from "prop-types";
 import Anchor from "@ui/anchor";
 import countriesData from "../../data/countries.json";
 
-const NFTFaucet = () => {
-    const { authenticate, isAuthenticated, user } = useMoralis();
+const NFTFaucet = ({ user, authenticate }) => {
     const [contract, setContract] = useState(null);
     const [tokenId, setTokenId] = useState("");
     const [mintingState, setMintingState] = useState({
@@ -16,7 +15,7 @@ const NFTFaucet = () => {
         status: null,
     });
 
-    const getCurrentTokenId = async () => {
+    const getContract = async () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const faucetContract = new ethers.Contract(
@@ -51,6 +50,15 @@ const NFTFaucet = () => {
                 );
                 await mintTxn.wait();
                 toast(`NFT minted successfully!`);
+                setMintingState({
+                    minting: false,
+                    status: {
+                        error: false,
+                        class: "text-success",
+                        msg: "NFT minted successfully!",
+                    },
+                });
+                setTokenId(tokenId + 1);
             } catch (error) {
                 toast(`Token mint failed! ${error.reason}`);
                 setMintingState({
@@ -66,46 +74,18 @@ const NFTFaucet = () => {
     };
 
     const onClick = () => {
-        if (isAuthenticated) {
+        if (user) {
             mintNFT();
         } else {
-            authenticate({
-                signingMessage: "Roll NFT Authentication",
-            });
+            authenticate();
         }
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
-            getCurrentTokenId();
+        if (user) {
+            getContract();
         }
     }, [user]);
-
-    useEffect(() => {
-        const onNFTMinted = async (sender, _tokenId, code) => {
-            setTokenId(_tokenId.toNumber());
-            setMintingState({
-                minting: false,
-                status: {
-                    error: false,
-                    class: "text-success",
-                    msg: "NFT minted successfully!",
-                    // msg: `NFT minted! ${process.env.NEXT_PUBLIC_RARIBLE_URL}${
-                    //     process.env.NEXT_PUBLIC_NFT_FAUCET_CONTRACT
-                    // }:${_tokenId.toNumber()}`,
-                },
-            });
-        };
-
-        if (contract) {
-            contract.on("CountryFlagNFTNFTMinted", onNFTMinted);
-        }
-        return () => {
-            if (contract) {
-                contract.off("CountryFlagNFTNFTMinted", onNFTMinted);
-            }
-        };
-    }, [contract]);
 
     return (
         <div className="form-wrapper-one registration-area">
@@ -130,7 +110,7 @@ const NFTFaucet = () => {
                 (please connect your wallet to that network prior to minting).
             </p>
             <Button type="submit" size="medium" onClick={onClick}>
-                Mint NFT
+                {user ? "Mint NFT" : "Login to Mint"}
             </Button>
             {mintingState.status && (
                 <p className={`mt-4 font-14 ${mintingState.status.class}`}>
@@ -140,4 +120,10 @@ const NFTFaucet = () => {
         </div>
     );
 };
+
+NFTFaucet.propTypes = {
+    user: PropTypes.objectOf(PropTypes.any),
+    authenticate: PropTypes.func.isRequired,
+};
+
 export default NFTFaucet;

@@ -21,6 +21,8 @@ import { NetworkType } from "@utils/types";
 import { ThreeDots } from "react-loader-spinner";
 import { v4 } from "uuid";
 
+const pluralize = require("pluralize");
+
 const PlaceBet = ({
     rollId,
     title,
@@ -361,7 +363,11 @@ const PlaceBet = ({
                     show={showBidModal}
                     cancel={handleBidModal}
                     confirm={onConfirm}
-                    confirmButtonLabel={approved ? "Buy Ticket(s)" : "Approve"}
+                    confirmButtonLabel={
+                        approved
+                            ? pluralize("Buy Ticket", ticket.quantity)
+                            : "Approve"
+                    }
                     title={title}
                     ticketPrice={ticketPrice}
                     ticketCurrency={ticketCurrency}

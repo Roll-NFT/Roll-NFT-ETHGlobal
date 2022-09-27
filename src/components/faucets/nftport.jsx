@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import Button from "@ui/button";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
-import { useMoralis } from "react-moralis";
 import nftFaucet from "@lib/contracts/_nftportfaucet.json";
-import Anchor from "@ui/anchor";
+import PropTypes from "prop-types";
 
-const NFTPortFaucet = () => {
-    const { authenticate, isAuthenticated, user } = useMoralis();
+const NFTPortFaucet = ({ user, authenticate }) => {
     const [contract, setContract] = useState(null);
     const [mintingState, setMintingState] = useState({
         minting: false,
@@ -42,18 +40,15 @@ const NFTPortFaucet = () => {
                     value: value.toString(),
                 });
                 await mintTxn.wait();
+                toast(`NFT minted successfully!`);
                 setMintingState({
                     minting: false,
                     status: {
                         error: false,
                         class: "text-success",
                         msg: "NFT minted successfully!",
-                        // msg: `NFT minted! ${process.env.NEXT_PUBLIC_RARIBLE_URL}${
-                        //     process.env.NEXT_PUBLIC_NFT_FAUCET_CONTRACT
-                        // }:${_tokenId.toNumber()}`,
                     },
                 });
-                toast(`NFT minted successfully!`);
             } catch (error) {
                 console.log(error);
                 toast(`Token mint failed! ${error.reason}`);
@@ -70,17 +65,15 @@ const NFTPortFaucet = () => {
     }
 
     const onClick = () => {
-        if (isAuthenticated) {
+        if (user) {
             mintNFT();
         } else {
-            authenticate({
-                signingMessage: "Roll NFT Authentication",
-            });
+            authenticate();
         }
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (user) {
             getContract();
         }
     }, [user]);
@@ -99,7 +92,7 @@ const NFTPortFaucet = () => {
                 to that network prior to minting).
             </p>
             <Button type="submit" size="medium" onClick={onClick}>
-                Mint NFT
+                {user ? "Mint NFT" : "Login to Mint"}
             </Button>
             {mintingState.status && (
                 <p className={`mt-4 font-14 ${mintingState.status.class}`}>
@@ -109,4 +102,10 @@ const NFTPortFaucet = () => {
         </div>
     );
 };
+
+NFTPortFaucet.propTypes = {
+    user: PropTypes.objectOf(PropTypes.any),
+    authenticate: PropTypes.func.isRequired,
+};
+
 export default NFTPortFaucet;
