@@ -1,13 +1,20 @@
 import Anchor from "@ui/anchor";
 import Image from "next/image";
 import { useMoralis } from "react-moralis";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getEllipsisTxt } from "@utils/format";
 import { utils } from "ethers";
+import { userLogout } from "@store/actions/users";
 
 const UserDropdown = () => {
     const { logout, user } = useMoralis();
     const currencyBalances = useSelector((state) => state.currencyBalances);
+    const dispatch = useDispatch();
+
+    const cleanReduxStore = () => {
+        dispatch(userLogout(null));
+        logout();
+    };
 
     const fomatBalance = (balance) => {
         const res = utils.formatEther(balance);
@@ -69,7 +76,7 @@ const UserDropdown = () => {
                         <Anchor path="/my-rolls">My Rolls</Anchor>
                     </li>
                     <li>
-                        <button type="button" onClick={logout}>
+                        <button type="button" onClick={cleanReduxStore}>
                             Sign Out
                         </button>
                     </li>
