@@ -32,17 +32,6 @@ export default async (req, res) => {
     if (req.method === "POST") {
         const { user, nft, form } = req.body;
 
-        const categories = [
-            "Art",
-            "Music",
-            "Metaverse",
-            "Domain Name",
-            "Game",
-            "Collectibles",
-        ];
-        const random = Math.floor(Math.random() * categories.length);
-        const category = categories[random];
-
         const newRaffle = new Raffles({
             raffleId: form.rollId,
             userId: user.id,
@@ -60,7 +49,7 @@ export default async (req, res) => {
             ticketSupply: form.ticketSupply,
             ticketPrice: form.ticketPrice,
             ticketCurrency: form.ticketCurrency,
-            categories: [category],
+            categories: [form.category],
             likeCount: 0,
             tickets: [],
             ticketsSold: 0,

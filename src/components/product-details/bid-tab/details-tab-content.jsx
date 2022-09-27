@@ -22,7 +22,7 @@ const DetailsTabContent = ({ network, properties, tags }) => (
         )}
         {properties && (
             <div className="rn-pd-sm-property-wrapper">
-                <h6 className="pd-property-title">Property</h6>
+                <h6 className="pd-property-title">Properties</h6>
                 <div className="property-wrapper">
                     {properties.map((property) => (
                         <div
@@ -42,7 +42,7 @@ const DetailsTabContent = ({ network, properties, tags }) => (
         )}
         {tags && (
             <div className="rn-pd-sm-property-wrapper">
-                <h6 className="pd-property-title">Tag</h6>
+                <h6 className="pd-property-title">Category</h6>
                 <div className="catagory-wrapper">
                     {tags.map((tag) => (
                         <div key={tag} className="pd-property-inner">

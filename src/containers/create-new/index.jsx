@@ -217,6 +217,7 @@ const CreateNewArea = ({ className, space }) => {
                 endDate: data.endDate, // API
                 ticketCurrency: data.currency, // API
                 description: data.description, // API
+                category: data.category, // API
             })
         );
         if (loading) {
@@ -279,6 +280,7 @@ const CreateNewArea = ({ className, space }) => {
                 setNft(selected[0]);
             }
         }
+
         return () => {
             setSelectedImage(null);
             setCurrencies(null);
@@ -424,7 +426,68 @@ const CreateNewArea = ({ className, space }) => {
                                         </div>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <div className="input-box pb--20">
+                                            <label
+                                                htmlFor="category"
+                                                className="form-label"
+                                            >
+                                                Category*
+                                            </label>
+                                            <select
+                                                id="category"
+                                                {...register("category", {
+                                                    required:
+                                                        "Category is required",
+                                                })}
+                                            >
+                                                <option value="">Select</option>
+                                                <option
+                                                    value="Art"
+                                                    key="category-art"
+                                                >
+                                                    Art
+                                                </option>
+                                                <option
+                                                    value="Music"
+                                                    key="category-music"
+                                                >
+                                                    Music
+                                                </option>
+                                                <option
+                                                    value="Metaverse"
+                                                    key="category-metaverse"
+                                                >
+                                                    Metaverse
+                                                </option>
+                                                <option
+                                                    value="Domain Name"
+                                                    key="category-domain"
+                                                >
+                                                    Domain Name
+                                                </option>
+                                                <option
+                                                    value="Game"
+                                                    key="category-game"
+                                                >
+                                                    Game
+                                                </option>
+                                                <option
+                                                    value="Collectibles"
+                                                    key="category-collectibles"
+                                                >
+                                                    Collectibles
+                                                </option>
+                                            </select>
+                                            {errors.category && (
+                                                <ErrorText>
+                                                    {errors.category?.message}
+                                                </ErrorText>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6">
                                         <div className="input-box pb--20">
                                             <label
                                                 htmlFor="endDate"
@@ -455,7 +518,7 @@ const CreateNewArea = ({ className, space }) => {
                                         </div>
                                     </div>
 
-                                    <div className="col-md-2">
+                                    <div className="col-md-4">
                                         <div className="input-box pb--20">
                                             <label
                                                 htmlFor="currency"
@@ -491,7 +554,7 @@ const CreateNewArea = ({ className, space }) => {
                                         </div>
                                     </div>
 
-                                    <div className="col-md-2">
+                                    <div className="col-md-4">
                                         <div className="input-box pb--20">
                                             <label
                                                 htmlFor="price"
