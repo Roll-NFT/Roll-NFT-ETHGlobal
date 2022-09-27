@@ -55,8 +55,10 @@ const Header = ({ className }) => {
             .filter(
                 (item) =>
                     item.type === "cryptocurrency" &&
-                    item.supports_erc.includes("erc20") &&
-                    supportedCurrency.includes(item.contract_ticker_symbol)
+                    item.supports_erc &&
+                    supportedCurrency.includes(
+                        item.contract_address.toLowerCase()
+                    )
             )
             .map((coin, i) => ({
                 id: i,
@@ -78,7 +80,7 @@ const Header = ({ className }) => {
                 dispatch(balancesUpdate(nftBalances));
 
                 const supportedCurrency =
-                    process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(",");
+                    process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES_ADDRESSES;
                 const currencyBalances = prepareCurrencyBalances(
                     response.data.data,
                     network,
@@ -92,13 +94,7 @@ const Header = ({ className }) => {
     };
 
     useEffect(() => {
-        if (user) {
-            getBalances(user.get("ethAddress"), user.get("networkId"));
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (user && chain) {
+        if (chain && isAuthenticated) {
             const { chainId } = chain;
             setUserData({
                 chain: chain.name,
@@ -109,7 +105,11 @@ const Header = ({ className }) => {
                 currency: chain.nativeCurrency,
             });
         }
-    }, [user, chain]);
+
+        if (isAuthenticated) {
+            getBalances(user.get("ethAddress"), user.get("networkId"));
+        }
+    }, [isAuthenticated, chain]);
 
     // useEffect(() => {
     //     if (userApp) {

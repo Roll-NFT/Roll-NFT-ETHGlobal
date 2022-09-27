@@ -178,13 +178,25 @@ const CreateNewArea = ({ className, space }) => {
         }
     };
 
+    const checkNetwork = () => {
+        const networks = [process.env.NEXT_PUBLIC_APP_CHAIN_ID_HEX];
+        return networks.includes(user.get("chainId"));
+    };
+
     const handleClick = (event) => {
         setLoading(true);
         event.preventDefault();
         if (isAuthenticated) {
-            Router.push("/select-nft").then(() => {
+            if (checkNetwork()) {
+                Router.push("/select-nft").then(() => {
+                    setLoading(false);
+                });
+            } else {
+                toast(
+                    `The current network is not support. Please change to ${process.env.NEXT_PUBLIC_APP_CHAIN_ID_NAME}`
+                );
                 setLoading(false);
-            });
+            }
         } else {
             authenticate({
                 signingMessage: "Roll NFT Authentication",
@@ -226,39 +238,16 @@ const CreateNewArea = ({ className, space }) => {
     };
 
     useEffect(() => {
-        // const onRollOwnershipTokenMinted = (owner, spender, tokenId) => {
-        //     saveRaffle();
-        //     toast(
-        //         "ROLT NFT minted successfully!"
-        //     );
-        // };
         const onTokenApproval = (owner, spender, tokenId) => {
             dispatch(approveUpdate({ owner, spender, tokenId }));
-            // setLoading(false);
-            // setConfirmButtonLabel("Create Roll");
-            // toast(
-            //     "Transfer approved successfully. You can now create the Roll!"
-            // );
         };
         if (nftContract) {
             nftContract.on("Approval", onTokenApproval);
         }
-        // if (roltContract) {
-        //     roltContract.on(
-        //         "RollOwnershipTokenMinted",
-        //         onRollOwnershipTokenMinted
-        //     );
-        // }
         return () => {
             if (nftContract) {
                 nftContract.off("Approval", onTokenApproval);
             }
-            // if (roltContract) {
-            //     roltContract.off(
-            //         "RollOwnershipTokenMinted",
-            //         onRollOwnershipTokenMinted
-            //     );
-            // }
         };
     }, [nftContract]);
 
@@ -284,9 +273,11 @@ const CreateNewArea = ({ className, space }) => {
     useEffect(() => {
         getAvailableCurrencies();
         setCurrencies(process.env.NEXT_PUBLIC_SUPPORTED_CURRENCIES.split(","));
-        const selected = balances.filter((item) => item.selected === true);
-        if (selected?.length > 0) {
-            setNft(selected[0]);
+        if (balances) {
+            const selected = balances.filter((item) => item.selected === true);
+            if (selected?.length > 0) {
+                setNft(selected[0]);
+            }
         }
         return () => {
             setSelectedImage(null);
@@ -372,20 +363,6 @@ const CreateNewArea = ({ className, space }) => {
                                     <ErrorText>NFT is required</ErrorText>
                                 )}
                             </div>
-                            {/*
-                                <div className="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
-                                    <h5> Note: </h5>
-                                    <span>
-                                        {" "}
-                                        Service fee : <strong>2.5%</strong>{" "}
-                                    </span>{" "}
-                                    <br />
-                                    <span>
-                                        {" "}
-                                        You will receive :{" "}
-                                        <strong>25.00 ETH $50,000</strong>
-                                    </span>
-                                </div> */}
                         </div>
                         <div className="col-lg-7">
                             <div className="form-wrapper-one">

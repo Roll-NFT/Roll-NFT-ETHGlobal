@@ -71,7 +71,7 @@ const UserDropdown = () => {
                             ))}
                     </ul>
                 </div>
-                <ul className="list-inner">
+                <ul className="list-inner pt-0">
                     <li>
                         <Anchor path="/my-rolls">My Rolls</Anchor>
                     </li>

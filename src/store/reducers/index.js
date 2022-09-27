@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { USER_LOGOUT } from "../actions";
 import { balancesReducer, currencyBalancesReducer } from "./balances";
-import userReducer from "./users";
+// import userReducer from "./users";
 import {
     rollReducer,
     categoryReducer,
@@ -13,7 +13,7 @@ import {
 const appReducer = combineReducers({
     balances: balancesReducer,
     currencyBalances: currencyBalancesReducer,
-    user: userReducer,
+    // user: userReducer,
     roll: rollReducer,
     category: categoryReducer,
     hero: heroReducer,
